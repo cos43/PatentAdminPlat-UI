@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 style="text-align: center;margin-top: 100px">专利检测</h1>
+    <h1 style="text-align: center;margin-top: 100px">专利检索</h1>
     <img style="width: 80%;margin: 0 10%" src="https://www.helloimg.com/images/2022/09/16/Z6LLbt.png">
   </div>
 </template>
