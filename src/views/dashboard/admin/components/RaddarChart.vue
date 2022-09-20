@@ -47,6 +47,10 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
+        title: {
+          show: true,
+          text: '技术包分布'
+        },
         tooltip: {
           trigger: 'axis',
           axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -59,7 +63,7 @@ export default {
           splitNumber: 8,
           splitArea: {
             areaStyle: {
-              color: 'rgba(127,95,132,.3)',
+              color: 'rgba(127,95,132,.4)',
               opacity: 1,
               shadowBlur: 45,
               shadowColor: 'rgba(0,0,0,.5)',
@@ -68,18 +72,18 @@ export default {
             }
           },
           indicator: [
-            { name: 'Sales', max: 10000 },
-            { name: 'Administration', max: 20000 },
-            { name: 'Information Technology', max: 20000 },
-            { name: 'Customer Support', max: 20000 },
-            { name: 'Development', max: 20000 },
-            { name: 'Marketing', max: 20000 }
+            { name: '知识图谱', max: 10000 },
+            { name: '路由', max: 20000 },
+            { name: '机器学习', max: 20000 },
+            { name: '流量监测', max: 20000 },
+            { name: '威胁情报', max: 20000 },
+            { name: 'APT攻击', max: 20000 }
           ]
         },
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Allocated Budget', 'Expected Spending', 'Actual Spending']
+          data: ['技术包1', '技术包2', '技术包3']
         },
         series: [{
           type: 'radar',
@@ -96,15 +100,15 @@ export default {
           data: [
             {
               value: [5000, 7000, 12000, 11000, 15000, 14000],
-              name: 'Allocated Budget'
+              name: '技术包1'
             },
             {
               value: [4000, 9000, 15000, 15000, 13000, 11000],
-              name: 'Expected Spending'
+              name: '技术包2'
             },
             {
               value: [5500, 11000, 12000, 15000, 12000, 12000],
-              name: 'Actual Spending'
+              name: '技术包3'
             }
           ],
           animationDuration: animationDuration

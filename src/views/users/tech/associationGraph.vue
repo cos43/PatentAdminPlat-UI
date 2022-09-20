@@ -1,6 +1,6 @@
 <template>
   <div style="display: flex;flex-direction: row;align-items: center;height: 100vh">
-    <div id="myChart" style="height: 800px;width:100%" />
+    <div id="myChart" style="height: 80%;width:100%" />
   </div>
 </template>
 <script>

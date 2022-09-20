@@ -45,6 +45,17 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
+        title: {
+          show: true,
+          text: '技术兴趣'
+        },
+        grid: {
+          top: 80,
+          left: '2%',
+          right: '2%',
+          bottom: '3%',
+          containLabel: true
+        },
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -52,7 +63,7 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          data: ['机器学习', '威胁情报', '流量检测', '知识图谱', '防火墙']
         },
         series: [
           {
@@ -62,11 +73,11 @@ export default {
             radius: [15, 95],
             center: ['50%', '38%'],
             data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
+              { value: 320, name: '机器学习' },
+              { value: 240, name: '威胁情报' },
+              { value: 149, name: '流量检测' },
+              { value: 100, name: '知识图谱' },
+              { value: 59, name: '防火墙' }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600
