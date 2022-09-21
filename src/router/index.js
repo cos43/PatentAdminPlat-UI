@@ -90,8 +90,15 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/users/index'),
-        name: 'Dashboard',
+        name: 'SearchIndex',
         meta: { title: '专利检索', icon: 'search' }
+      },
+      {
+        path: 'advanced',
+        component: () => import('@/views/users/search/advancedSearch'),
+        name: 'AdvancedSearch',
+        hidden: true,
+        meta: { title: '高级检索', icon: 'search' }
       }
     ]
   },
