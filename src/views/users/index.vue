@@ -9,31 +9,24 @@
             <div class="searchBtn">检索</div>
           </div>
           <div class="searchAction">
-            <router-link to="/search/advanced"><span>表单检索</span></router-link>
+            <router-link to="/search/advanced"><span>高级检索</span></router-link>
+            <router-link to="/search/form"><span>表单检索</span></router-link>
           </div>
-        </div>
-        <div v-show="visible" class="filter">
-          1212
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import Link from '@/layout/components/Sidebar/Link'
 export default {
   name: 'Users',
-  components: { Link },
   data() {
     return {
-      currentRole: 'adminDashboard',
-      visible: false
+
     }
   },
   created() {
-    if (!this.roles.includes('admin')) {
-      this.currentRole = 'editorDashboard'
-    }
+
   },
   methods: {
 
@@ -112,10 +105,11 @@ export default {
 .searchAction{
   display: flex;
   flex-direction: column;
-  justify-content: center;
   color: #17233d;
   font-weight: bold;
+  font-size: 13px;
   text-shadow:3px 3px 3px #ccc;
+  justify-content: space-around;
   margin-left: 10px;
   cursor: pointer;
 

@@ -94,11 +94,25 @@ export const constantRoutes = [
         meta: { title: '专利检索', icon: 'search' }
       },
       {
+        path: 'form',
+        component: () => import('@/views/users/search/formSearch'),
+        name: 'FormSearch',
+        hidden: true,
+        meta: { title: '表单检索', icon: 'search' }
+      },
+      {
         path: 'advanced',
         component: () => import('@/views/users/search/advancedSearch'),
         name: 'AdvancedSearch',
         hidden: true,
         meta: { title: '高级检索', icon: 'search' }
+      },
+      {
+        path: 'results',
+        component: () => import('@/views/users/search/results'),
+        name: 'SearchResults',
+        hidden: true,
+        meta: { title: '检索结果' }
       }
     ]
   },
