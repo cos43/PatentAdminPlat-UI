@@ -84,6 +84,10 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/home',
+    component: () => import('@/views/users/home')
+  },
+  {
     path: '/search',
     component: Layout,
     children: [

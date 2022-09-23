@@ -1,10 +1,37 @@
 <template>
-  <div style="display: flex;flex-direction: row;align-items: center;height: 100vh">
-    <div id="myChart" style="height: 80%;width:100%" />
+  <div>
+    <div style="display: flex;flex-direction: row;align-items: center;height: 100vh">
+      <div id="myChart" style="height: 80%;width:100%" />
+    </div>
+    <div class="table">
+      <el-table
+        :data="tableData"
+        stripe
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="date"
+          label="排名"
+          align="center"
+          width="100"
+        />
+        <el-table-column
+          align="center"
+          prop="name"
+          label="发明人"
+        />
+        <el-table-column
+          align="center"
+          prop="number"
+          label="关联指数"
+        />
+      </el-table>
+    </div>
   </div>
 </template>
 <script>
 import echarts from 'echarts'
+
 const data = {
   'nodes': [
     {
@@ -1750,6 +1777,14 @@ const data = {
   ]
 }
 const option = {
+  title: {
+    text: '关联图谱',
+    textAlign: 'auto',
+    left: '10%', // '5' | '5%'，title 组件离容器左侧的距离
+    right: 'auto', // 'title 组件离容器右侧的距离
+    top: 'auto', // title 组件离容器上侧的距离
+    bottom: 'auto'
+  },
   tooltip: {},
   legend: [
     {
@@ -1784,12 +1819,62 @@ const option = {
         curveness: 0.3
       }
     }
-  ] }
+  ]
+}
 export default {
   name: 'AssociationGraph',
+  data() {
+    return {
+      tableData: [{
+        date: '1',
+        name: '张三',
+        number: 12
+      }, {
+        date: '2',
+        name: '李四',
+        number: 11
+      }, {
+        date: '3',
+        name: '张三',
+        number: 8
+      }, {
+        date: '4',
+        name: '张三',
+        number: 2
+      },
+      {
+        date: '1',
+        name: '张三',
+        number: 12
+      }, {
+        date: '2',
+        name: '张三',
+        number: 11
+      }, {
+        date: '3',
+        name: '张三',
+        number: 8
+      }, {
+        date: '4',
+        name: '张三',
+        number: 2
+      }]
+    }
+  },
   mounted() {
     const myChart = echarts.init(document.getElementById('myChart'))
     myChart.setOption(option)
   }
 }
 </script>
+<style>
+.table {
+  position: absolute;
+  z-index: 99;
+  top:10px;
+  right: 10px;
+  overflow-y: auto;
+  width: 300px;
+  border:1px solid #ccc;
+}
+</style>

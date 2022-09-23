@@ -1,6 +1,14 @@
 <template>
   <div>
     <div class="header">
+      <div style="display: flex;flex-direction: row;justify-content: flex-end;width: 90%">
+        <router-link to="/login">
+          <el-button type="text">登录</el-button>
+        </router-link>
+        <router-link to="/login" style="margin-left: 10px">
+          <el-button type="text">注册</el-button>
+        </router-link>
+      </div>
       <div class="searchBox">
         <div class="searchHeader">
           <h1 style="color: black;text-shadow: 3px 3px 3px #ccc;">专利检索平台</h1>
@@ -17,23 +25,7 @@
         </div>
       </div>
     </div>
-    <div style="margin: 50px 100px">
-      <el-row :gutter="20">
-        <el-col :span="6">
-          <el-button type="primary" style="height: 80px;font-size: 1.5rem">查新报告</el-button>
-        </el-col>
-        <el-col :span="6">
-          <el-button type="primary" style="height: 80px;font-size: 1.5rem">侵权报告</el-button>
-        </el-col>
-        <el-col :span="6">
-          <el-button type="primary" style="height: 80px;font-size: 1.5rem">技术图谱</el-button>
-        </el-col>
-        <el-col :span="6">
-          <el-button type="primary" style="height: 80px;font-size: 1.5rem">关联图谱</el-button>
-        </el-col>
-      </el-row>
-    </div>
-    <div class="recommend" style="margin: 0 100px">
+    <div class="recommend" style="margin: 40px 100px">
       <span class="result-item title">今日推荐</span>
       <div v-for="index in 8" :key="index" class="result-item">
         <div class="result-title row-center">
@@ -70,17 +62,16 @@ export default {
 .header {
   padding: 10px 20px;
   border-bottom: 1px solid #ebeef5;
-  height: 300px;
+  height: 350px;
   display: flex;
   flex-direction: column;
-
   align-items: center;
   background-image: linear-gradient(to top, #ace0f9 0%, #ffffff 100%);
 }
 
 .searchBox {
   width: 70%;
-  padding-top: 50px;
+  padding-top: 70px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -156,7 +147,8 @@ export default {
   cursor: pointer;
 
 }
-.searchAction span{
+
+.searchAction span {
   margin-right: 10px;
 }
 
@@ -207,7 +199,8 @@ export default {
   color: #17233d;
   text-shadow: 3px 3px 3px #ccc;
 }
-.menu{
+
+.menu {
   display: flex;
   flex-direction: column;
   align-items: center;
