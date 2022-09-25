@@ -117,6 +117,13 @@ export const constantRoutes = [
         name: 'SearchResults',
         hidden: true,
         meta: { title: '检索结果' }
+      },
+      {
+        path: 'detail',
+        component: () => import('@/views/users/search/detail'),
+        name: 'SearchDetail',
+        hidden: true,
+        meta: { title: '检索详情' }
       }
     ]
   },
