@@ -2,13 +2,12 @@
   <div>
     <div class="header">
       <div style="display: flex;flex-direction: row;justify-content: flex-end;width: 90%">
-        <router-link to="/login">
-          <el-button type="text">登录</el-button>
-        </router-link>
-        <router-link to="/login" style="margin-left: 10px">
+        <el-button type="text" @click="login">登录</el-button>
+        <router-link to="/register" style="margin-left: 10px">
           <el-button type="text">注册</el-button>
         </router-link>
       </div>
+      <LoginComponent ref="loginRef" />
       <div class="searchBox">
         <div class="searchHeader">
           <h1 style="color: black;text-shadow: 3px 3px 3px #ccc;">专利咨询平台</h1>
@@ -47,15 +46,26 @@
   </div>
 </template>
 <script>
+import LoginComponent from '@/views/users/components/LoginComponent'
+
 export default {
   name: 'Users',
+  components: {
+    LoginComponent
+  },
   data() {
-    return {}
+    return {
+      showLogin: false
+    }
   },
   created() {
 
   },
-  methods: {}
+  methods: {
+    login() {
+      this.$refs.loginRef.show()
+    }
+  }
 }
 </script>
 <style>
@@ -179,17 +189,7 @@ export default {
   transition: 0.3s;
 }
 
-.flex-end {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-}
-
 .result-item:hover {
-  background-color: #e3f8fd;
-}
-
-.active {
   background-color: #e3f8fd;
 }
 
@@ -200,15 +200,4 @@ export default {
   text-shadow: 3px 3px 3px #ccc;
 }
 
-.menu {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 80px;
-  width: 120px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  margin: auto;
-}
 </style>

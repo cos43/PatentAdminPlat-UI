@@ -56,6 +56,11 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/register',
+    component: () => import('@/views/users/components/RegisterComponent'),
+    hidden: true
+  },
+  {
     path: '/auth-redirect',
     component: () => import('@/views/login/auth-redirect'),
     hidden: true
@@ -128,15 +133,71 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/resource',
+    path: '/patent',
     component: Layout,
-    meta: { title: '我的资源', icon: 'resource' },
+    meta: { title: '我的专利', icon: 'patent' },
     children: [
       {
-        path: 'patent',
+        path: 'home',
         component: () => import('@/views/users/resource/patent'),
         name: 'Patent',
-        meta: { title: '我的专利', icon: 'patent' }
+        meta: { title: '首页', icon: 'patent' }
+      },
+      {
+        path: 'patentManage',
+        component: () => import('@/views/users/resource/patent'),
+        name: 'Patent',
+        meta: { title: '专利管理', icon: 'patent' }
+      },
+      {
+        path: 'tagManege',
+        component: () => import('@/views/users/resource/patent'),
+        name: 'Patent',
+        meta: { title: '标签管理', icon: 'patent' }
+      },
+      {
+        path: 'report',
+        component: () => import('@/views/users/resource/report'),
+        name: 'Report',
+        meta: { title: '我的报告', icon: 'report' }
+      },
+      {
+        path: 'pack',
+        component: () => import('@/views/users/tech/techPack'),
+        name: 'Pack',
+        meta: { title: '技术包', icon: 'pack' }
+      },
+      {
+        path: 'analysis',
+        name: 'Pack',
+        meta: { title: '分析', icon: 'pack' },
+        children: [
+          {
+            path: 'associationGraph',
+            component: () => import('@/views/users/tech/associationGraph'),
+            name: 'associationGraph',
+            meta: { title: '关联图谱', icon: 'related' }
+          },
+          {
+            path: 'technicalGraph',
+            component: () => import('@/views/users/tech/technicalGraph'),
+            name: 'technicalGraph',
+            meta: { title: '技术图谱', icon: 'tech' }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/explore',
+    component: Layout,
+    meta: { title: '我的探索', icon: 'guide' },
+    children: [
+      {
+        path: 'followPack',
+        component: () => import('@/views/users/resource/follow'),
+        name: 'Follow',
+        meta: { title: '关注包', icon: 'focus' }
       },
       {
         path: 'follow',
@@ -145,69 +206,66 @@ export const constantRoutes = [
         meta: { title: '我的关注', icon: 'focus' }
       },
       {
-        path: 'report',
-        component: () => import('@/views/users/resource/report'),
-        name: 'Report',
-        meta: { title: '我的报告', icon: 'report' }
-      }
-    ]
-  },
-  {
-    path: '/technology',
-    component: Layout,
-    meta: { title: '我的技术', icon: 'guide' },
-    children: [
-      {
-        path: 'pack',
-        component: () => import('@/views/users/tech/techPack'),
+        path: 'analysis',
         name: 'Pack',
-        meta: { title: '技术包', icon: 'pack' }
-      },
-      {
-        path: 'noveltyReport',
-        component: () => import('@/views/users/tech/noveltyReport'),
-        name: 'noveltyReport',
-        meta: { title: '查新报告', icon: 'check' }
-      },
-      {
-        path: 'associationGraph',
-        component: () => import('@/views/users/tech/associationGraph'),
-        name: 'associationGraph',
-        meta: { title: '关联图谱', icon: 'related' }
-      },
-      {
-        path: 'technicalGraph',
-        component: () => import('@/views/users/tech/technicalGraph'),
-        name: 'technicalGraph',
-        meta: { title: '技术图谱', icon: 'tech' }
+        meta: { title: '分析', icon: 'pack' },
+        children: [
+          {
+            path: 'associationGraph',
+            component: () => import('@/views/users/tech/associationGraph'),
+            name: 'associationGraph',
+            meta: { title: '关联图谱', icon: 'related' }
+          },
+          {
+            path: 'technicalGraph',
+            component: () => import('@/views/users/tech/technicalGraph'),
+            name: 'technicalGraph',
+            meta: { title: '技术图谱', icon: 'tech' }
+          }
+        ]
       }
     ]
   },
+  // {
+  //   path: '/technology',
+  //   component: Layout,
+  //   meta: { title: '我的技术', icon: 'guide' },
+  //   children: [
+  //
+  //     {
+  //       path: 'noveltyReport',
+  //       component: () => import('@/views/users/tech/noveltyReport'),
+  //       name: 'noveltyReport',
+  //       meta: { title: '查新报告', icon: 'check' }
+  //     }
+  //   ]
+  // },
   {
     path: '/trade',
     component: Layout,
+    meta: { title: '我的交易', icon: 'guide' },
     children: [
+      {
+        path: 'home',
+        component: () => import('@/views/users/tradingInformation'),
+        name: 'tradingInformation',
+        meta: { title: '首页', icon: 'trade' }
+      },
       {
         path: 'information',
         component: () => import('@/views/users/tradingInformation'),
         name: 'tradingInformation',
         meta: { title: '交易信息', icon: 'trade' }
-      }
-    ]
-  },
-  {
-    path: '/patentValuation',
-    component: Layout,
-    redirect: '/profile/index',
-    children: [
+      },
       {
-        path: 'index',
+        path: 'estimate',
         component: () => import('@/views/users/patentValuation'),
         name: 'patentValuation',
         meta: { title: '专利估价', icon: 'estimate' }
       }
     ]
   },
+
   {
     path: '/profile',
     component: Layout,
