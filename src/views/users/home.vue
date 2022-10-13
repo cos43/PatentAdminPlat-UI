@@ -3,7 +3,7 @@
     <div class="header">
       <div style="display: flex;flex-direction: row;justify-content: flex-end;width: 90%">
         <el-button type="text" @click="login">登录</el-button>
-        <router-link to="/register" style="margin-left: 10px">
+        <router-link to="/register" style="margin-left: 15px" target="_blank">
           <el-button type="text">注册</el-button>
         </router-link>
       </div>
