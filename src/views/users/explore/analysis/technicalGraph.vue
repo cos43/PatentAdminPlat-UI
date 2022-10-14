@@ -10,20 +10,20 @@
         style="width: 100%"
       >
         <el-table-column
-          prop="date"
-          label="排名"
           align="center"
+          label="排名"
+          prop="date"
           width="100"
         />
         <el-table-column
           align="center"
-          prop="name"
           label="技术"
+          prop="name"
         />
         <el-table-column
           align="center"
-          prop="number"
           label="关联指数"
+          prop="number"
         />
       </el-table>
     </div>
@@ -1871,10 +1871,10 @@ export default {
 .table {
   position: absolute;
   z-index: 99;
-  top:10px;
+  top: 10px;
   right: 10px;
   overflow-y: auto;
   width: 300px;
-  border:1px solid #ccc;
+  border: 1px solid #ccc;
 }
 </style>

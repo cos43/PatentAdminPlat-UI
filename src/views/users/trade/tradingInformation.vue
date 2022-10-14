@@ -3,9 +3,9 @@
     <div class="filter-container">
 
       <el-input v-model="listQuery.title" placeholder="专利名称" style="width: 200px;margin-right: 10px" class="filter-item" @keyup.enter.native="handleFilter" />
-<!--      <el-select v-model="listQuery.importance" placeholder="报告类型" clearable style="width: 120px;margin-right: 10px" class="filter-item">-->
-<!--        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />-->
-<!--      </el-select>-->
+      <!--      <el-select v-model="listQuery.importance" placeholder="报告类型" clearable style="width: 120px;margin-right: 10px" class="filter-item">-->
+      <!--        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />-->
+      <!--      </el-select>-->
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>

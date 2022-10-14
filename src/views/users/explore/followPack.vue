@@ -7,14 +7,10 @@
         <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
           搜索
         </el-button>
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-          添加
-        </el-button>
         <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
           导出
         </el-button>
       </div>
-
       <el-table
         :key="tableKey"
         v-loading="listLoading"
@@ -22,7 +18,7 @@
         border
         fit
         highlight-current-row
-        style="width: 100%;  border-radius: 10px!important;"
+        style="width: 100%; border-radius: 10px!important;"
         @sort-change="sortChange"
       >
         <el-table-column label="ID" prop="id" sortable="custom" align="center" width="60" :class-name="getSortClass('id')">
@@ -52,6 +48,7 @@
             <span>{{ row.importance }}</span>
           </template>
         </el-table-column>
+
         <el-table-column label="状态" class-name="status-col" width="100">
           <template slot-scope="{row}">
             <el-tag :type="row.status | statusFilter">
@@ -62,14 +59,12 @@
         <el-table-column label="操作" align="center" width="130" class-name="small-padding fixed-width">
           <template slot-scope="{row,$index}">
             <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
-              取消认领
+              取消关注
             </el-button>
           </template>
         </el-table-column>
       </el-table>
-
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-
     </div>
     <div style="width: 300px">
       <PatentRecommend />
@@ -308,6 +303,3 @@ export default {
   }
 }
 </script>
-<style>
-
-</style>

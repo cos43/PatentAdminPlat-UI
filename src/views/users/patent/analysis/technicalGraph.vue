@@ -10,20 +10,20 @@
         style="width: 100%"
       >
         <el-table-column
-          prop="date"
-          label="排名"
           align="center"
+          label="排名"
+          prop="date"
           width="100"
         />
         <el-table-column
           align="center"
+          label="技术"
           prop="name"
-          label="发明人"
         />
         <el-table-column
           align="center"
-          prop="number"
           label="关联指数"
+          prop="number"
         />
       </el-table>
     </div>
@@ -1778,7 +1778,7 @@ const data = {
 }
 const option = {
   title: {
-    text: '关联图谱',
+    text: '技术图谱',
     textAlign: 'auto',
     left: '10%', // '5' | '5%'，title 组件离容器左侧的距离
     right: 'auto', // 'title 组件离容器右侧的距离
@@ -1827,36 +1827,36 @@ export default {
     return {
       tableData: [{
         date: '1',
-        name: '张三',
+        name: '机器学习',
         number: 12
       }, {
         date: '2',
-        name: '李四',
+        name: '知识图谱',
         number: 11
       }, {
         date: '3',
-        name: '张三',
+        name: '威胁情报',
         number: 8
       }, {
         date: '4',
-        name: '张三',
+        name: '流量监测',
         number: 2
       },
       {
         date: '1',
-        name: '张三',
+        name: '机器学习',
         number: 12
       }, {
         date: '2',
-        name: '张三',
+        name: '知识图谱',
         number: 11
       }, {
         date: '3',
-        name: '张三',
+        name: '威胁情报',
         number: 8
       }, {
         date: '4',
-        name: '张三',
+        name: '流量监测',
         number: 2
       }]
     }
@@ -1871,10 +1871,10 @@ export default {
 .table {
   position: absolute;
   z-index: 99;
-  top:10px;
+  top: 10px;
   right: 10px;
   overflow-y: auto;
   width: 300px;
-  border:1px solid #ccc;
+  border: 1px solid #ccc;
 }
 </style>

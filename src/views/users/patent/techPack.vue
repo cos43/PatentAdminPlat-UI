@@ -1,14 +1,14 @@
 <template>
   <div class="container1">
     <el-row :gutter="10">
-      <el-col v-for="(o,index) in 8" :key="o" :span="6" :xs="8" :sm="6">
+      <el-col v-for="(o,index) in 8" :key="o" :sm="6" :span="6" :xs="8">
         <el-card :style="{ padding: '0px',margin:'10px' }">
-          <img src="https://i.pinimg.com/originals/4e/b3/9e/4eb39e8616a353272d771b6f3271427f.png" class="image" alt="">
+          <img alt="" class="image" src="https://i.pinimg.com/originals/4e/b3/9e/4eb39e8616a353272d771b6f3271427f.png">
           <div style="padding-top: 14px;">
             <div style="margin: 5px 0;font-size: 0.8rem">
               技术包{{ index }}
             </div>
-            <el-row type="flex" justify="space-between">
+            <el-row justify="space-between" type="flex">
               <el-button size="mini" type="text" />
               <el-button-group>
                 <el-button size="mini" type="primary">查看</el-button>
