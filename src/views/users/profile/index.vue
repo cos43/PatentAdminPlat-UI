@@ -10,7 +10,10 @@
         <el-col :span="18" :xs="24">
           <el-card>
             <el-tabs v-model="activeTab">
-              <el-tab-pane label="我的资料" name="account">
+              <el-tab-pane label="基础资料" name="account">
+                <account :user="user" />
+              </el-tab-pane>
+              <el-tab-pane label="账户安全" name="password">
                 <account :user="user" />
               </el-tab-pane>
             </el-tabs>
@@ -25,8 +28,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import UserCard from './components/UserCard'
-import Activity from './components/Activity'
-import Timeline from './components/Timeline'
 import Account from './components/Account'
 
 export default {

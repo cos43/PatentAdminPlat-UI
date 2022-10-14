@@ -1,5 +1,3 @@
-import Cookies from 'js-cookie'
-
 const TokenKey = 'Admin-Token'
 
 export function getToken() {
@@ -11,5 +9,5 @@ export function setToken(token) {
 }
 
 export function removeToken() {
-  return localStorage.remove(TokenKey)
+  return localStorage.removeItem(TokenKey)
 }

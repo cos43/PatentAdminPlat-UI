@@ -1,15 +1,26 @@
 <template>
-  <el-dialog width="25%" title="用户名密码登录" :visible.sync="formVisible" center>
-    <el-form ref="form" :rules="rules" :model="form">
-      <el-form-item label="账号" prop="username">
-        <el-input v-model="form.username" name="username" autocomplete="off" />
+  <el-dialog :visible.sync="formVisible" center class="diag" title="用户名密码登录">
+    <el-form ref="form" :model="form" :rules="rules">
+      <el-form-item prop="username">
+        <el-input v-model="form.username" autocomplete="off" name="username" placeholder="用户名" />
       </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="form.password" name="password" type="password" autocomplete="off" />
+      <el-form-item prop="password">
+        <el-input v-model="form.password" autocomplete="off" name="password" placeholder="密码" type="password" />
       </el-form-item>
-      <el-form-item style="margin-top: 40px">
-        <el-button style="width: 100%;height: 40px" type="primary">登录</el-button>
+      <el-form-item prop="code">
+        <el-row align="middle" type="flex">
+          <el-col :span="15">
+            <el-input v-model="form.code" autocomplete="off" name="code" placeholder="验证码" type="text" />
+          </el-col>
+          <el-col :offset="1" :span="8">
+            <img :src="captchaBase64" alt="cap" style="width: 100%;" @click="changeCaptcha">
+          </el-col>
+        </el-row>
       </el-form-item>
+      <el-form-item style="margin-top: 20px">
+        <el-button style="width: 100%;height: 40px" type="primary" @click="submitForm('form')">登录</el-button>
+      </el-form-item>
+
       <el-form-item>
         <router-link target="_blank" to="/register">
           <span style="color: #0085fa;font-size: 14px;cursor: pointer">注册账号</span>
@@ -20,6 +31,9 @@
   </el-dialog>
 </template>
 <script>
+import { getCaptcha, login } from '@/api/user'
+import { setToken } from '@/utils/auth'
+
 export default {
   name: 'LoginComponent',
   data() {
@@ -34,6 +48,7 @@ export default {
     return {
       formVisible: false,
       loginLoading: false,
+      captchaBase64: '',
       rules: {
         username: [
           {
@@ -44,26 +59,58 @@ export default {
           {
             validator: notEmptyValidator, trigger: 'blur', fullField: '密码'
           }
+        ],
+        code: [
+          {
+            validator: notEmptyValidator, trigger: 'blur', fullField: '验证码'
+          }
         ]
       },
       form: {
         username: '',
-        password: ''
+        password: '',
+        code: ''
       }
     }
   },
+  mounted() {
+  },
   methods: {
     show() {
-      this.formVisible = true
+      this.initCaptcha()
     },
-
+    initCaptcha() {
+      const self = this
+      getCaptcha().then(res => {
+        self.captchaBase64 = res.data.data
+        self.formVisible = true
+        self.form.uuid = res.data.requestId
+      })
+    },
+    changeCaptcha() {
+      this.initCaptcha()
+    },
     submitForm(formName) {
       const self = this
       this.loginLoading = true
       this.$refs[formName].validate((valid) => {
         self.loginLoading = false
         if (valid) {
-          alert('submit!')
+          login(self.form).then(res => {
+            if (res.data.code === 200) {
+              self.$message({
+                message: '登录成功',
+                type: 'success'
+              })
+              setToken(res.data.token)
+              this.$router.push({ path: '/' })
+            } else {
+              self.$message({
+                message: res.data.msg,
+                type: 'error'
+              })
+            }
+          })
         } else {
           console.log('error submit!!')
           return false
@@ -73,3 +120,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.diag {
+  width: 100%;
+}
+
+.diag >>> .el-dialog {
+  width: 350px;
+  margin-top: 25vh !important;
+}
+</style>

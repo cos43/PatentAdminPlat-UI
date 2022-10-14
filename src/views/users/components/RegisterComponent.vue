@@ -16,9 +16,7 @@
       <el-form-item label="密码" class="form-item" prop="region">
         <el-input v-model="ruleForm.name" class="form-input" />
       </el-form-item>
-      <el-form-item label="验证码" class="form-item" prop="region">
-        <el-input v-model="ruleForm.name" class="form-input" />
-      </el-form-item>
+
       <div style="margin-top: 40px">
         <el-button style="width: 100%;height: 50px;border-radius: 20px;font-size: 16px;font-weight: bold" type="primary" @click="submitForm('ruleForm')">注册</el-button>
       </div>
@@ -45,11 +43,11 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { message: '请输入活动名称', trigger: 'blur' },
           { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         region: [
-          { required: true, message: '请选择活动区域', trigger: 'change' }
+          { message: '请选择活动区域', trigger: 'change' }
         ],
         date1: [
           { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
