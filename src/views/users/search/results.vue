@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div style="margin-top: 15px">
+    <div style="margin-top: 5px">
       <el-input class="input-with-select" placeholder="请输入内容">
         <el-button slot="append" icon="el-icon-search" plain type="primary" />
       </el-input>
@@ -14,7 +14,9 @@
       </div>
     </div>
     <el-tabs type="border-card">
-      <el-tab-pane label="搜索分析">搜索分析</el-tab-pane>
+      <el-tab-pane label="搜索分析">
+        <table-analysis />
+      </el-tab-pane>
       <el-tab-pane>
         <span slot="label">搜索列表</span>
         <div class="results">
@@ -73,11 +75,13 @@
   </div>
 </template>
 <script>
+
+import tableAnalysis from '@/views/users/search/components/tableAnalysis'
+
 export default {
+  components: { tableAnalysis },
   data() {
-    return {
-      form: {}
-    }
+    return {}
   }
 }
 </script>
@@ -105,9 +109,9 @@ export default {
 }
 
 .desc {
-  font-size: 0.75rem;
-  margin: 5px 0;
-  line-height: 1.3rem;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  margin-top: 3px;
 }
 
 .result-item {
@@ -122,6 +126,7 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  margin-top: 10px;
 }
 
 .result-item:hover {
