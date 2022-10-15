@@ -1,16 +1,7 @@
 <template>
   <el-form>
-    <el-form-item label="姓名">
-      <el-input v-model="user.username" />
-    </el-form-item>
-    <el-form-item label="邮箱">
-      <el-input v-model="user.email" />
-    </el-form-item>
-    <el-form-item label="单位">
-      <el-input v-model="user.departure" />
-    </el-form-item>
-    <el-form-item label="电话">
-      <el-input v-model="user.phone" />
+    <el-form-item label="密码">
+      <el-input placeholder="请设置密码" type="password" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submit">更新</el-button>
