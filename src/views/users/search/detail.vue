@@ -86,7 +86,7 @@ export default {
 
 }
 </script>
-<style>
+<style scoped>
 .container {
   padding: 15px;
   display: flex;
@@ -112,7 +112,7 @@ export default {
 }
 
 .row-desc {
-  margin:20px 0;
+  margin: 20px 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
