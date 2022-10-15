@@ -1,14 +1,14 @@
 <template>
   <div class="container">
-    <login-component ref="loginRef" />
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" class="form">
-      <div style="font-size: 35px;font-weight: bold;margin-bottom: 15px;">欢迎注册
+      <div style="font-size: 35px;font-weight: bold;margin-bottom: 15px;">欢迎登录
       </div>
       <div style="font-size: 14px;color:gray;margin: 20px 0 20px 0">
-        已有账号？<span style="color:#0093fa;cursor: pointer" @click="login">登录</span>
+        没有账号？
+        <router-link style="color:#0093fa;cursor: pointer" target="_blank" to="/register">注册</router-link>
       </div>
       <el-form-item class="form-item" label="用户名" prop="username">
-        <el-input v-model="ruleForm.username" class="form-input" placeholder="请设置用户名" />
+        <el-input v-model="ruleForm.username" class="form-input" placeholder="请输入用户名" />
       </el-form-item>
       <el-popover
         ref="popover"
@@ -23,7 +23,7 @@
           v-model="ruleForm.password"
           v-popover:popover
           class="form-input"
-          placeholder="请设置登录密码"
+          placeholder="请输入登录密码"
           type="password"
         />
       </el-form-item>
@@ -34,20 +34,17 @@
           type="primary"
           @click="submitForm('ruleForm')"
         >
-          注册
+          登录
         </el-button>
       </div>
     </el-form>
   </div>
 </template>
 <script>
-import LoginComponent from '@/views/users/components/LoginComponent'
 import { register } from '@/api/user'
 
 export default {
-  components: {
-    LoginComponent
-  },
+
   data() {
     const notEmptyValidator = (rule, value, callback) => {
       console.log(rule)
@@ -75,7 +72,6 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      const self = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
           register(this.ruleForm).then(res => {
@@ -84,7 +80,6 @@ export default {
                 message: '注册成功',
                 type: 'success'
               })
-              self.$refs.loginRef.show()
             } else {
               this.$message({
                 message: res.data.msg,

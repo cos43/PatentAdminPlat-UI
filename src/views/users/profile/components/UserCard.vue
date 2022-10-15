@@ -6,7 +6,7 @@
 
     <div class="user-profile">
       <div class="box-center">
-        <pan-thumb :height="'100px'" :hoverable="false" :image="user.avatar" :width="'100px'" />
+        <pan-thumb :height="'100px'" :hoverable="false" :image="user.avatar||''" :width="'100px'" />
       </div>
       <div class="box-center">
         <div class="user-name text-center">{{ user.username }}</div>
@@ -48,15 +48,7 @@ export default {
   components: { PanThumb },
   props: {
     user: {
-      type: Object,
-      default: () => {
-        return {
-          name: '',
-          email: '',
-          avatar: '',
-          role: ''
-        }
-      }
+      type: Object
     }
   }
 }

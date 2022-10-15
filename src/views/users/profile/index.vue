@@ -1,20 +1,20 @@
 <template>
   <div class="app-container">
-    <div v-if="user">
+    <div v-if="userinfo">
       <el-row :gutter="20">
 
         <el-col :span="6" :xs="24">
-          <user-card :user="user" />
+          <user-card :user="userinfo" />
         </el-col>
 
         <el-col :span="18" :xs="24">
           <el-card>
             <el-tabs v-model="activeTab">
               <el-tab-pane label="基础资料" name="account">
-                <account :user="user" />
+                <account :user="userinfo" />
               </el-tab-pane>
               <el-tab-pane label="账户安全" name="password">
-                <account-safety :user="user" />
+                <account-safety :user="userinfo" />
               </el-tab-pane>
             </el-tabs>
           </el-card>
@@ -30,7 +30,6 @@ import { mapGetters } from 'vuex'
 import UserCard from './components/UserCard'
 import Account from './components/Account'
 import AccountSafety from './components/AccountSafety'
-import { getInfo } from '@/api/user'
 
 export default {
   name: 'Profile',
@@ -43,17 +42,11 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'name',
-      'avatar',
-      'roles'
+      'userinfo'
     ])
   },
   created() {
-    const self = this
-    getInfo().then(response => {
-      self.user = response.data.data
-      console.log(response.data.data)
-    })
+    this.user = JSON.parse(localStorage.getItem('user'))
   },
   methods: {
     getUser() {

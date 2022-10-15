@@ -6,13 +6,11 @@
       class="hamburger-container"
       @toggleClick="toggleSideBar"
     />
-
+    <LoginComponent ref="loginRef" />
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-
-        <error-log class="errLog-container right-menu-item hover-effect" />
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
@@ -22,10 +20,10 @@
 
       </template>
 
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+      <el-dropdown v-if="token" class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img
-            :src="'https://img0.baidu.com/it/u=236085137,1979895699&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1665853200&t=ce6b32f431170809ecfba71babd1b103'"
+            :src="avatar"
             class="user-avatar"
           >
           <i class="el-icon-caret-bottom" />
@@ -39,6 +37,9 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+      <div v-else class="right-menu-item">
+        <el-button type="primary" @click="login">登录</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -47,32 +48,42 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
+import LoginComponent from '@/views/users/components/LoginComponent'
 
 export default {
   components: {
     Breadcrumb,
     Hamburger,
-    ErrorLog,
     Screenfull,
-    SizeSelect
+    SizeSelect,
+    LoginComponent
   },
   computed: {
     ...mapGetters([
+      'token',
       'sidebar',
-      'avatar',
-      'device'
+      'device',
+      'avatar'
     ])
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      localStorage.clear()
-      this.$router.push(`/home`)
+    logout() {
+      const self = this
+      this.$store.dispatch('user/logout').then(() => {
+        self.$message({
+          message: '退出成功',
+          type: 'success'
+        })
+        self.$router.push({ path: '/search/index' })
+      })
+    },
+    login() {
+      this.$refs.loginRef.show()
     }
   }
 }

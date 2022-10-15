@@ -17,28 +17,15 @@
         </div>
       </div>
     </div>
-    <div style="margin: 50px 100px">
-      <el-row :gutter="20">
-        <el-col :span="6">
-          <el-button type="primary" style="height: 80px;font-size: 1.5rem">查新报告</el-button>
-        </el-col>
-        <el-col :span="6">
-          <el-button type="primary" style="height: 80px;font-size: 1.5rem">侵权报告</el-button>
-        </el-col>
-        <el-col :span="6">
-          <el-button type="primary" style="height: 80px;font-size: 1.5rem">技术图谱</el-button>
-        </el-col>
-        <el-col :span="6">
-          <el-button type="primary" style="height: 80px;font-size: 1.5rem">关联图谱</el-button>
-        </el-col>
-      </el-row>
-    </div>
-    <div class="recommend" style="margin: 0 100px">
-      <span class="result-item title">今日推荐</span>
+    <div class="recommend" style="margin: 30px 100px">
+      <div class="d-flex flex-row align-items-center">
+        <span class="title title-active">推荐</span>
+        <span class="title">知产教室</span>
+      </div>
       <div v-for="index in 8" :key="index" class="result-item">
         <div class="result-title row-center">
           <span class="text-primary">基于条件标准化流模型的强鲁棒性图像隐写方法及系统[ZH]</span>
-          <el-tag style="margin: 0 5px" effect="dark" size="mini" type="warning">审中</el-tag>
+          <el-tag effect="dark" size="mini" style="margin: 0 5px" type="warning">审中</el-tag>
           中国发明申请
         </div>
         <div class="desc">
@@ -70,7 +57,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .header {
   padding: 10px 20px;
   border-bottom: 1px solid #ebeef5;
@@ -160,7 +147,8 @@ export default {
   cursor: pointer;
 
 }
-.searchAction span{
+
+.searchAction span {
   margin-right: 10px;
 }
 
@@ -183,43 +171,47 @@ export default {
 }
 
 .result-item {
-  margin-top: 10px;
-  padding: 20px 10px;
+  margin: 15px 0;
   cursor: pointer;
-  border-radius: 10px;
-  margin-bottom: 10px;
+  padding: 20px;
   transition: 0.3s;
-}
-
-.flex-end {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+  border-radius: 10px;
 }
 
 .result-item:hover {
   background-color: #e3f8fd;
 }
 
-.active {
-  background-color: #e3f8fd;
-}
-
-.recommend .title {
+.title {
   font-size: 1.2rem;
   font-weight: bold;
   color: #17233d;
-  text-shadow: 3px 3px 3px #ccc;
+  margin-right: 20px;
 }
-.menu{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 80px;
-  width: 120px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  margin: auto;
+
+.title:first-child {
+  margin-left: 20px;
 }
+
+.title:hover {
+  cursor: pointer;
+  color: #06CC6B;
+  transition: 0.3s;
+}
+
+.title-active:hover {
+  color: inherit;
+  transition: 0.3s;
+}
+
+.title-active {
+  text-decoration: none;
+  border-bottom: 10px solid #06CC6B;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  line-height: 10px;
+  display: inline-block;
+  margin-bottom: -10px !important;
+}
+
 </style>

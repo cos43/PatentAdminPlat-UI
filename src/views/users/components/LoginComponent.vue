@@ -31,14 +31,12 @@
   </el-dialog>
 </template>
 <script>
-import { getCaptcha, login } from '@/api/user'
-import { setToken } from '@/utils/auth'
+import { getCaptcha } from '@/api/user'
 
 export default {
   name: 'LoginComponent',
   data() {
     const notEmptyValidator = (rule, value, callback) => {
-      console.log(rule)
       if (value === '') {
         callback(new Error(`${rule.fullField}不能为空`))
       } else {
@@ -77,6 +75,11 @@ export default {
   },
   methods: {
     show() {
+      this.form = {
+        username: '',
+        password: '',
+        code: ''
+      }
       this.initCaptcha()
     },
     initCaptcha() {
@@ -96,21 +99,18 @@ export default {
       this.$refs[formName].validate((valid) => {
         self.loginLoading = false
         if (valid) {
-          login(self.form).then(res => {
-            if (res.data.code === 200) {
-              self.$message({
-                message: '登录成功',
-                type: 'success'
-              })
-              setToken(res.data.token)
-              this.$router.push({ path: '/' })
-            } else {
-              self.$message({
-                message: res.data.msg,
-                type: 'error'
-              })
-            }
+          this.$store.dispatch('user/login', this.form).then(() => {
+            this.$message({
+              message: '登录成功',
+              type: 'success'
+            })
+            self.formVisible = false
+            this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+            this.loading = false
           })
+            .catch(() => {
+              this.loading = false
+            })
         } else {
           console.log('error submit!!')
           return false
