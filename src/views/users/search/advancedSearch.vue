@@ -4,85 +4,47 @@
       高级检索
     </div>
     <div class="form">
-      <el-form size="small" label-position="right" label-width="140px" class="demo-form-inline">
+      <el-form class="demo-form-inline" label-position="right" label-width="140px" size="small">
         <el-row :gutter="20">
-          <div class="filterRow">
-            <div style="width: 100px;margin-right: 10px" />
-            <el-input placeholder="请输入内容" class="input-with-select">
-              <el-select slot="prepend" placeholder="主题" style="width: 100px">
-                <el-option label="主题" value="1" />
-                <el-option label="篇关摘" value="2" />
-                <el-option label="关键词" value="3" />
-                <el-option label="篇名" value="3" />
-                <el-option label="全文" value="3" />
-                <el-option label="作者" value="3" />
-              </el-select>
-              <el-select slot="append" placeholder="精确" style="width: 80px">
-                <el-option label="精确" value="1" />
-                <el-option label="模糊" value="2" />
-              </el-select>
-            </el-input>
-            <div class="operation" />
-          </div>
-          <div class="filterRow">
+          <div v-for="(item,index) in form" :key="'item'+item.id" class="filterRow">
             <div style="width: 100px;margin-right: 10px">
-              <el-select slot="append" placeholder="AND" style="width: 80px">
-                <el-option label="AND" value="1" />
-                <el-option label="OR" value="2" />
-                <el-option label="NOT" value="2" />
+              <el-select
+                slot="append"
+                v-model="item.operation"
+                :disabled="index===0"
+                placeholder="AND"
+                size="small"
+                style="width: 80px"
+              >
+                <el-option label="AND" value="and" />
+                <el-option label="OR" value="or" />
+                <el-option label="NOT" value="not" />
               </el-select>
             </div>
-            <el-input placeholder="请输入内容" class="input-with-select">
-              <el-select slot="prepend" placeholder="主题" style="width: 100px">
-                <el-option label="主题" value="1" />
-                <el-option label="篇关摘" value="2" />
-                <el-option label="关键词" value="3" />
-                <el-option label="篇名" value="3" />
-                <el-option label="全文" value="3" />
-                <el-option label="作者" value="3" />
-              </el-select>
-              <el-select slot="append" placeholder="精确" style="width: 80px">
-                <el-option label="精确" value="1" />
-                <el-option label="模糊" value="2" />
+            <el-input v-model="item.value" class="input-with-select" placeholder="请输入内容" size="small">
+              <el-select slot="prepend" v-model="item.fieldName" placeholder="请选择" style="width: 150px">
+                <el-option v-for="field in fields" :key="field.cnName" :label="field.cnName" :value="field.fieldName" />
               </el-select>
             </el-input>
             <div class="operation">
-              <el-button type="info" plain size="mini" icon="el-icon-minus" />
+              <el-button
+                :disabled="index===0"
+                icon="el-icon-minus"
+                plain
+                size="mini"
+                type="info"
+                @click="removeCondition(index)"
+              />
+              <el-button icon="el-icon-plus" plain size="mini" type="info" @click="addCondition" />
             </div>
           </div>
-          <div class="filterRow">
-            <div style="width: 100px;margin-right: 10px">
-              <el-select slot="append" placeholder="AND" style="width: 80px">
-                <el-option label="AND" value="1" />
-                <el-option label="OR" value="2" />
-                <el-option label="NOT" value="2" />
-              </el-select>
-            </div>
-            <el-input placeholder="请输入内容" class="input-with-select">
-              <el-select slot="prepend" placeholder="主题" style="width: 100px">
-                <el-option label="主题" value="1" />
-                <el-option label="篇关摘" value="2" />
-                <el-option label="关键词" value="3" />
-                <el-option label="篇名" value="3" />
-                <el-option label="全文" value="3" />
-                <el-option label="作者" value="3" />
-              </el-select>
-              <el-select slot="append" placeholder="精确" style="width: 80px">
-                <el-option label="精确" value="1" />
-                <el-option label="模糊" value="2" />
-              </el-select>
-            </el-input>
-            <div class="operation">
-              <el-button type="info" plain size="mini" icon="el-icon-minus" />
-              <el-button type="info" plain size="mini" icon="el-icon-plus" />
-            </div>
-          </div>
+
         </el-row>
       </el-form>
     </div>
-    <div class="row-center" style="margin-top: 50px">
-      <el-button>清空</el-button>
-      <el-button type="primary">检索</el-button>
+    <div class="row-center" style="margin-top: 30px">
+      <el-button size="small">清空</el-button>
+      <el-button size="small" type="primary" @click="onSubmit">检索</el-button>
     </div>
   </div>
 </template>
@@ -91,12 +53,82 @@ export default {
   name: 'AdvancedSearch',
   data() {
     return {
-      selected: '1'
+      selected: '1',
+      fields: [{ 'cnName': '公开(公告)号', 'fieldName': 'PNM' }, {
+        'cnName': '公开(公告)日',
+        'fieldName': 'PD'
+      }, { 'cnName': '名称摘要权利要求书', 'fieldName': 'TAC' }, {
+        'cnName': '名称摘要',
+        'fieldName': 'TA'
+      }, { 'cnName': '名称', 'fieldName': 'TI' }, { 'cnName': '摘要', 'fieldName': 'ABST' }, {
+        'cnName': '权利要求书',
+        'fieldName': 'blank'
+      }, { 'cnName': '说明书', 'fieldName': 'DESCR' }, {
+        'cnName': '申请人，当前专利权人',
+        'fieldName': 'CAS'
+      }, { 'cnName': '地址', 'fieldName': 'AR' }, {
+        'cnName': '申请(专利权)人',
+        'fieldName': 'PA'
+      }, { 'cnName': '申请人集合', 'fieldName': 'PATMS' }, {
+        'cnName': '当前专利权人',
+        'fieldName': 'CAS'
+      }, { 'cnName': '当前专利权人集合', 'fieldName': 'CASTMS' }, {
+        'cnName': '发明(设计)人',
+        'fieldName': 'PINN'
+      }, { 'cnName': '发明人集合', 'fieldName': 'INNTMS' }, {
+        'cnName': '存活期',
+        'fieldName': 'PERIOD'
+      }, { 'cnName': '国省代码', 'fieldName': 'CO' }, { 'cnName': '有效性', 'fieldName': 'LV' }, {
+        'cnName': '当前法律状态',
+        'fieldName': 'CLS'
+      }, { 'cnName': 'IPC/LOC', 'fieldName': 'IPC' }, { 'cnName': '主IPC/LOC', 'fieldName': 'PICS' }, {
+        'cnName': 'CPC',
+        'fieldName': 'CPC'
+      }, { 'cnName': 'UC', 'fieldName': 'UC' }, { 'cnName': '优先权', 'fieldName': 'PR' }, {
+        'cnName': '国民经济分类',
+        'fieldName': 'blank'
+      }, { 'cnName': '分案原申请号', 'fieldName': 'DAN' }, {
+        'cnName': '专利代理机构',
+        'fieldName': 'AGC'
+      }, { 'cnName': '代理人', 'fieldName': 'AGT' }, { 'cnName': '国际公布', 'fieldName': 'IPN' }, {
+        'cnName': '国际申请',
+        'fieldName': 'IAN'
+      }, { 'cnName': '进入国家日期', 'fieldName': 'DEN' }, {
+        'cnName': '解密专利',
+        'fieldName': 'blank'
+      }, { 'cnName': '同族号', 'fieldName': 'TZH' }, {
+        'cnName': '期限调整PTA',
+        'fieldName': 'PTAD'
+      }, { 'cnName': '药品名称', 'fieldName': 'PTEN' }, { 'cnName': '期限延长PTE', 'fieldName': 'PTED' }],
+      form: [
+        {
+          id: 0,
+          fieldName: 'PNM',
+          value: '',
+          operation: ''
+        }
+      ]
     }
   },
   methods: {
     onSubmit() {
-      console.log('submit!')
+      const query = []
+      for (const item of this.form) {
+        query.push(`${item.operation} ${item.fieldName}='${item.value}'`)
+      }
+      this.$router.push({ path: '/search/results', query: { q: query.join(' ') }})
+    },
+    addCondition() {
+      const id = this.form[this.form.length - 1].id + 1
+      this.form.push({
+        id,
+        fieldName: 'PNM',
+        value: '',
+        operation: 'and'
+      })
+    },
+    removeCondition(index) {
+      this.form.splice(index, 1)
     }
   }
 }
@@ -113,7 +145,6 @@ export default {
   width: 1000px;
   border: 1px solid #ccc;
   padding: 20px;
-  border-radius: 10px;
 }
 
 .row-center {
@@ -142,8 +173,12 @@ export default {
   color: #17233d;
   font-weight: bold;
   text-shadow: 3px 3px 3px #ccc;
-  margin: 20px 0;
-  font-size: 25px;
+  margin: 10px 0;
+  font-size: 20px;
   cursor: pointer;
+}
+
+/deep/ .el-form-item {
+  margin-bottom: 5px !important;
 }
 </style>

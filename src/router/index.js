@@ -101,7 +101,7 @@ export const constantRoutes = [
         component: () => import('@/views/users/search/formSearch'),
         name: 'FormSearch',
         hidden: true,
-        meta: { title: '表单检索', icon: 'search' }
+        meta: { title: '表格检索', icon: 'search' }
       },
       {
         path: 'advanced',

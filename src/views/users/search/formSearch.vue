@@ -1,23 +1,23 @@
 <template>
   <div class="container">
     <div class="row-center title">
-      表单检索
+      表格检索
     </div>
     <div class="form">
-      <el-form size="small" label-position="right" label-width="140px" class="demo-form-inline">
-        <el-row :gutter="20">
-          <el-col v-for="field in fields" :key="field" :span="12">
-            <el-form-item>
-              <div slot="label" style="font-size: 10px!important;">{{ field }}</div>
-              <el-input :placeholder="'请输入'+field" />
+      <el-form class="demo-form-inline" label-position="right" label-width="140px" size="small">
+        <el-row :gutter="10">
+          <el-col v-for="field in fields" :key="field.cnName" :span="12">
+            <el-form-item size="small">
+              <div slot="label" style="font-size: 10px!important;">{{ field.cnName }}</div>
+              <el-input v-model="field.value" :name="field.fieldName" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
     </div>
-    <div class="row-center" style="margin-top: 50px">
-      <el-button>清空</el-button>
-      <el-button type="primary">检索</el-button>
+    <div class="row-center" style="margin-top: 20px">
+      <el-button size="small">清空</el-button>
+      <el-button size="small" type="primary" @click="onSubmit">检索</el-button>
     </div>
   </div>
 </template>
@@ -26,12 +26,91 @@ export default {
   name: 'AdvancedSearch',
   data() {
     return {
-      fields: ['申请(专利)号', '申请日', '公开(公告)号', '公开(公告)日', '名称摘要权利要求书', '名称摘要', '名称', '摘要', '权利要求书', '说明书', '申请人，当前专利权人', '地址']
+      fields: [
+        { 'cnName': '公开(公告)号', 'fieldName': 'PNM', 'value': '' }, {
+          'cnName': '公开(公告)日',
+          'fieldName': 'PD',
+          'value': ''
+        }, { 'cnName': '名称摘要权利要求书', 'fieldName': 'TAC', 'value': '' }, {
+          'cnName': '名称摘要',
+          'fieldName': 'TA',
+          'value': ''
+        }, { 'cnName': '名称', 'fieldName': 'TI', 'value': '' }, {
+          'cnName': '摘要',
+          'fieldName': 'ABST',
+          'value': ''
+        }, { 'cnName': '权利要求书', 'fieldName': 'blank', 'value': '' }, {
+          'cnName': '说明书',
+          'fieldName': 'DESCR',
+          'value': ''
+        }, { 'cnName': '申请人，当前专利权人', 'fieldName': 'CAS', 'value': '' }, {
+          'cnName': '地址',
+          'fieldName': 'AR',
+          'value': ''
+        }, { 'cnName': '申请(专利权)人', 'fieldName': 'PA', 'value': '' }, {
+          'cnName': '申请人集合',
+          'fieldName': 'PATMS',
+          'value': ''
+        }, { 'cnName': '当前专利权人', 'fieldName': 'CAS', 'value': '' }, {
+          'cnName': '当前专利权人集合',
+          'fieldName': 'CASTMS',
+          'value': ''
+        }, { 'cnName': '发明(设计)人', 'fieldName': 'PINN', 'value': '' }, {
+          'cnName': '发明人集合',
+          'fieldName': 'INNTMS',
+          'value': ''
+        }, { 'cnName': '存活期', 'fieldName': 'PERIOD', 'value': '' }, {
+          'cnName': '国省代码',
+          'fieldName': 'CO',
+          'value': ''
+        }, { 'cnName': '有效性', 'fieldName': 'LV', 'value': '' }, {
+          'cnName': '当前法律状态',
+          'fieldName': 'CLS',
+          'value': ''
+        }, { 'cnName': 'IPC/LOC', 'fieldName': 'IPC', 'value': '' }, {
+          'cnName': '主IPC/LOC',
+          'fieldName': 'PICS',
+          'value': ''
+        }, { 'cnName': 'CPC', 'fieldName': 'CPC', 'value': '' }, {
+          'cnName': 'UC',
+          'fieldName': 'UC',
+          'value': ''
+        }, { 'cnName': '优先权', 'fieldName': 'PR', 'value': '' }, {
+          'cnName': '国民经济分类',
+          'fieldName': 'blank',
+          'value': ''
+        }, { 'cnName': '分案原申请号', 'fieldName': 'DAN', 'value': '' }, {
+          'cnName': '专利代理机构',
+          'fieldName': 'AGC',
+          'value': ''
+        }, { 'cnName': '代理人', 'fieldName': 'AGT', 'value': '' }, {
+          'cnName': '国际公布',
+          'fieldName': 'IPN',
+          'value': ''
+        }, { 'cnName': '国际申请', 'fieldName': 'IAN', 'value': '' }, {
+          'cnName': '进入国家日期',
+          'fieldName': 'DEN',
+          'value': ''
+        }, { 'cnName': '解密专利', 'fieldName': 'blank', 'value': '' }, {
+          'cnName': '同族号',
+          'fieldName': 'TZH',
+          'value': ''
+        }, { 'cnName': '期限调整PTA', 'fieldName': 'PTAD', 'value': '' }, {
+          'cnName': '药品名称',
+          'fieldName': 'PTEN',
+          'value': ''
+        }, { 'cnName': '期限延长PTE', 'fieldName': 'PTED', 'value': '' }]
     }
   },
   methods: {
     onSubmit() {
-      console.log('submit!')
+      const query = []
+      for (const field of this.fields) {
+        if (field.value) {
+          query.push(`${field.fieldName}='${field.value}'`)
+        }
+      }
+      this.$router.push({ path: '/search/results', query: { q: query.join(' and ') }})
     }
   }
 }
@@ -48,7 +127,6 @@ export default {
   width: 80%;
   border: 1px solid #ccc;
   padding: 20px;
-  border-radius: 10px;
 }
 
 .row-center {
@@ -62,8 +140,12 @@ export default {
   color: #17233d;
   font-weight: bold;
   text-shadow: 3px 3px 3px #ccc;
-  margin: 20px 0;
-  font-size: 25px;
+  margin: 10px 0;
+  font-size: 20px;
   cursor: pointer;
+}
+
+/deep/ .el-form-item {
+  margin-bottom: 5px !important;
 }
 </style>

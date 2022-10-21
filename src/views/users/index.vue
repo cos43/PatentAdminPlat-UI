@@ -11,7 +11,7 @@
           <div style="display: flex;flex-direction: row;justify-content: flex-start;width: 80%">
             <div class="searchAction">
               <router-link to="/search/advanced"><span>高级检索</span></router-link>
-              <router-link to="/search/form"><span>表单检索</span></router-link>
+              <router-link to="/search/form"><span>表格检索</span></router-link>
             </div>
           </div>
         </div>
