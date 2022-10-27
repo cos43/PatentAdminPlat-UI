@@ -76,7 +76,7 @@
         <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="130">
           <template slot-scope="row">
             <el-button size="mini" type="danger" @click="unClaimClick(row)">
-              取消关注
+              取消认领
             </el-button>
           </template>
         </el-table-column>
@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { getFocusedPatents, unFocusPatent } from '@/api/patent'
+import { getClaimedPatents, unClaimPatent } from '@/api/patent'
 import waves from '@/directive/waves' // waves directive
 
 export default {
@@ -119,7 +119,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getFocusedPatents(this.listQuery).then(response => {
+      getClaimedPatents(this.listQuery).then(response => {
         const results = response.data.data
         results.map(item => {
           item.patentProperties = JSON.parse(item.patentProperties)
@@ -130,9 +130,9 @@ export default {
       })
     },
     unClaimClick(row) {
-      unFocusPatent(row.row.patentId).then(response => {
+      unClaimPatent(row.row.patentId).then(response => {
         this.$message({
-          message: '取消关注成功',
+          message: '取消认领成功',
           type: 'success',
           duration: 5 * 1000
         })

@@ -138,16 +138,10 @@ export const constantRoutes = [
         meta: { title: '首页', icon: 'patent' }
       },
       {
-        path: 'patentManage',
-        component: () => import('@/views/users/patent/patentManage'),
+        path: 'claim',
+        component: () => import('@/views/users/patent/patentClaimList'),
         name: 'Patent',
         meta: { title: '专利管理', icon: 'patent' }
-      },
-      {
-        path: 'tagManege',
-        component: () => import('@/views/users/patent/tagManage'),
-        name: 'Patent',
-        meta: { title: '标签管理', icon: 'patent' }
       },
       {
         path: 'report',
@@ -188,12 +182,12 @@ export const constantRoutes = [
     component: Layout,
     meta: { title: '我的探索', icon: 'guide' },
     children: [
-      {
-        path: 'followPack',
-        component: () => import('@/views/users/explore/followPack'),
-        name: 'Follow',
-        meta: { title: '关注包', icon: 'focus' }
-      },
+      // {
+      //   path: 'followPack',
+      //   component: () => import('@/views/users/explore/followPack'),
+      //   name: 'Follow',
+      //   meta: { title: '关注包', icon: 'focus' }
+      // },
       {
         path: 'follow',
         component: () => import('@/views/users/explore/follow'),

@@ -108,8 +108,11 @@ export default {
             this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
             this.loading = false
           })
-            .catch(() => {
-              this.loading = false
+            .catch(error => {
+              this.$message({
+                message: error,
+                type: 'error'
+              })
             })
         } else {
           console.log('error submit!!')

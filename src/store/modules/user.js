@@ -30,9 +30,13 @@ const actions = {
     return new Promise((resolve, reject) => {
       login(userInfo).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
+        if (data.code === 200) {
+          commit('SET_TOKEN', data.token)
+          setToken(data.token)
+          resolve()
+        } else {
+          reject(data.msg)
+        }
       }).catch(error => {
         reject(error)
       })

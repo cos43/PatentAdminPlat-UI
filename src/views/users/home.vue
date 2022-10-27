@@ -3,7 +3,7 @@
     <div class="header">
       <div style="display: flex;flex-direction: row;justify-content: flex-end;width: 90%">
         <el-button type="text" @click="login">登录</el-button>
-        <router-link to="/register" style="margin-left: 15px" target="_blank">
+        <router-link style="margin-left: 15px" target="_blank" to="/register">
           <el-button type="text">注册</el-button>
         </router-link>
       </div>
@@ -29,7 +29,7 @@
       <div v-for="index in 8" :key="index" class="result-item">
         <div class="result-title row-center">
           <span class="text-primary">基于条件标准化流模型的强鲁棒性图像隐写方法及系统[ZH]</span>
-          <el-tag style="margin: 0 5px" effect="dark" size="mini" type="warning">审中</el-tag>
+          <el-tag effect="dark" size="mini" style="margin: 0 5px" type="warning">审中</el-tag>
           中国发明申请
         </div>
         <div class="desc">

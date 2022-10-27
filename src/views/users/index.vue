@@ -5,8 +5,11 @@
         <div class="searchHeader">
           <h1 style="color: black;text-shadow: 3px 3px 3px #ccc;">专利咨询平台</h1>
           <div class="searchBoxInput">
-            <input placeholder="可输入申请人、发明(设计）人、技术关键词、分类号、申请号、公开(公告)号等或直接输入检索式">
-            <div class="searchBtn" @click="jump">检索</div>
+            <input
+              v-model="query"
+              placeholder="可输入申请人、发明(设计）人、技术关键词、分类号、申请号、公开(公告)号等或直接输入检索式"
+            >
+            <div class="searchBtn" @click="search">检索</div>
           </div>
           <div style="display: flex;flex-direction: row;justify-content: flex-start;width: 80%">
             <div class="searchAction">
@@ -45,14 +48,19 @@
 export default {
   name: 'Users',
   data() {
-    return {}
+    return {
+      query: ''
+    }
   },
   created() {
 
   },
   methods: {
-    jump() {
-      this.$router.push('/search/results')
+    search() {
+      const query = this.query
+      if (query) {
+        this.$router.push({ path: '/search/results', query: { q: query }})
+      }
     }
   }
 }
