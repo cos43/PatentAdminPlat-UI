@@ -9,6 +9,7 @@ const getters = {
   name: state => state.user.name,
   permission_routes: state => state.permission.routes,
   errorLogs: state => state.errorLog.logs,
-  userinfo: state => state.user.userInfo
+  userinfo: state => state.user.userInfo,
+  packageList: state => state.package.packageList
 }
 export default getters

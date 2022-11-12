@@ -13,15 +13,6 @@
         <el-button v-waves class="filter-item" icon="el-icon-search" size="small" type="primary">
           搜索
         </el-button>
-        <el-button
-          class="filter-item"
-          icon="el-icon-edit"
-          size="small"
-          style="margin-left: 10px;"
-          type="primary"
-        >
-          添加
-        </el-button>
       </div>
 
       <el-table

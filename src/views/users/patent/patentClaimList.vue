@@ -13,15 +13,7 @@
         <el-button v-waves class="filter-item" icon="el-icon-search" size="small" type="primary">
           搜索
         </el-button>
-        <el-button
-          class="filter-item"
-          icon="el-icon-edit"
-          size="small"
-          style="margin-left: 10px;"
-          type="primary"
-        >
-          添加
-        </el-button>
+
       </div>
 
       <el-table
@@ -73,10 +65,13 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="130">
+        <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="180">
           <template slot-scope="row">
             <el-button size="mini" type="danger" @click="unClaimClick(row)">
               取消认领
+            </el-button>
+            <el-button size="mini" type="primary" @click="unClaimClick(row)">
+              加入工艺包
             </el-button>
           </template>
         </el-table-column>
