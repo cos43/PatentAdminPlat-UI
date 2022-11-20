@@ -17,38 +17,33 @@
       </el-button>
 
     </div>
-    <el-row :gutter="10">
-      <el-col v-for="(o,index) in packageList" :key="index" :sm="6" :span="6" :xs="8">
-        <el-card :style="{ padding: '0px',margin:'10px' }">
-          <img alt="" class="image" src="https://i.pinimg.com/originals/4e/b3/9e/4eb39e8616a353272d771b6f3271427f.png">
-          <div style="padding-top: 14px;">
-            <div style="margin: 5px 0;font-size: 0.8rem">
-              {{ o.packageName }}
-            </div>
-            <el-row justify="space-between" type="flex">
-              <el-button size="mini" type="text" />
-              <el-button-group>
-                <Link :to="`package/${o.packageId}`">
-                  <el-button icon="el-icon-folder" size="mini" type="primary">查看</el-button>
-                </Link>
-                <el-button icon="el-icon-download" size="mini" type="primary">打包下载</el-button>
-              </el-button-group>
-            </el-row>
+    <div class="cards">
+      <el-card v-for="o in packageList" :key="o.packageId" :style="{ padding: '0px',margin:'10px' }" class="my-card">
+        <svg aria-hidden="true" class="image">
+          <use xlink:href="#icon-files" />
+        </svg>
+        <div style="padding-top: 14px;">
+          <div style="font-size:1rem;margin-bottom: 5px">
+            {{ o.packageName }}
           </div>
-        </el-card>
-      </el-col>
-    </el-row>
+          <el-row justify="space-between" type="flex">
+            <router-link :to="{path:`package/${o.packageId}`,params:'1212'}" style="margin-right: 5px">
+              <el-button icon="el-icon-view" size="mini" type="primary">查看</el-button>
+            </router-link>
+            <el-button icon="el-icon-download" size="mini" type="primary">打包下载</el-button>
+          </el-row>
+        </div>
+      </el-card>
+    </div>
   </div>
 </template>
 <script>
 import createPack from '@/views/users/components/createPack'
 import { mapGetters } from 'vuex'
-import Link from '@/layout/components/Sidebar/Link'
 
 export default {
   name: 'TechPack',
   components: {
-    Link,
     createPack
   },
   computed: {
@@ -69,6 +64,19 @@ export default {
 }
 </script>
 <style scoped>
+.cards {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.my-card {
+  width: 220px;
+  height: 250px;
+}
+
 .image {
   width: 100%;
   display: block;

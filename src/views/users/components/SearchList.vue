@@ -1,110 +1,114 @@
 <template>
-  <div class="results">
+  <div class="results" style="padding-top: 15px">
     <create-pack ref="createPack" />
-
-    <div v-for="(item,index) of results" :key="item.NO" class="result-item">
-      <div class="result-title row-center">
-        <span class="text-primary">{{ index + 1 }} {{ item.TI }}[ZH]</span>
-        <el-tag
-          :style="{backgroundColor:getTagColor(item.CLS),border:'none'}"
-          effect="dark"
-          size="mini"
-          style="margin: 0 5px"
-        >{{ item.CLS }}
-        </el-tag>
-        中国发明申请
-      </div>
-      <div class="desc">
-        申请号：{{ item.AN }}
-        <el-divider direction="vertical" />
-        申请日：{{ item.AD }}
-        <el-divider direction="vertical" />
-        公开(公告）号：{{ item.PNM }}
-        <el-divider direction="vertical" />
-        公开（公告）日：{{ item.PD }}
-
-      </div>
-      <div class="desc">
-        申请（专利权）人：{{ item.PA }}
-        <el-divider direction="vertical" />
-        发明(设计）人：{{ item.PINN }}
-      </div>
-      <div class="desc">
-        {{ item.CL }}
-      </div>
-      <div class="flex-end">
-        <el-popover
-          ref="popover"
-          content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
-          placement="right"
-          title="标题"
-          trigger="focus"
-          width="200"
-        />
-        <el-button-group>
-          <el-button size="mini" type="primary" @click="claim(item)">
-            {{ item.isClaimed ? '取消认领' : '认领' }}
-          </el-button>
-          <el-button size="mini" type="primary" @click="focus(item)">
-            {{ item.isFocused ? '取消关注' : '关注' }}
-          </el-button>
-          <el-popover
-            placement="left-end"
-            width="350"
-          >
-            <el-form
-              :model="addPackForm"
-              label-position="left"
-              label-width="60px"
-              size="small"
-              style="margin: 10px"
-            >
-              <el-form-item label="专利" size="small">
-                <el-input v-model="addPackForm.patentName" size="small" />
-              </el-form-item>
-              <el-form-item label="工艺包" size="small">
-                <el-select
-                  v-model="addPackForm.packageId"
-                  v-loading="loadingPackageList"
-                  placeholder="请选择工艺包"
-                  size="small"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="p in packageList"
-                    :key="'p'+p.packageName"
-                    :label="p.packageName"
-                    :value="p.packageId"
-                  />
-                </el-select>
-              </el-form-item>
-              <div style="display: flex;flex-direction: row;align-items: center;justify-content: space-between">
-                <el-button size="mini" type="primary" @click="showCreatePack">新增工艺包</el-button>
-                <div style="text-align: right; margin: 0">
-
-                  <el-button
-                    v-loading="loadingRelation"
-                    :disabled="patentPackageExist"
-                    size="mini"
-                    type="primary"
-                    @click="handleAddPatentToPackage(item)"
-                  >
-                    {{ patentPackageExist ? '已添加' : '添加' }}
-                  </el-button>
-                </div>
-              </div>
-            </el-form>
-            <el-button slot="reference" size="mini" type="primary" @click="showPopover(item)">加入工艺包
-            </el-button>
-          </el-popover>
-        </el-button-group>
-      </div>
+    <div v-if="searchLoading">
+      <el-skeleton v-for="i of 6" :key="i" :rows="6" animated />
     </div>
-    <div class="block center">
-      <el-pagination
-        :total="1000"
-        layout="prev, pager, next"
-      />
+    <div v-else>
+
+      <div v-for="(item,index) of searchResults.list" :key="item.PNM" class="result-item">
+        <Link :to="`detail?id=${item.patentId}`">
+          <div class="result-title row-center">
+            <span class="text-primary">{{ index + 1 }} {{ item.TI }}[ZH]</span>
+            <el-tag
+              :style="{backgroundColor:getTagColor(item.CLS),border:'none'}"
+              effect="dark"
+              size="mini"
+              style="margin: 0 5px"
+            >{{ item.CLS }}
+            </el-tag>
+            中国发明申请
+          </div>
+          <div class="desc">
+            申请号：{{ item.AN }}
+            <el-divider direction="vertical" />
+            申请日：{{ item.AD }}
+            <el-divider direction="vertical" />
+            公开(公告）号：{{ item.PNM }}
+            <el-divider direction="vertical" />
+            公开（公告）日：{{ item.PD }}
+
+          </div>
+          <div class="desc">
+            申请（专利权）人：{{ item.PA }}
+            <el-divider direction="vertical" />
+            发明(设计）人：{{ item.PINN }}
+          </div>
+          <div class="desc">
+            {{ item.CL }}
+          </div>
+        </Link>
+        <div class="flex-end">
+          <el-button-group>
+            <el-button size="mini" type="primary" @click="claim(item)">
+              {{ item.isClaimed ? '取消认领' : '认领' }}
+            </el-button>
+            <el-button size="mini" type="primary" @click="focus(item)">
+              {{ item.isFocused ? '取消关注' : '关注' }}
+            </el-button>
+            <el-popover
+              placement="left-end"
+              width="350"
+            >
+              <el-form
+                :model="addPackForm"
+                label-position="left"
+                label-width="60px"
+                size="small"
+                style="margin: 10px"
+              >
+                <el-form-item label="专利" size="small">
+                  <el-input v-model="addPackForm.patentName" size="small" />
+                </el-form-item>
+                <el-form-item label="工艺包" size="small">
+                  <el-select
+                    v-model="addPackForm.packageId"
+                    v-loading="loadingPackageList"
+                    placeholder="请选择工艺包"
+                    size="small"
+                    style="width: 100%"
+                  >
+                    <el-option
+                      v-for="p in packageList"
+                      :key="'p'+p.packageName"
+                      :label="p.packageName"
+                      :value="p.packageId"
+                    />
+                  </el-select>
+                </el-form-item>
+                <div style="display: flex;flex-direction: row;align-items: center;justify-content: space-between">
+                  <el-button size="mini" type="primary" @click="showCreatePack">新增工艺包</el-button>
+                  <div style="text-align: right; margin: 0">
+
+                    <el-button
+                      v-loading="loadingRelation"
+                      :disabled="patentPackageExist"
+                      size="mini"
+                      type="primary"
+                      @click="handleAddPatentToPackage(item)"
+                    >
+                      {{ patentPackageExist ? '已添加' : '添加' }}
+                    </el-button>
+                  </div>
+                </div>
+              </el-form>
+              <el-button slot="reference" size="mini" type="primary" @click="showPopover(item)">加入工艺包
+              </el-button>
+            </el-popover>
+          </el-button-group>
+        </div>
+
+      </div>
+
+      <div class="block center">
+        <div>
+          <el-button :disabled="page===1" icon="el-icon-arrow-left" size="mini" type="primary">上一页</el-button>
+          <el-button size="mini" style="width: 50px;color: #2b2f3a" type="text">{{ page }}</el-button>
+          <el-button size="mini" type="primary">下一页<i
+            class="el-icon-arrow-right el-icon--right"
+          /></el-button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -113,21 +117,27 @@ import { claimPatent, focusPatent, unClaimPatent, unFocusPatent } from '@/api/pa
 import { addPatentToPackage, checkPatentToPackage, getPackageList } from '@/api/package'
 import { getTagColor } from '@/views/users/utils'
 import createPack from '@/views/users/components/createPack'
+import { searchSimple } from '@/api/search'
+import Link from '@/layout/components/Sidebar/Link'
 
 export default {
   name: 'SearchList',
   components: {
+    Link,
     createPack
   },
   props: {
-    results: {
-      type: Array,
-      default: () => []
+    query: {
+      type: Object,
+      default: () => {
+      }
     }
   },
   data() {
     return {
-      searchResults: [],
+      page: 1,
+      searchLoading: false,
+      searchResults: { list: [] },
       addPackForm: {
         patentName: '',
         patentId: '',
@@ -163,10 +173,18 @@ export default {
         this.loadingPackageList = false
       })
     },
+    search() {
+      const self = this
+      self.searchLoading = true
+      searchSimple(this.query).then(res => {
+        self.searchResults = res.data.data
+        self.searchLoading = false
+      })
+    },
     showPopover(patent) {
       this.loadPackageList()
-      this.addPackForm.patentId = patent.patentId
       console.log(patent)
+      this.addPackForm.patentId = patent.PNM
       this.addPackForm.patentName = patent.TI
       this.addPackForm.packageId = ''
     },
@@ -198,6 +216,7 @@ export default {
         if (res.data.code === 200) {
           this.$message.success('添加成功')
           this.dialogVisible = false
+          this.patentPackageExist = true
         } else {
           this.$message.error(res.data.msg)
         }
@@ -272,10 +291,6 @@ export default {
 }
 
 .result-item:hover {
-  background-color: #e3f8fd;
-}
-
-.active {
   background-color: #e3f8fd;
 }
 

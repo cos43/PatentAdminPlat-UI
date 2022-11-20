@@ -2,7 +2,7 @@
   <div class="container">
     <div style="margin-top: 5px">
       <el-input v-model="searchForm.Query" class="input-with-select" placeholder="请输入内容">
-        <el-button slot="append" icon="el-icon-search" plain type="primary" @click="search" />
+        <el-button slot="append" icon="el-icon-search" plain type="primary" @click="doSearch" />
       </el-input>
       <div class="advancedFilter">
         <span>高级搜索</span>
@@ -10,7 +10,7 @@
       </div>
     </div>
     <el-tabs style="margin-top: 10px" type="border-card">
-      <el-tab-pane v-loading="searchLoading">
+      <el-tab-pane>
         <span slot="label">搜索列表</span>
         <div class="d-flex flex-row filters">
           <span class="filter-active">概况</span>
@@ -20,7 +20,7 @@
           <span>按发明人</span>
           <span>法律状态</span>
         </div>
-        <search-list :results="results.list" />
+        <search-list ref="search" :query="searchForm" />
       </el-tab-pane>
       <el-tab-pane label="搜索分析">
         <table-analysis />
@@ -31,9 +31,7 @@
 <script>
 
 import tableAnalysis from '@/views/users/search/components/tableAnalysis'
-// import { results } from '../../../../mock/patent'
 import SearchList from '@/views/users/components/SearchList'
-import { searchSimple } from '@/api/search'
 
 export default {
   components: { tableAnalysis, SearchList },
@@ -42,7 +40,6 @@ export default {
       searchForm: {
         Query: ''
       },
-      results: [],
       searchLoading: false
     }
   },
@@ -50,22 +47,12 @@ export default {
     const { q } = this.$route.query
     if (q) {
       this.searchForm.Query = q
-      this.search()
-    } else {
-      this.$route.query
+      this.doSearch()
     }
   },
   methods: {
-    search() {
-      const self = this
-      self.searchLoading = true
-      // self.results = results.data
-      // console.log(results)
-      // self.searchLoading = false
-      searchSimple(this.searchForm).then(res => {
-        self.results = res.data.data
-        self.searchLoading = false
-      })
+    doSearch() {
+      this.$refs.search.search()
     }
   }
 }

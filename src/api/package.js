@@ -40,7 +40,7 @@ export function getPackage(id) {
 
 export function addPatentToPackage(packageId, patentId, patent) {
   return request({
-    url: `/user-agent/package/${packageId}/patent/${patentId}`,
+    url: `/user-agent/package/${packageId}/patent`,
     method: 'post',
     data: patent
   })

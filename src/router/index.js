@@ -58,7 +58,8 @@ export const constantRoutes = [{
   }]
 }, {
   path: '/login', component: () => import('@/views/users/login')
-}, {
+},
+{
   path: '/search', component: Layout, children: [{
     path: 'index',
     component: () => import('@/views/users/index'),

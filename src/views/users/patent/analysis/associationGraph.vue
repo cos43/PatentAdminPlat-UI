@@ -886,12 +886,25 @@ const data = {
       'target': '21'
     },
     {
-      'source': '23',
-      'target': '11'
+      source: '23',
+      target: '11',
+      ignoreForceLayout: true,
+      value: '12121',
+      label: {
+        show: true,
+        formatter: function() {
+          return '数据分析前端'
+        }
+      },
+      lineStyle: {
+        width: 5,
+        curveness: 0.2
+      }
     },
     {
       'source': '23',
       'target': '12'
+
     },
     {
       'source': '23',
