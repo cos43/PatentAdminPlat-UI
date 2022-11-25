@@ -31,6 +31,7 @@
 </template>
 <script>
 import echarts from 'echarts'
+import { getChartOption } from '@/api/chart'
 
 const data = {
   'nodes': [
@@ -1875,6 +1876,11 @@ export default {
     }
   },
   mounted() {
+    getChartOption(301, { 'Query': '网安' }).then(res => {
+      console.log(res)
+      // const myChart = echarts.init(document.getElementById('main'))
+      // myChart.setOption(option)
+    })
     const myChart = echarts.init(document.getElementById('myChart'))
     myChart.setOption(option)
   }

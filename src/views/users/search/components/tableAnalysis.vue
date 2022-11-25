@@ -1,6 +1,9 @@
 <template>
   <div>
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <Chart />
+    </el-row>
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <line-chart />
     </el-row>
     <el-row :gutter="20">
@@ -25,11 +28,13 @@
 <script>
 import LineChart from './LineChart'
 import TableInfo from './tableInfo'
+import Chart from './Chart'
 
 export default {
   components: {
     LineChart,
-    TableInfo
+    TableInfo,
+    Chart
   },
   data() {
     return {
