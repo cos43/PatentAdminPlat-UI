@@ -66,3 +66,7 @@ export function toThousandFilter(num) {
 export function uppercaseFirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
+
+export function textCut(string) {
+  return string.length > 10 ? string.substring(0, 10) + '...' : string
+}

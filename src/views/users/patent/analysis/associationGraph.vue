@@ -31,6 +31,7 @@
 </template>
 <script>
 import echarts from 'echarts'
+import { getChartOption } from '@/api/chart'
 
 const data = {
   'nodes': [
@@ -886,12 +887,25 @@ const data = {
       'target': '21'
     },
     {
-      'source': '23',
-      'target': '11'
+      source: '23',
+      target: '11',
+      ignoreForceLayout: true,
+      value: '12121',
+      label: {
+        show: true,
+        formatter: function() {
+          return '数据分析前端'
+        }
+      },
+      lineStyle: {
+        width: 5,
+        curveness: 0.2
+      }
     },
     {
       'source': '23',
       'target': '12'
+
     },
     {
       'source': '23',
@@ -1862,6 +1876,11 @@ export default {
     }
   },
   mounted() {
+    getChartOption(301, { 'Query': '网安' }).then(res => {
+      console.log(res)
+      // const myChart = echarts.init(document.getElementById('main'))
+      // myChart.setOption(option)
+    })
     const myChart = echarts.init(document.getElementById('myChart'))
     myChart.setOption(option)
   }

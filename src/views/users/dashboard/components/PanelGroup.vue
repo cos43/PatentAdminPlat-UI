@@ -1,54 +1,54 @@
 <template>
   <el-row :gutter="40" class="panel-group">
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :lg="6" :sm="12" :xs="12" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="patent" class-name="card-panel-icon" />
+          <svg-icon class-name="card-panel-icon" icon-class="patent" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
             我的专利
           </div>
-          <count-to :start-val="0" :end-val="10" :duration="2600" class="card-panel-num" />
+          <count-to :duration="2600" :end-val="10" :start-val="0" class="card-panel-num" />
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :lg="6" :sm="12" :xs="12" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="pack" class-name="card-panel-icon" />
+          <svg-icon class-name="card-panel-icon" icon-class="pack" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            我的技术包
+            我的工艺包
           </div>
-          <count-to :start-val="0" :end-val="7" :duration="3000" class="card-panel-num" />
+          <count-to :duration="3000" :end-val="7" :start-val="0" class="card-panel-num" />
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :lg="6" :sm="12" :xs="12" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
+          <svg-icon class-name="card-panel-icon" icon-class="money" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
             我的估价
           </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <count-to :duration="3200" :end-val="9280" :start-val="0" class="card-panel-num" />
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :lg="6" :sm="12" :xs="12" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="report" class-name="card-panel-icon" />
+          <svg-icon class-name="card-panel-icon" icon-class="report" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
             我的报告
           </div>
-          <count-to :start-val="0" :end-val="32" :duration="3600" class="card-panel-num" />
+          <count-to :duration="3600" :end-val="32" :start-val="0" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -160,7 +160,7 @@ export default {
   }
 }
 
-@media (max-width:550px) {
+@media (max-width: 550px) {
   .card-panel-description {
     display: none;
   }

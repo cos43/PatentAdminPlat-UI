@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            我的专利
+            专利数量
           </div>
           <count-to :duration="2600" :end-val="10" :start-val="0" class="card-panel-num" />
         </div>
@@ -20,7 +20,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            我的工艺包
+            工艺包数量
           </div>
           <count-to :duration="3000" :end-val="7" :start-val="0" class="card-panel-num" />
         </div>
@@ -29,13 +29,13 @@
     <el-col :lg="6" :sm="12" :xs="12" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon class-name="card-panel-icon" icon-class="money" />
+          <svg-icon class-name="card-panel-icon" icon-class="focus" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            我的估价
+            关注领域
           </div>
-          <count-to :duration="3200" :end-val="9280" :start-val="0" class="card-panel-num" />
+          <count-to :duration="3200" :end-val="10" :start-val="0" class="card-panel-num" />
         </div>
       </div>
     </el-col>

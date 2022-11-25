@@ -1,12 +1,19 @@
 <template>
   <div class="container">
     <div style="display: flex;flex-direction: row;width: 100%;justify-content: center">
-      <div style="width: 40%;display: flex;flex-direction: column;align-items:center;">
-        <div style="display: flex;flex-direction: column;align-items: flex-start;margin-top: 50px">
-          <strong style="color: white;font-size: 54px;letter-spacing: 0;font-weight: 700;">专利咨询平台</strong>
-          <div style="color: white;font-size: 32px;letter-spacing: 3.81px;font-weight: 300;margin-top: 20px">
-            用科技让复杂的世界更简单
+      <div style="width: 45%;display: flex;flex-direction: column;align-items:center;">
+        <div style="display: flex;flex-direction: column;align-items: flex-start;">
+          <strong style="color: white;font-size: 54px;letter-spacing: 3.81px;font-weight: 700;">
+            IPTB
+          </strong>
+          <strong style="color: white;font-size: 54px;letter-spacing: 0;font-weight: 700;">知识产权转化手册</strong>
+          <strong style="color: white;font-size: 28px;letter-spacing: 3.81px;font-weight: 700;margin-top: 20px">
+            Intellectual Property Transfer Book
+          </strong>
+          <div style="color: white;font-size: 32px;letter-spacing: 3.81px;font-weight: 300;margin-top: 60px">
+            科研工作者的的IP平台
           </div>
+
         </div>
       </div>
       <div style="width: 40%;display: flex;flex-direction: row;align-items: center;justify-content: center">

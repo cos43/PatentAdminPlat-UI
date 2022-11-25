@@ -4,8 +4,9 @@
 
 <script>
 import echarts from 'echarts'
-require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
+
+require('echarts/theme/macarons') // echarts theme
 
 const animationDuration = 3000
 
@@ -49,7 +50,7 @@ export default {
       this.chart.setOption({
         title: {
           show: true,
-          text: '技术包分布'
+          text: '工艺包分布'
         },
         tooltip: {
           trigger: 'axis',
@@ -83,7 +84,7 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['技术包1', '技术包2', '技术包3']
+          data: ['工艺包1', '工艺包2', '工艺包3']
         },
         series: [{
           type: 'radar',
@@ -100,15 +101,15 @@ export default {
           data: [
             {
               value: [5000, 7000, 12000, 11000, 15000, 14000],
-              name: '技术包1'
+              name: '工艺包1'
             },
             {
               value: [4000, 9000, 15000, 15000, 13000, 11000],
-              name: '技术包2'
+              name: '工艺包2'
             },
             {
               value: [5500, 11000, 12000, 15000, 12000, 12000],
-              name: '技术包3'
+              name: '工艺包3'
             }
           ],
           animationDuration: animationDuration

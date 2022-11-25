@@ -50,7 +50,7 @@ export default {
       this.chart.setOption({
         title: {
           show: true,
-          text: '工艺包分布'
+          text: '已估值专利分析'
         },
         tooltip: {
           trigger: 'axis',
@@ -84,7 +84,7 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['工艺包1', '工艺包2', '工艺包3']
+          data: ['', '', '']
         },
         series: [{
           type: 'radar',

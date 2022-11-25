@@ -10,18 +10,10 @@
           style="width: 200px;margin-right: 10px"
         />
 
-        <el-button v-waves class="filter-item" icon="el-icon-search" size="small" type="primary">
+        <el-button class="filter-item" icon="el-icon-search" size="small" type="primary">
           搜索
         </el-button>
-        <el-button
-          class="filter-item"
-          icon="el-icon-edit"
-          size="small"
-          style="margin-left: 10px;"
-          type="primary"
-        >
-          添加
-        </el-button>
+
       </div>
 
       <el-table
@@ -73,30 +65,29 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="130">
+        <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="190">
           <template slot-scope="row">
             <el-button size="mini" type="danger" @click="unClaimClick(row)">
               取消认领
             </el-button>
+            <AddToPackage :patent="row.row.patentProperties" />
           </template>
         </el-table-column>
       </el-table>
 
     </div>
-    <!--    <div style="width: 300px">-->
-    <!--      <PatentRecommend />-->
-    <!--    </div>-->
   </div>
 </template>
 
 <script>
 import { getClaimedPatents, unClaimPatent } from '@/api/patent'
-import waves from '@/directive/waves' // waves directive
+import AddToPackage from '@/views/users/components/AddToPackage'
 
 export default {
   name: 'ComplexTable',
-  directives: { waves },
-
+  components: {
+    AddToPackage
+  },
   data() {
     return {
       tableKey: 0,
@@ -116,7 +107,9 @@ export default {
   created() {
     this.getList()
   },
+
   methods: {
+
     getList() {
       this.listLoading = true
       getClaimedPatents(this.listQuery).then(response => {
@@ -125,7 +118,6 @@ export default {
           item.patentProperties = JSON.parse(item.patentProperties)
         })
         this.list = results
-        console.log(this.list)
         this.listLoading = false
       })
     },

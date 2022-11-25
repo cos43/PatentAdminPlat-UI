@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            我的专利
+            已申请估值
           </div>
           <count-to :duration="2600" :end-val="10" :start-val="0" class="card-panel-num" />
         </div>
@@ -20,7 +20,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            我的工艺包
+            涉及工艺包
           </div>
           <count-to :duration="3000" :end-val="7" :start-val="0" class="card-panel-num" />
         </div>
@@ -33,7 +33,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            我的估价
+            估价总额
           </div>
           <count-to :duration="3200" :end-val="9280" :start-val="0" class="card-panel-num" />
         </div>
