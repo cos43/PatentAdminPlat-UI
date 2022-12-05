@@ -24,14 +24,14 @@ export function getInfringementReportList() {
 //
 export function rejectReport(reportId) {
   return request({
-    url: `/admin-agent/report/reject/${reportId} `, method: 'post'
+    url: `/admin-agent/report/reject/${reportId} `, method: 'put'
   })
 }
 
 //
 export function unRejectReport(reportId) {
   return request({
-    url: `/admin-agent/report/unReject/${reportId} `, method: 'post'
+    url: `/admin-agent/report/unReject/${reportId} `, method: 'put'
   })
 }
 
@@ -39,5 +39,37 @@ export function unRejectReport(reportId) {
 export function getReportById(reportId) {
   return request({
     url: `/admin-agent/report/${reportId} `, method: 'get'
+  })
+}
+
+export function Upload(data) {
+  return request({
+    url: '/public/uploadFile?type=1', // type=1单文件，type=2多文件
+    method: 'post', data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+export function updateReport(data) {
+  return request({
+    url: `/admin-agent/report/upload`,
+    method: 'put',
+    data
+  })
+}
+
+export function deleteReport(reportId) {
+  return request({
+    url: `/admin-agent/report/files/${reportId}`,
+    method: 'put'
+  })
+}
+
+export function getReportListByPaId(patentId) {
+  return request({
+    url: `/admin-agent/report/reportList/${patentId}`,
+    method: 'get'
   })
 }

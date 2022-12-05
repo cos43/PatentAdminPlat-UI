@@ -31,6 +31,7 @@
         </el-button>
       </div>
     </div>
+
     <div class="cards">
       <el-card
         v-for="(file,index) in files"
@@ -53,17 +54,19 @@
         <!--          <use :xlink:href="`#icon-files_image`" />-->
         <!--        </svg>-->
         <div class="imageField">
-          <img :src="`http://${file.FilePath}`" alt="" class="image">
+          <img :src="`http://localhost:8000${file.FilePath}`" alt="" class="image">
         </div>
         <!--        <div style="padding: 10px">-->
         <!--          {{ file.FilePath }}-->
         <!--        </div>-->
+
         <div style="font-size: 0.8rem;text-align: center">
           {{ (file.FileName || '未命名') | textCut }}
           <div style="margin-top: 5px">10-23 15:37</div>
         </div>
       </el-card>
     </div>
+
     <div class="cards">
       <el-card
         v-for="(patent) in patentList.list"
@@ -83,7 +86,9 @@
       </el-card>
     </div>
   </div>
+
 </template>
+
 <script>
 import { deletePackage, getPackage, getPatentListByPackageId, updatePackage } from '@/api/package'
 import { uploadFile } from '@/api/upload'
