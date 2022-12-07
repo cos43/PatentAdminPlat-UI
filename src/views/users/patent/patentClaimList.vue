@@ -113,7 +113,6 @@
           <template slot-scope="{row}">
             <span class="link-type">{{ row.Type }}</span>
           </template>
-
         </el-table-column>
 
         <el-table-column align="center" label="申请时间" sortable="custom" width="180px">
@@ -129,7 +128,6 @@
         </el-table-column>
 
         <el-table-column align="center" label="状态" width="110px">
-
           <template slot-scope="{row}">
             <span>{{ row.rejectTag }}</span>
           </template>
@@ -152,16 +150,15 @@
             </el-button>
           </template>
         </el-table-column>
-
       </el-table>
 
-      <el-dialog title="申请报告" :visible.sync="dialogFormVisible">
-
+      <el-dialog title="申请生成报告" :visible.sync="dialogFormVisible" width="30%" center>
         <el-form :model="form">
           <el-form-item label="报告类型" :label-width="formLabelWidth">
             <el-select v-model="form.type" placeholder="请选择报告类型">
               <el-option label="侵权报告" value="infringement" />
               <el-option label="估值报告" value="valuation" />
+              <el-option label="查新报告" value="none" />
             </el-select>
           </el-form-item>
         </el-form>
@@ -169,7 +166,6 @@
           <el-button @click="dialogFormVisible = false">取 消</el-button>
           <el-button type="primary" @click="InsertReport(form)">确 定</el-button>
         </div>
-
       </el-dialog>
 
     </div>
@@ -179,7 +175,7 @@
 
 <script>
 import { getClaimedPatents, unClaimPatent } from '@/api/patent'
-import { ApplyReport, getReportListByPaId, cancelReport, reAppReport } from '@/api/report'
+import { ApplyReport, userGetReportListByPaId, cancelReport, reAppReport } from '@/api/report'
 import waves from '@/directive/waves'
 
 export default {
@@ -215,8 +211,8 @@ export default {
       flag: 0,
       form: {
         patentId: '',
-        type: '',
-        CreatedAt: this.getNowTime()
+        type: ''
+        // CreatedAt: this.getNowTime()
       },
       formLabelWidth: '120px'
 
@@ -245,7 +241,7 @@ export default {
         this.$message({
           message: '取消认领成功',
           type: 'success',
-          duration: 5 * 1000
+          duration: 1000
         })
         this.getList()
       })
@@ -254,14 +250,14 @@ export default {
       this.ifreport = true
       this.listLoading = true
       this.patentid = id
-      getReportListByPaId(id).then(response => {
+      userGetReportListByPaId(id).then(response => {
         this.reportlist = response.data.data
         this.listLoading = false
         for (var i = 0; i < this.reportlist.length; i++) {
           if (this.reportlist[i].files !== '' && this.reportlist[i].files !== null && this.reportlist[i].files !== '[]' && this.reportlist[i].files !== 'undefined') {
             this.reportlist[i].files = JSON.parse(this.reportlist[i].files)
           }
-          if (this.reportlist[i].rejectTag === '未审核') { this.reportlist[i].UpdatedAt = '无' }
+          if (this.reportlist[i].UpdatedAt === null) { this.reportlist[i].UpdatedAt = '无' }
           if (this.reportlist[i].Type === 'infringement') { this.reportlist[i].Type = '侵权报告' }
           if (this.reportlist[i].Type === 'valuation') { this.reportlist[i].Type = '估值报告' }
         }
@@ -292,7 +288,7 @@ export default {
       console.log(this.patentid)
       this.form.patentId = this.patentid
       console.log(this.form)
-      getReportListByPaId(this.form.patentId).then(response => {
+      userGetReportListByPaId(this.form.patentId).then(response => {
         this.reportlist = response.data.data
         this.listLoading = false
         if (this.reportList !== null) {
@@ -301,7 +297,7 @@ export default {
               this.$message({
                 message: '您已申请该类型报告，点击详情查看',
                 type: 'error',
-                duration: 5 * 1000
+                duration: 1000
               })
               this.flag = 1
               break
@@ -314,7 +310,7 @@ export default {
               this.$message({
                 message: '申请成功',
                 type: 'success',
-                duration: 5 * 1000
+                duration: 1000
               })
             }
           })
@@ -339,16 +335,11 @@ export default {
           this.$message({
             message: '重新申请成功',
             type: 'success',
-            duration: 5 * 1000
+            duration: 1000
           })
         }
         this.showReports(this.patentid)
       })
-    },
-    getNowTime() {
-      var time = new Date()
-      var mytime = time.toLocaleDateString() + ' ' + time.toLocaleTimeString()
-      return mytime
     }
   }
 }

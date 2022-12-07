@@ -1,87 +1,21 @@
 import request from '@/utils/request'
 
-export function getValuationReportList() {
+// 用户通过reportId查看对应专利详情（x）
+export function userGetReportPatents(reportId) {
   return request({
-    url: '/admin-agent/report/type/valuation',
+    url: `/user-agent/report/patent/${reportId} `,
     method: 'get'
   })
 }
 
-export function getReportPatents(reportId) {
-  return request({
-    url: `/admin-agent/report/patent/${reportId} `,
-    method: 'get'
-  })
-}
-
-export function getInfringementReportList() {
-  return request({
-    url: '/admin-agent/report/type/infringement',
-    method: 'get'
-  })
-}
-
-//
-export function rejectReport(reportId) {
-  return request({
-    url: `/admin-agent/report/reject/${reportId} `, method: 'put'
-  })
-}
-
-//
-export function unRejectReport(reportId) {
-  return request({
-    url: `/admin-agent/report/unReject/${reportId} `, method: 'put'
-  })
-}
-
-//
-export function getReportById(reportId) {
-  return request({
-    url: `/admin-agent/report/${reportId} `, method: 'get'
-  })
-}
-
-export function Upload(data) {
-  return request({
-    url: '/public/uploadFile?type=1', // type=1单文件，type=2多文件
-    method: 'post', data,
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  })
-}
-
-export function updateReport(data) {
-  return request({
-    url: `/admin-agent/report/upload`,
-    method: 'put',
-    data
-  })
-}
-
-export function deleteReport(reportId) {
-  return request({
-    url: `/admin-agent/report/files/${reportId}`,
-    method: 'put'
-  })
-}
-
-export function getReportListByPaId(patentId) {
-  return request({
-    url: `/admin-agent/report/reportList/${patentId}`,
-    method: 'get'
-  })
-}
-
-// 申请报告
+// 用户申请报告
 export function ApplyReport(form) {
   return request({
     url: '/user-agent/report', method: 'post', data: form
   })
 }
 
-// 撤销申请
+// 用户撤销申请
 export function cancelReport(reportId) {
   return request({
     url: `/user-agent/report/cancel/${reportId}`,
@@ -89,10 +23,48 @@ export function cancelReport(reportId) {
   })
 }
 
-// 重新申请
+// 用户重新申请
 export function reAppReport(reportId) {
   return request({
     url: `/user-agent/report/reApp/${reportId}`,
     method: 'put'
   })
+}
+
+// 用户报告
+export function userReportList() {
+  return request({
+    url: `/user-agent/report`,
+    method: 'get'
+  })
+}
+
+// 用户通过patentId获取报告列表
+export function userGetReportListByPaId(patentId) {
+  return request({
+    url: `/user-agent/report/reportList/${patentId}`,
+    method: 'get'
+  })
+}
+
+// 用户query报告
+export function userGetReportById(reportId) {
+  return request({
+    url: `/user-agent/report/query/${reportId} `, method: 'get'
+  })
+}
+
+// 用户按照类型查看报告
+export function userGetReportListByType(type) {
+  return request({
+    url: `/user-agent/report/${type} `,
+    method: 'get'
+  })
+}
+
+// 获取当前时间
+export function getNowTime() {
+  var time = new Date()
+  var mytime = time.toLocaleDateString() + ' ' + time.toLocaleTimeString()
+  return mytime
 }
