@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getValuationReportList() {
   return request({
-    url: '/admin-agent/valuation-report',
+    url: '/admin-agent/report/type/valuation',
     method: 'get'
   })
 }
@@ -16,7 +16,7 @@ export function getReportPatents(reportId) {
 
 export function getInfringementReportList() {
   return request({
-    url: '/admin-agent/infringement-report',
+    url: '/admin-agent/report/type/infringement',
     method: 'get'
   })
 }
@@ -71,5 +71,28 @@ export function getReportListByPaId(patentId) {
   return request({
     url: `/admin-agent/report/reportList/${patentId}`,
     method: 'get'
+  })
+}
+
+// 申请报告
+export function ApplyReport(form) {
+  return request({
+    url: '/user-agent/report', method: 'post', data: form
+  })
+}
+
+// 撤销申请
+export function cancelReport(reportId) {
+  return request({
+    url: `/user-agent/report/cancel/${reportId}`,
+    method: 'put'
+  })
+}
+
+// 重新申请
+export function reAppReport(reportId) {
+  return request({
+    url: `/user-agent/report/reApp/${reportId}`,
+    method: 'put'
   })
 }

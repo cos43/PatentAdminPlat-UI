@@ -27,13 +27,6 @@
         </el-button>
       </div>
 
-      <!-- <el-tabs style="height: 200px;" v-if="ifreport">
-        <el-tab-pane label="侵权报告"></el-tab-pane>
-        <el-tab-pane label="估值报告"></el-tab-pane>
-        <el-tab-pane label="查新报告"></el-tab-pane>
-        <el-tab-pane label="其他"></el-tab-pane>
-      </el-tabs> -->
-
       <el-table
         v-if="!ifreport"
         :key="tableKey"
@@ -153,17 +146,18 @@
             >
               下载
             </el-button>
-            <div v-else>/</div>
+            <el-button v-if="row.rejectTag === '未审核'" size="mini" type="danger" round @click="cancelReport(row)"> 撤销
+            </el-button>
+            <el-button v-if="row.rejectTag === '已撤销'" size="mini" type="primary" @click="reReport(row)"> 重新申请
+            </el-button>
           </template>
         </el-table-column>
 
       </el-table>
 
       <el-dialog title="申请报告" :visible.sync="dialogFormVisible">
+
         <el-form :model="form">
-          <el-form-item label="专利ID" :label-width="formLabelWidth">
-            <el-input v-model="form.patentId" autocomplete="off" />
-          </el-form-item>
           <el-form-item label="报告类型" :label-width="formLabelWidth">
             <el-select v-model="form.type" placeholder="请选择报告类型">
               <el-option label="侵权报告" value="infringement" />
@@ -173,24 +167,20 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="insertReport()">确 定</el-button>
+          <el-button type="primary" @click="InsertReport(form)">确 定</el-button>
         </div>
+
       </el-dialog>
 
     </div>
-    <!--    <div style="width: 300px">-->
-    <!--      <PatentRecommend />-->
-    <!--    </div>-->
+
   </div>
 </template>
 
 <script>
 import { getClaimedPatents, unClaimPatent } from '@/api/patent'
-import waves from '@/directive/waves' // waves directive
-
-import {
-  getReportListByPaId
-} from '@/api/report'
+import { ApplyReport, getReportListByPaId, cancelReport, reAppReport } from '@/api/report'
+import waves from '@/directive/waves'
 
 export default {
   name: 'ComplexTable',
@@ -201,6 +191,7 @@ export default {
       tableKey: 0,
       patents: null,
       ifpatent: false,
+      ifcancel: false,
       ifreport: false,
       ifshow1: false,
       patentitems: null,
@@ -211,7 +202,6 @@ export default {
       dialogFormVisible: false,
       a: 0,
       list: null,
-
       claim: [],
       listLoading: true,
       listQuery: {
@@ -222,6 +212,7 @@ export default {
         type: undefined,
         sort: '+id'
       },
+      flag: 0,
       form: {
         patentId: '',
         type: '',
@@ -262,6 +253,7 @@ export default {
     showReports(id) {
       this.ifreport = true
       this.listLoading = true
+      this.patentid = id
       getReportListByPaId(id).then(response => {
         this.reportlist = response.data.data
         this.listLoading = false
@@ -269,12 +261,11 @@ export default {
           if (this.reportlist[i].files !== '' && this.reportlist[i].files !== null && this.reportlist[i].files !== '[]' && this.reportlist[i].files !== 'undefined') {
             this.reportlist[i].files = JSON.parse(this.reportlist[i].files)
           }
-          if (this.reportlist[i].rejectTag === '未审核') {
-            this.reportlist[i].UpdatedAt = '无'
-          }
+          if (this.reportlist[i].rejectTag === '未审核') { this.reportlist[i].UpdatedAt = '无' }
+          if (this.reportlist[i].Type === 'infringement') { this.reportlist[i].Type = '侵权报告' }
+          if (this.reportlist[i].Type === 'valuation') { this.reportlist[i].Type = '估值报告' }
         }
         // console.log(this.claim)  证明 用this依然可以访问 其他函数 修改的元素
-
         console.log(this.reportlist)
       })
     },
@@ -289,17 +280,70 @@ export default {
       this.url = 'http://localhost:8000' + path
       window.open(this.url, '_self')
     },
+
     showDialog(row) {
       this.dialogFormVisible = true
-      this.form.reportId = row.reportId
+      this.patentid = row.patentId
     },
-    insertReport() {
+
+    InsertReport(form) {
+      this.flag = 0
       this.dialogFormVisible = false
-
-      // this.form.CreatedAt = this.getNowTime()
-
+      console.log(this.patentid)
+      this.form.patentId = this.patentid
       console.log(this.form)
-      // 判断是否已经存在该类型的报告
+      getReportListByPaId(this.form.patentId).then(response => {
+        this.reportlist = response.data.data
+        this.listLoading = false
+        if (this.reportList !== null) {
+          for (var i = 0; i < this.reportlist.length && this.flag === 0; i++) {
+            if (this.reportlist[i].Type === this.form.type) {
+              this.$message({
+                message: '您已申请该类型报告，点击详情查看',
+                type: 'error',
+                duration: 5 * 1000
+              })
+              this.flag = 1
+              break
+            }
+          }
+        }
+        if (this.flag === 0) {
+          ApplyReport(form).then(response => {
+            if (response.data.code === 200) {
+              this.$message({
+                message: '申请成功',
+                type: 'success',
+                duration: 5 * 1000
+              })
+            }
+          })
+        }
+      })
+    },
+    cancelReport(row) {
+      cancelReport(row.reportId).then(response => {
+        if (response.data.code === 200) {
+          this.$message({
+            message: '撤销报告申请成功',
+            type: 'success',
+            duration: 5 * 1000
+          })
+        }
+        this.showReports(this.patentid)
+      })
+    },
+    reReport(row) {
+      reAppReport(row.reportId).then(response => {
+        if (response.data.code === 200) {
+          this.$message({
+            message: '重新申请成功',
+            type: 'success',
+            duration: 5 * 1000
+          })
+        }
+        this.showReports(this.patentid)
+      })
     },
     getNowTime() {
       var time = new Date()
