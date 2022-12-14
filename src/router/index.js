@@ -124,9 +124,9 @@ export const constantRoutes = [{
     component: () => import('@/views/users/patent/analysis/analysis'),
     children: [{
       path: 'associationGraph',
-      component: () => import('@/views/users/patent/analysis/associationGraph'),
+      component: () => import('@/views/users/patent/analysis/packageAssociationGraph'),
       name: 'associationGraph',
-      meta: { title: '关联图谱', icon: 'related' }
+      meta: { title: '专利包图谱', icon: 'related' }
     }, {
       path: 'technicalGraph',
       component: () => import('@/views/users/patent/analysis/technicalGraph'),
@@ -148,9 +148,9 @@ export const constantRoutes = [{
       component: () => import('@/views/users/explore/analysis/analysis'),
       children: [{
         path: 'associationGraph',
-        component: () => import('@/views/users/explore/analysis/associationGraph'),
+        component: () => import('@/views/users/explore/analysis/focusAssociationGraph'),
         name: 'associationGraph',
-        meta: { title: '关联图谱', icon: 'related' }
+        meta: { title: '关注图谱', icon: 'related' }
       }, {
         path: 'technicalGraph',
         component: () => import('@/views/users/explore/analysis/technicalGraph'),
