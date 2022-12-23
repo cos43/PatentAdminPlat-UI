@@ -1,7 +1,11 @@
 <template>
   <div>
     <div style="display: flex;flex-direction: row;align-items: center;height: 100vh">
+
       <div id="myChart" style="height: 80%;width:100%" />
+    </div>
+    <div>
+      <input id="showname" type="button" value="姓名" @click="showInventorName">
     </div>
     <div class="table">
       <el-table
@@ -27,40 +31,44 @@
         />
       </el-table>
     </div>
+
   </div>
 </template>
 <script>
 import echarts from 'echarts'
-import { getGraphByUserId } from '@/api/patent'
-const data = {
 
+import { getGraphByPackageId3 } from '@/api/package'
+const data = {
   'categories': [
     {
-      'name': 'A'
+      'name': 'No.1'
     },
     {
-      'name': 'B'
+      'name': 'No.2'
     },
     {
-      'name': 'C'
+      'name': 'No.3'
     },
     {
-      'name': 'D'
+      'name': 'No.4'
     },
     {
-      'name': 'E'
+      'name': 'No.5'
     },
     {
-      'name': 'F'
+      'name': 'No.6'
     },
     {
-      'name': 'G'
+      'name': 'No.7'
     },
     {
-      'name': 'H'
+      'name': 'No.8'
     },
     {
-      'name': 'I'
+      'name': 'No.9'
+    },
+    {
+      'name': 'No.10'
     }
   ]
 }
@@ -82,36 +90,82 @@ const option = {
     }
   ],
   series: [
+    // {
+    //   name: 'Les Miserables',
+    //   type: 'graph',
+    //   layout: 'none',
+    //   data: null,
+    //   links: null,
+    //   categories: data.categories,
+    //   roam: true,
+    //   focusNodeAdjacency: true,
+    //   legendHoverLink: true,
+    //   // lineStyle: {
+    //   //   color: "source",
+    //   //   opacity: 0.2,
+    //   //   curveness: 0.3,
+    //   // },
+    //   // force: {
+    //   //   initLayout: "",
+    //   //   repulsion: 5,
+    //   //   layoutAnimation: false,
+    //   // },
+    //   label: {
+    //     position: 'right',
+    //     formatter: '{b}'
+    //   },
+    //   lineStyle: {
+    //     color: 'source',
+    //     curveness: 0.3
+    //   },
+    //   emphasis: {
+    //     focus: 'adjacency',
+    //     lineStyle: {
+    //       width: 10
+    //     }
+    //   }
+    //
+    // }
     {
-      name: 'Les Miserables',
+      name: '专利发明人',
       type: 'graph',
-      layout: 'none',
+      layout: 'force',
       data: null,
       links: null,
       categories: data.categories,
       roam: true,
+      label: {
+        show: true,
+        formatter: '{b}',
+        position: 'right'
+      },
       focusNodeAdjacency: true,
       legendHoverLink: true,
-      // lineStyle: {
-      //   color: "source",
-      //   opacity: 0.2,
-      //   curveness: 0.3,
-      // },
-      label: {
-        position: 'right',
-        formatter: '{b}'
+      animation: false,
+      force: {
+        initLayout: 'circular',
+        layoutAnimation: false,
+        repulsion: 100
       },
       lineStyle: {
         color: 'source',
+        opacity: 0.2,
         curveness: 0.3
       },
       emphasis: {
         focus: 'adjacency',
+        itemStyle: {
+          shadowColor: 'rgba(0, 0, 0, 0.4)',
+          shadowBlur: 15
+        },
         lineStyle: {
-          width: 10
+          width: 3
+        },
+        label: {
+          textBorderColor: 'rgba(255, 255, 255, 0.8)',
+          textBorderWidth: 2
         }
       }
-
     }
   ]
 }
@@ -164,15 +218,17 @@ export default {
     getlist() {
       console.log('进入')
       this.listloading = true
-      getGraphByUserId().then(response => {
+      getGraphByPackageId3(3).then(response => {
         const results = response.data.data
         option.series[0].data = results.nodes
         option.series[0].links = results.links
-        option.series[0].data.forEach(function(node) {
-          // node.label = {
-          //   show: node.symbolSize > 30
-          // }
-        })
+        this.tableData = this.dealTheRank(option)
+        console.log(results)
+        // option.series[0].data.forEach(function(node) {
+        //   // node.label = {
+        //   //   show: node.symbolSize > 30
+        //   // }
+        // })
       }).then(() => {
         // console.log(data1)
         // console.log(option)
@@ -182,6 +238,21 @@ export default {
       }
       )
       // return null
+    },
+    dealTheRank(option) {
+      const tableData1 = []
+      for (let i = 0; i < option.series[0].data.length && i < 10; i++) {
+        const now = { date: i + 1, name: option.series[0].data[i].name, number: option.series[0].data[i].value }
+        tableData1.push(now)
+      }
+      console.log(tableData1)
+      return tableData1
+    },
+    showInventorName() {
+      console.log(option.series[0].label.show)
+      if (option.series[0].label.show) { option.series[0].label.show = false } else { option.series[0].label.show = true }
+      const myChart = echarts.init(document.getElementById('myChart'))
+      myChart.setOption(option)
     }
   }
 }
