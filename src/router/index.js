@@ -118,6 +118,12 @@ export const constantRoutes = [{
     hidden: true,
     meta: { title: '工艺包详情', icon: 'pack' }
   }, {
+    path: 'package/inventor-graph/:id',
+    component: () => import('@/views/users/patent/analysis/packageAssociationGraph2'),
+    name: 'Pack',
+    hidden: true,
+    meta: { title: '工艺包发明人关系图谱', icon: 'pack' }
+  }, {
     path: 'analysis',
     name: 'analysis',
     meta: { title: '分析', icon: 'pack' },
@@ -132,12 +138,14 @@ export const constantRoutes = [{
       component: () => import('@/views/users/patent/analysis/technicalGraph'),
       name: 'technicalGraph',
       meta: { title: '技术图谱', icon: 'tech' }
-    }, {
-      path: 'associationGraph2',
-      component: () => import('@/views/users/patent/analysis/packageAssociationGraph2'),
-      name: 'associationGraph2',
-      meta: { title: '专利包发明人关注图谱', icon: 'related' }
-    }]
+    }
+    //   {
+    //   path: 'associationGraph2',
+    //   component: () => import('@/views/users/patent/analysis/packageAssociationGraph2'),
+    //   name: 'associationGraph2',
+    //   meta: { title: '专利包发明人关注图谱', icon: 'related' }
+    // }
+    ]
   }]
 }, {
   path: '/explore', component: Layout, meta: { title: '我的探索', icon: 'guide' }, children: [

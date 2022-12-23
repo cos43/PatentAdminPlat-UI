@@ -1,11 +1,18 @@
 <template>
   <div>
+    <h3>工艺包: {{ packageDetail.packageName }}</h3>
+    <!--    <div style="margin-bottom: 5px">-->
+    <!--      <h3>工艺包: {{ packageDetail.packageName }}</h3>-->
+    <!--      <div class="text">Element-->
+    <!--        为了避免视觉传达差异，使用一套特定的调色板来规定颜色，为你所搭建的产品提供一致的外观视觉感受。-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <div>
+      <input id="showname" type="button" value="姓名开关" @click="showInventorName">
+    </div>
     <div style="display: flex;flex-direction: row;align-items: center;height: 100vh">
 
       <div id="myChart" style="height: 80%;width:100%" />
-    </div>
-    <div>
-      <input id="showname" type="button" value="姓名" @click="showInventorName">
     </div>
     <div class="table">
       <el-table
@@ -37,7 +44,7 @@
 <script>
 import echarts from 'echarts'
 
-import { getGraphByPackageId3 } from '@/api/package'
+import { getGraphByPackageId3, getPackage } from '@/api/package'
 const data = {
   'categories': [
     {
@@ -175,41 +182,15 @@ export default {
     return {
       tableData: [{
         date: '1',
-        name: '张三',
-        number: 12
-      }, {
-        date: '2',
-        name: '李四',
-        number: 11
-      }, {
-        date: '3',
-        name: '张三',
-        number: 8
-      }, {
-        date: '4',
-        name: '张三',
-        number: 2
-      },
-      {
-        date: '1',
-        name: '张三',
-        number: 12
-      }, {
-        date: '2',
-        name: '张三',
-        number: 11
-      }, {
-        date: '3',
-        name: '张三',
-        number: 8
-      }, {
-        date: '4',
-        name: '张三',
-        number: 2
-      }]
+        name: '暂无',
+        number: 0
+      }],
+      packageDetail: { packageName: '' },
+      packageId: {}
     }
   },
   mounted() {
+    this.loadPackageInventor()
     const myChart = echarts.init(document.getElementById('myChart'))
     myChart.setOption(option)
     this.getlist()
@@ -218,11 +199,17 @@ export default {
     getlist() {
       console.log('进入')
       this.listloading = true
-      getGraphByPackageId3(3).then(response => {
+      getGraphByPackageId3(this.packageId).then(response => {
         const results = response.data.data
-        option.series[0].data = results.nodes
-        option.series[0].links = results.links
-        this.tableData = this.dealTheRank(option)
+        console.log(results)
+        if (results == null) {
+          option.series[0].data = null
+          option.series[0].links = null
+        } else {
+          option.series[0].data = results.nodes
+          option.series[0].links = results.links
+          this.tableData = this.dealTheRank(option)
+        }
         console.log(results)
         // option.series[0].data.forEach(function(node) {
         //   // node.label = {
@@ -253,6 +240,12 @@ export default {
       if (option.series[0].label.show) { option.series[0].label.show = false } else { option.series[0].label.show = true }
       const myChart = echarts.init(document.getElementById('myChart'))
       myChart.setOption(option)
+    },
+    loadPackageInventor() {
+      this.packageId = this.$route.params.id
+      getPackage(this.packageId).then(res => {
+        this.packageDetail = res.data.data
+      })
     }
   }
 }
