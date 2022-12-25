@@ -158,7 +158,23 @@ export const constantRoutes = [{
         meta: { title: '技术图谱', icon: 'tech' }
       }]
     }]
-}, {
+},
+{
+  path: '/dept', component: Layout, meta: { title: '我的团队', icon: 'el-icon-s-help' }, children: [
+    {
+      path: 'index',
+      component: () => import('@/views/users/explore/dept/index.vue'),
+      name: 'dept',
+      meta: { title: '团队一览', icon: 'el-icon-more' }
+    }, {
+      path: 'apply',
+      name: 'apply',
+      meta: { title: '我的申请', icon: 'el-icon-document-add' },
+      component: () => import('@/views/users/explore/dept/dept.vue')
+    }]
+},
+
+{
   path: '/trade', component: Layout, meta: { title: '我的交易', icon: 'guide' }, children: [{
     path: 'home',
     component: () => import('@/views/users/trade/dashboard/index'),
