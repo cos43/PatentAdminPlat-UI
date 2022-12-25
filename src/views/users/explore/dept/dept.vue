@@ -98,6 +98,7 @@
           <template slot-scope="{row}">
             <el-button
               v-if="row.ExamineStatus === '已撤销' || row.ExamineStatus === '已驳回' && (row.ExamineStatus === '已完成' || row.MemType === '非组员')"
+
               size="mini"
               type="primary"
               @click="ReJoinDept(row)"
@@ -108,16 +109,17 @@
               v-if="row.ExamineStatus === '已驳回' || row.ExamineStatus === '未审核' || row.ExamineStatus === '处理中'"
               size="mini"
               type="danger"
+              :disabled="row.memStatus ==='申请退出团队'"
               @click="CancelJoinDept(row)"
             >
               撤销
             </el-button>
 
             <el-button
-              v-if="row.ExamineStatus === '已完成' || row.MemType === '组员'"
+              v-if="(row.ExamineStatus === '已完成' || row.MemType === '组员') && row.memStatus !== '申请退出团队' "
               size="mini"
               type="warning"
-              @click="CancelJoinDept(row)"
+              @click="ExitDept(row)"
             >
               退出团队
             </el-button>
@@ -136,7 +138,7 @@
 
 import waves from '@/directive/waves' // waves directive
 
-import { getDeptRELAUser, UserCancelJoinDept, reJoinDept } from '@/api/dept'
+import { getDeptRELAUser, UserCancelJoinDept, reJoinDept, ExitDept } from '@/api/dept'
 export default {
   name: 'ComplexTable',
   directives: { waves },
@@ -203,6 +205,15 @@ export default {
           duration: 1000
         })
         this.getList()
+      })
+    },
+    ExitDept(row) {
+      ExitDept(row.deptId).then(response => {
+        this.$message({
+          message: '申请退出成功',
+          type: 'success',
+          duration: 1000
+        })
       })
     },
 

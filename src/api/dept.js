@@ -56,3 +56,12 @@ export function reJoinDept(deptId) {
 
   })
 }
+
+//  用户申请退出团队
+export function ExitDept(deptId) {
+  return request({
+    url: `/user-agent/dept/exit/${deptId} `,
+    method: 'put'
+
+  })
+}
