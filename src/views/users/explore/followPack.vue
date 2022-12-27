@@ -2,12 +2,25 @@
   <div class="app-container" style="display: flex;flex-direction: row">
     <div style="width:  calc(100% - 300px);">
       <div class="filter-container">
-        <el-input v-model="listQuery.title" placeholder="专利名称" style="width: 200px;margin-right: 10px" class="filter-item" @keyup.enter.native="handleFilter" />
+        <el-input
+          v-model="listQuery.title"
+          class="filter-item"
+          placeholder="专利名称"
+          style="width: 200px;margin-right: 10px"
+          @keyup.enter.native="handleFilter"
+        />
 
-        <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+        <el-button v-waves class="filter-item" icon="el-icon-search" type="primary" @click="handleFilter">
           搜索
         </el-button>
-        <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+        <el-button
+          v-waves
+          :loading="downloadLoading"
+          class="filter-item"
+          icon="el-icon-download"
+          type="primary"
+          @click="handleDownload"
+        >
           导出
         </el-button>
       </div>
@@ -21,42 +34,49 @@
         style="width: 100%; border-radius: 10px!important;"
         @sort-change="sortChange"
       >
-        <el-table-column label="ID" prop="id" sortable="custom" align="center" width="60" :class-name="getSortClass('id')">
+        <el-table-column
+          :class-name="getSortClass('id')"
+          align="center"
+          label="ID"
+          prop="id"
+          sortable="custom"
+          width="60"
+        >
           <template slot-scope="{row}">
             <span>{{ row.id }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="专利名称" min-width="150px">
+        <el-table-column label="专利名称" min-width="120px">
           <template slot-scope="{row}">
             <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="申请日" sortable="custom" width="100px" align="center">
+        <el-table-column align="center" label="申请日" sortable="custom" width="100px">
           <template slot-scope="{row}">
             <span>{{ row.timestamp | parseTime('{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="发明人" width="110px" align="center">
+        <el-table-column align="center" label="发明人" width="110px">
           <template slot-scope="{row}">
             <span>{{ row.author }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="主分类号" width="80px" align="center">
+        <el-table-column align="center" label="主分类号" width="80px">
           <template slot-scope="{row}">
             <span>{{ row.importance }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="状态" class-name="status-col" width="100">
+        <el-table-column class-name="status-col" label="状态" width="150">
           <template slot-scope="{row}">
             <el-tag :type="row.status | statusFilter">
-              {{ row.status==='published'?'授权':'主动放弃' }}
+              {{ row.status === 'published' ? '授权' : '主动放弃' }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="130" class-name="small-padding fixed-width">
+        <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="130">
           <template slot-scope="{row,$index}">
             <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
               取消关注
@@ -64,7 +84,13 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+      <pagination
+        v-show="total>0"
+        :limit.sync="listQuery.limit"
+        :page.sync="listQuery.page"
+        :total="total"
+        @pagination="getList"
+      />
     </div>
     <div style="width: 300px">
       <PatentRecommend />
@@ -73,11 +99,12 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+import { createArticle, fetchList, fetchPv, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import PatentRecommend from '@/views/users/components/patentRecommend'
+
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
   { key: 'US', display_name: 'USA' },

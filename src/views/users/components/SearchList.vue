@@ -104,9 +104,10 @@
         <div>
           <el-button :disabled="page===1" icon="el-icon-arrow-left" size="mini" type="primary">上一页</el-button>
           <el-button size="mini" style="width: 50px;color: #2b2f3a" type="text">{{ page }}</el-button>
-          <el-button size="mini" type="primary">下一页<i
-            class="el-icon-arrow-right el-icon--right"
-          /></el-button>
+          <el-button size="mini" type="primary">下一页
+            <i
+              class="el-icon-arrow-right el-icon--right"
+            /></el-button>
         </div>
       </div>
     </div>
@@ -115,9 +116,9 @@
 <script>
 import { claimPatent, focusPatent, unClaimPatent, unFocusPatent } from '@/api/patent'
 import { addPatentToPackage, checkPatentToPackage, getPackageList } from '@/api/package'
+import { searchSimple } from '@/api/search'
 import { getTagColor } from '@/views/users/utils'
 import createPack from '@/views/users/components/createPack'
-import { searchSimple } from '@/api/search'
 import Link from '@/layout/components/Sidebar/Link'
 
 export default {
@@ -180,6 +181,14 @@ export default {
         self.searchResults = res.data.data
         self.searchLoading = false
       })
+    },
+    nextPage() {
+      this.page++
+      this.search()
+    },
+    prevPage() {
+      this.page--
+      this.search()
     },
     showPopover(patent) {
       this.loadPackageList()

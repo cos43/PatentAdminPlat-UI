@@ -41,6 +41,7 @@ export function getFocusedPatents() {
     url: '/user-agent/patent/focus', method: 'get'
   })
 }
+
 // 通过userid获得用户关注专利的关系图谱1
 export function getGraphByUserId() {
   return request({
@@ -56,4 +57,3 @@ export function getGraphByUserId2() {
     method: 'get'
   })
 }
-

@@ -58,8 +58,7 @@ export const constantRoutes = [{
   }]
 }, {
   path: '/login', component: () => import('@/views/users/login')
-},
-{
+}, {
   path: '/search', component: Layout, children: [{
     path: 'index',
     component: () => import('@/views/users/index'),
@@ -139,57 +138,59 @@ export const constantRoutes = [{
       name: 'technicalGraph',
       meta: { title: '技术图谱', icon: 'tech' }
     }
-    //   {
-    //   path: 'associationGraph2',
-    //   component: () => import('@/views/users/patent/analysis/packageAssociationGraph2'),
-    //   name: 'associationGraph2',
-    //   meta: { title: '专利包发明人关注图谱', icon: 'related' }
-    // }
+      //   {
+      //   path: 'associationGraph2',
+      //   component: () => import('@/views/users/patent/analysis/packageAssociationGraph2'),
+      //   name: 'associationGraph2',
+      //   meta: { title: '专利包发明人关注图谱', icon: 'related' }
+      // }
     ]
   }]
 }, {
-  path: '/explore', component: Layout, meta: { title: '我的探索', icon: 'guide' }, children: [
-    {
-      path: 'follow',
-      component: () => import('@/views/users/explore/patentFollowList.vue'),
-      name: 'Follow',
-      meta: { title: '我的关注', icon: 'focus' }
+  path: '/explore', component: Layout, meta: { title: '我的探索', icon: 'guide' }, children: [{
+    path: 'follow',
+    component: () => import('@/views/users/explore/patentFollowList.vue'),
+    name: 'Follow',
+    meta: { title: '我的关注', icon: 'focus' }
+  }, {
+    path: 'queries',
+    component: () => import('@/views/users/explore/queriesList.vue'),
+    name: 'Queries',
+    meta: { title: '我的搜索', icon: 'focus' }
+  }, {
+    path: 'analysis',
+    name: 'Pack',
+    meta: { title: '分析', icon: 'pack' },
+    component: () => import('@/views/users/explore/analysis/analysis'),
+    children: [{
+      path: 'associationGraph',
+      component: () => import('@/views/users/explore/analysis/focusAssociationGraph1'),
+      name: 'associationGraph1',
+      meta: { title: '关注图谱1', icon: 'related' }
     }, {
-      path: 'analysis',
-      name: 'Pack',
-      meta: { title: '分析', icon: 'pack' },
-      component: () => import('@/views/users/explore/analysis/analysis'),
-      children: [{
-        path: 'associationGraph',
-        component: () => import('@/views/users/explore/analysis/focusAssociationGraph1'),
-        name: 'associationGraph1',
-        meta: { title: '关注图谱1', icon: 'related' }
-      }, {
-        path: 'associationGraph2',
-        component: () => import('@/views/users/explore/analysis/focusAssociationGraph2'),
-        name: 'associationGraph2',
-        meta: { title: '关注图谱2', icon: 'related' }
-      }, {
-        path: 'technicalGraph',
-        component: () => import('@/views/users/explore/analysis/technicalGraph'),
-        name: 'technicalGraph',
-        meta: { title: '技术图谱', icon: 'tech' }
-      }]
-    }]
-},
-{
-  path: '/dept', component: Layout, meta: { title: '我的团队', icon: 'el-icon-s-help' }, children: [
-    {
-      path: 'index',
-      component: () => import('@/views/users/explore/dept/index.vue'),
-      name: 'dept',
-      meta: { title: '团队一览', icon: 'el-icon-more' }
+      path: 'associationGraph2',
+      component: () => import('@/views/users/explore/analysis/focusAssociationGraph2'),
+      name: 'associationGraph2',
+      meta: { title: '关注图谱2', icon: 'related' }
     }, {
-      path: 'apply',
-      name: 'apply',
-      meta: { title: '我的申请', icon: 'el-icon-document-add' },
-      component: () => import('@/views/users/explore/dept/dept.vue')
+      path: 'technicalGraph',
+      component: () => import('@/views/users/explore/analysis/technicalGraph'),
+      name: 'technicalGraph',
+      meta: { title: '技术图谱', icon: 'tech' }
     }]
+  }]
+}, {
+  path: '/dept', component: Layout, meta: { title: '我的团队', icon: 'el-icon-s-help' }, children: [{
+    path: 'index',
+    component: () => import('@/views/users/explore/dept/index.vue'),
+    name: 'dept',
+    meta: { title: '团队一览', icon: 'el-icon-more' }
+  }, {
+    path: 'apply',
+    name: 'apply',
+    meta: { title: '我的申请', icon: 'el-icon-document-add' },
+    component: () => import('@/views/users/explore/dept/dept.vue')
+  }]
 },
 
 {

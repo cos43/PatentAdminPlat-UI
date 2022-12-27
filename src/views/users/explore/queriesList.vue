@@ -32,56 +32,43 @@
           width="60"
         >
           <template slot-scope="{row}">
-            <span>{{ row.patentId }}</span>
+            <span>{{ row.queryID }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="专利名称" min-width="150px">
+        <el-table-column label="名称" min-width="150px">
           <template slot-scope="{row}">
-            <span class="link-type">{{ row.patentProperties.TI }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="申请日" sortable="custom" width="160">
-          <template slot-scope="{row}">
-            <span>{{ row.patentProperties.AD }}</span>
+            <span class="link-type">{{ row.name }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="发明人" width="110px">
+        <el-table-column align="center" label="表达式" min-width="80">
           <template slot-scope="{row}">
-            <span>{{ row.patentProperties.PINN }}</span>
+            <span>{{ row.expression }}</span>
           </template>
         </el-table-column>
-
-        <el-table-column align="center" label="主分类号" width="80px">
+        <el-table-column class-name="status-col" label="描述" width="200">
           <template slot-scope="{row}">
-            <span>{{ row.PNM }}</span>
+            <span>{{ row.desc }}</span>
           </template>
         </el-table-column>
-        <el-table-column class-name="status-col" label="状态" width="200">
-          <template slot-scope="{row}">
-            <el-tag :type="row.status ">
-              {{ row.patentProperties.CLS }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="100">
+        <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="200">
           <template slot-scope="row">
-            <el-button size="mini" type="danger" @click="unClaimClick(row)">
-              取消关注
+            <el-button size="mini" type="primary" @click="queryDetail(row)">
+              查看详情
+            </el-button>
+            <el-button size="mini" type="danger" @click="deleteQuery(row)">
+              删除
             </el-button>
           </template>
         </el-table-column>
       </el-table>
 
     </div>
-    <!--    <div style="width: 300px">-->
-    <!--      <PatentRecommend />-->
-    <!--    </div>-->
   </div>
 </template>
 
 <script>
-import { getFocusedPatents, unFocusPatent } from '@/api/patent'
+import { deleteQuery, getQueryList } from '@/api/search'
 import waves from '@/directive/waves' // waves directive
 
 export default {
@@ -110,22 +97,20 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getFocusedPatents(this.listQuery).then(response => {
-        const results = response.data.data
-        results.map(item => {
-          item.patentProperties = JSON.parse(item.patentProperties)
-        })
-        this.list = results
+      getQueryList().then(response => {
+        this.list = response.data.data.list
         console.log(this.list)
         this.listLoading = false
       })
     },
-    unClaimClick(row) {
-      unFocusPatent(row.row.patentId).then(response => {
+    queryDetail(row) {
+      this.$router.push({ path: '/search/results', query: { q: row.row.expression }})
+    },
+    deleteQuery(row) {
+      deleteQuery(row.row.queryID).then(response => {
         this.$message({
-          message: '取消关注成功',
-          type: 'success',
-          duration: 5 * 1000
+          message: '删除成功',
+          type: 'success'
         })
         this.getList()
       })

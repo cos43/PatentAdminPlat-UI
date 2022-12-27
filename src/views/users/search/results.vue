@@ -1,12 +1,47 @@
 <template>
   <div class="container">
     <div style="margin-top: 5px">
-      <el-input v-model="searchForm.Query" class="input-with-select" placeholder="请输入内容">
+      <el-input v-model="searchForm.query" class="input-with-select" placeholder="请输入内容">
         <el-button slot="append" icon="el-icon-search" plain type="primary" @click="doSearch" />
       </el-input>
       <div class="advancedFilter">
         <span>高级搜索</span>
         <span>表单搜索</span>
+        <el-popover
+          placement="right-start"
+          trigger="click"
+          width="400"
+        >
+          <div>
+            <el-form
+              ref="queryForm"
+              :model="queryFrom"
+              :rules="queryFromRules"
+              label-position="left"
+              label-width="60px"
+              size="small"
+              style="margin: 10px"
+            >
+              <el-form-item label="名称" prop="name" size="small">
+                <el-input v-model="queryFrom.name" size="small" />
+              </el-form-item>
+              <el-form-item label="表达式" size="small">
+                <el-input v-model="queryFrom.expression" disabled size="small" />
+              </el-form-item>
+              <el-form-item label="描述" size="small">
+                <el-input v-model="queryFrom.desc" size="small" />
+              </el-form-item>
+              <el-button
+                size="mini"
+                type="primary"
+                @click="submitForm('queryForm')"
+              >
+                保存
+              </el-button>
+            </el-form>
+          </div>
+          <el-button slot="reference" size="mini" type="primary">保存搜索结果</el-button>
+        </el-popover>
       </div>
     </div>
     <el-tabs style="margin-top: 10px" type="border-card">
@@ -32,13 +67,25 @@
 
 import tableAnalysis from '@/views/users/search/components/tableAnalysis'
 import SearchList from '@/views/users/components/SearchList'
+import { addQuery } from '@/api/search'
 
 export default {
   components: { tableAnalysis, SearchList },
   data() {
     return {
+      // 用户搜索表达式
+      queryFrom: {
+        expression: '',
+        name: '',
+        desc: ''
+      },
+      queryFromRules: {
+        name: [
+          { required: true, message: '请输入搜索名称', trigger: 'blur' }
+        ]
+      },
       searchForm: {
-        Query: ''
+        query: ''
       },
       searchLoading: false
     }
@@ -46,13 +93,30 @@ export default {
   mounted() {
     const { q } = this.$route.query
     if (q) {
-      this.searchForm.Query = q
+      this.queryFrom.expression = q
+      this.searchForm.query = q
       this.doSearch()
     }
   },
   methods: {
     doSearch() {
+      this.queryFrom.expression = this.searchForm.query
       this.$refs.search.search()
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          addQuery(this.queryFrom).then(res => {
+            this.$message({
+              message: '保存成功',
+              type: 'success'
+            })
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     }
   }
 }
