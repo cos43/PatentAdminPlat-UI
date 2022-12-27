@@ -22,7 +22,7 @@
         <svg aria-hidden="true" class="image">
           <use xlink:href="#icon-files" />
         </svg>
-        <div style="padding-top: 14px;">
+        <div style="padding-top: 16px;">
           <div style="font-size:1rem;margin-bottom: 5px">
             {{ o.packageName }}
           </div>
@@ -31,6 +31,11 @@
               <el-button icon="el-icon-view" size="mini" type="primary">查看</el-button>
             </router-link>
             <el-button icon="el-icon-download" size="mini" type="primary">打包下载</el-button>
+          </el-row>
+          <el-row>
+            <router-link :to="{path:`package/inventor-graph/${o.packageId}`,params:'1212'}" style="margin-right: 5px">
+              <el-button icon="el-icon-view" size="mini" type="primary">发明人关系图谱</el-button>
+            </router-link>
           </el-row>
         </div>
       </el-card>
@@ -74,7 +79,7 @@ export default {
 
 .my-card {
   width: 220px;
-  height: 250px;
+  height: 280px;
 }
 
 .image {
