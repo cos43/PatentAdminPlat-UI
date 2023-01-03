@@ -22,23 +22,42 @@
     </div>
     <div class="recommend" style="margin: 30px 100px">
       <div class="d-flex flex-row align-items-center">
-        <span class="title title-active">推荐</span>
-        <span class="title">知产教室</span>
+        <span class="title title-active">知产教室</span>
       </div>
-      <div v-for="index in 8" :key="index" class="result-item">
-        <div class="result-title row-center">
-          <span class="text-primary">基于条件标准化流模型的强鲁棒性图像隐写方法及系统[ZH]</span>
-          <el-tag effect="dark" size="mini" style="margin: 0 5px" type="warning">审中</el-tag>
-          中国发明申请
+      <div style="margin-top: 5px">
+        <div class="d-flex flex-row">
+          <video controls height="270" width="400">
+            <source src="http://www.daweisoft.com//upload/file/gaoxiaodisijiang.mp4" type="video/mp4">
+          </video>
+          <div style="margin-left: 30px">
+            <h3>第四讲：高校优势学科的专利特色库建设</h3>
+            <p>培训大纲：
+
+              1、什么是优势学科专利专题特色库；
+
+              2、优势学科专利专题特色库的形式与功能展示
+
+              3、优势学科专利专题特色库的重要价值；
+
+              4、如何构建优势学科的全球专利特色库</p>
+          </div>
         </div>
-        <div class="desc">
-          申请号：CN202210754766.3 申请日：2022.06.30 公开(公告）号：CN114827381A 公开（公告）日：2022.07.29
-        </div>
-        <div class="desc">
-          申请（专利权）人：广东]北京大学深圳研究生院发明(设计)人：张健；许佑民
-        </div>
-        <div class="desc">
-          本发明涉及基于条件标准化流模型的强鲁棒性图像隐写方法，包括步骤：S1.构建流模型单元：对输入的宿主图像和隐藏图像进行分布变换，转化为高频冗余信息和容器图像；S2.构造分布映射模块：建模高频冗余信息在容器图像条件依赖下的分布，将其映射到标准正态分布以隐式保存有价值的隐藏信息；S3.构造失真模拟单元：在模型训练过程中仿真各类失真干扰的影响；S4.构造图像增强模块：对受干扰的容器图像进行初步增强去噪处理；以及S5.构造条件调制模块：以干扰强度和类型为条件，调制流模型单元的网络参数。本发明方法解决当前图像隐写术在鲁棒性和还原质量、隐写容量上的缺陷和不足，解决之前基于学习的隐写术在受到失真干扰时性能大幅下降的问题。
+        <div class="d-flex flex-row">
+          <video controls height="270" width="400">
+            <source src="http://www.daweisoft.com//upload/file/gaoxiaodisijiang.mp4" type="video/mp4">
+          </video>
+          <div style="margin-left: 30px">
+            <h3>第三讲：高校优势学科的专利特色库建设</h3>
+            <p>培训大纲：
+
+              1、什么是优势学科专利专题特色库；
+
+              2、优势学科专利专题特色库的形式与功能展示
+
+              3、优势学科专利专题特色库的重要价值；
+
+              4、如何构建优势学科的全球专利特色库</p>
+          </div>
         </div>
       </div>
     </div>
@@ -164,46 +183,16 @@ export default {
   margin: 20px 10px 0 10px;
 }
 
-.result-title {
-  font-size: 0.9rem;
-}
-
-.text-primary {
-  color: #00a9ed;
-}
-
-.desc {
-  font-size: 0.75rem;
-  margin: 5px 0;
-  line-height: 1.3rem;
-}
-
-.result-item {
-  margin: 15px 0;
-  cursor: pointer;
-  padding: 20px;
-  transition: 0.3s;
-  border-radius: 10px;
-}
-
-.result-item:hover {
-  background-color: #e3f8fd;
-}
-
 .title {
   font-size: 1.2rem;
   font-weight: bold;
   color: #17233d;
-  margin-right: 20px;
-}
 
-.title:first-child {
-  margin-left: 20px;
 }
 
 .title:hover {
   cursor: pointer;
-  color: #06CC6B;
+  color: #bfe2f7;
   transition: 0.3s;
 }
 
@@ -214,7 +203,7 @@ export default {
 
 .title-active {
   text-decoration: none;
-  border-bottom: 10px solid #06CC6B;
+  border-bottom: 10px solid #bfe2f7;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
   line-height: 10px;

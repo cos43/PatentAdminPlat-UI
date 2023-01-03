@@ -54,7 +54,7 @@
         <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="200">
           <template slot-scope="row">
             <el-button size="mini" type="primary" @click="queryDetail(row)">
-              查看详情
+              快速访问
             </el-button>
             <el-button size="mini" type="danger" @click="deleteQuery(row)">
               删除

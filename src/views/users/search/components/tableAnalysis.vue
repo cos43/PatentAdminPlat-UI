@@ -1,91 +1,93 @@
 <template>
   <div>
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <Chart />
-    </el-row>
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart />
-    </el-row>
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <table-info :table-data="categoricalData" table-type="categorical" title="分类号：按部统计" />
-      </el-col>
-      <el-col :span="12">
-        <table-info :table-data="categoricalData" table-type="pieChart" title="专利饼图" />
-      </el-col>
-    </el-row>
-    <el-row :gutter="20" style="margin-top: 20px">
-      <el-col :span="12">
-        <table-info :table-data="applicationData" table-type="application" title="申请人统计" />
-      </el-col>
-      <el-col :span="12">
-        <table-info :table-data="applicationData" table-type="inventor" title="发明人统计" />
-      </el-col>
-    </el-row>
+    <div style="margin-bottom: 10px;">
+      <el-tag
+        v-for="chart in charts"
+        :key="chart.id"
+        :type="chart.active?'primary':'info'"
+        style="margin-right: 5px;margin-bottom: 5px;cursor: pointer"
+        @click="chart.active=!chart.active"
+      >
+        {{ chart.name }}
+      </el-tag>
+    </div>
+    <div>
+      <Chart
+        v-for="chart in charts.filter(item=>item.active)"
+        :key="'chart'+chart.id"
+        :title="chart.name"
+        style="margin-bottom: 10px"
+      />
+    </div>
 
   </div>
 </template>
 <script>
-import LineChart from './LineChart'
-import TableInfo from './tableInfo'
 import Chart from './Chart'
 
 export default {
   components: {
-    LineChart,
-    TableInfo,
     Chart
   },
   data() {
     return {
-      categoricalData: [{
-        date: 'G 物理',
-        number: 805,
-        percent: 80.5
-      }, {
-        date: 'H电学',
-        number: 22,
-        percent: 10.2
-      }, {
-        date: 'F 机械工程；照明；加热',
-        number: 13,
-        percent: 1.3
-      }, {
-        date: 'B 作业；运输',
-        number: 8,
-        percent: 0.8
-      },
-      {
-        date: 'C 作业；运输',
-        number: 8,
-        percent: 0.8
-      }],
-      applicationData: [{
-        person: '张三',
-        number: 805,
-        percent: 80.5
-      },
-      {
-        person: '张三',
-        number: 805,
-        percent: 80.5
-      }, {
-        person: '张三',
-        number: 805,
-        percent: 80.5
-      }, {
-        person: '张三',
-        number: 805,
-        percent: 80.5
-      }, {
-        person: '张三',
-        number: 805,
-        percent: 80.5
-      }, {
-        person: '张三',
-        number: 805,
-        percent: 80.5
-      }]
+      charts: [
+        {
+          'id': '101',
+          'name': '专利类型分布',
+          'active': true
+        },
+        {
+          'id': '106',
+          'name': '技术生命周期分析',
+          'active': false
+        },
+        {
+          'id': '201',
+          'name': '年度申请量分析',
+          'active': false
+        },
+        {
+          'id': '301',
+          'name': '申请人排行榜',
+          'active': false
+        },
+        {
+          'id': '501',
+          'name': '发明人排行榜',
+          'active': false
+        },
+        {
+          'id': '721',
+          'name': '主分类年度申请趋势分析',
+          'active': false
+        },
+        {
+          'id': '1001',
+          'name': '省市申请量分析',
+          'active': false
+        },
+        {
+          'id': '1302',
+          'name': '年度专利转让趋势分析',
+          'active': false
+        },
+        {
+          'id': '1303',
+          'name': '转让人排名分析',
+          'active': false
+        },
+        {
+          'id': '1315',
+          'name': '年度专利许可趋势分析',
+          'active': false
+        },
+        {
+          'id': '1316',
+          'name': '许可人排名分析',
+          'active': false
+        }
+      ]
     }
   }
 }

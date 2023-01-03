@@ -1,10 +1,37 @@
 <template>
   <div class="container">
+    <el-dialog :visible.sync="packageDetailDialogVisible" title="编辑工艺包">
+      <el-form
+        ref="form"
+        :model="packageDetail"
+        label-width="80px"
+        size="small"
+        style="margin: 10px"
+      >
+        <el-form-item label="工艺包" prop="packageName" size="small">
+          <el-input v-model="packageDetail.packageName" size="small" />
+        </el-form-item>
+        <el-form-item label="描述" size="small">
+
+          <el-input
+            v-model="packageDetail.desc"
+            :rows="2"
+            placeholder="请输入内容"
+            type="textarea"
+          />
+
+        </el-form-item>
+        <div style="text-align: right; margin: 0">
+          <el-button size="mini" type="text" @click="packageDetailDialogVisible=false">取消</el-button>
+          <el-button size="mini" type="primary" @click="updatePackageSubmit">更新</el-button>
+        </div>
+      </el-form>
+    </el-dialog>
 
     <div style="margin-bottom: 5px">
-      <h3>工艺包: {{ packageDetail.packageName }}</h3>
-      <div class="text">Element
-        为了避免视觉传达差异，使用一套特定的调色板来规定颜色，为你所搭建的产品提供一致的外观视觉感受。
+      <h3>{{ packageDetail.packageName }}</h3>
+      <div class="text">
+        {{ packageDetail.desc }}
       </div>
     </div>
     <div style="display: flex;flex-direction: row;align-items: center;justify-content: space-between">
@@ -14,7 +41,8 @@
           <input v-show="false" ref="uploadInput" type="file">
         </el-button>
         <el-button icon="el-icon-download" size="small" type="primary">打包下载</el-button>
-        <el-button icon="el-icon-edit" size="small" type="primary">编辑</el-button>
+        <el-button icon="el-icon-edit" size="small" type="primary" @click="packageDetailDialogVisible=true">编辑
+        </el-button>
         <el-button icon="el-icon-delete" size="small" type="danger" @click="handleDeletePackage()">删除专利包
         </el-button>
       </div>
@@ -31,7 +59,6 @@
         </el-button>
       </div>
     </div>
-
     <div class="cards">
       <el-card
         v-for="(file,index) in files"
@@ -66,7 +93,6 @@
         </div>
       </el-card>
     </div>
-
     <div class="cards">
       <el-card
         v-for="(patent) in patentList.list"
@@ -99,7 +125,8 @@ export default {
     return {
       packageDetail: { packageName: '' },
       patentList: [],
-      files: []
+      files: [],
+      packageDetailDialogVisible: false
     }
   },
 
@@ -107,11 +134,20 @@ export default {
     this.loadPackageDetail()
   },
   methods: {
+    updatePackageSubmit() {
+      updatePackage(this.packageDetail.packageId, {
+        packageName: this.packageDetail.packageName,
+        desc: this.packageDetail.desc
+      }).then(res => {
+        this.packageDetailDialogVisible = false
+        this.$message.success('更新成功')
+      })
+    },
     loadPackageDetail() {
       const packageId = this.$route.params.id
       getPackage(packageId).then(res => {
         this.packageDetail = res.data.data
-        this.files = JSON.parse(this.packageDetail.files)
+        this.files = JSON.parse(this.packageDetail.files === '' ? '[]' : this.packageDetail.files)
         getPatentListByPackageId(packageId).then(res => {
           this.patentList = res.data.data
         })

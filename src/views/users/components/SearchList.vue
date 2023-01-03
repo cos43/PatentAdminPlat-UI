@@ -7,7 +7,7 @@
     <div v-else>
 
       <div v-for="(item,index) of searchResults.list" :key="item.PNM" class="result-item">
-        <Link :to="`detail?id=${item.patentId}`">
+        <Link :to="`detail?id=${item.patentId}`" target="_blank">
           <div class="result-title row-center">
             <span class="text-primary">{{ index + 1 }} {{ item.TI }}[ZH]</span>
             <el-tag
@@ -102,9 +102,11 @@
 
       <div class="block center">
         <div>
-          <el-button :disabled="page===1" icon="el-icon-arrow-left" size="mini" type="primary">上一页</el-button>
+          <el-button :disabled="page===1" icon="el-icon-arrow-left" size="mini" type="primary" @click="prevPage">
+            上一页
+          </el-button>
           <el-button size="mini" style="width: 50px;color: #2b2f3a" type="text">{{ page }}</el-button>
-          <el-button size="mini" type="primary">下一页
+          <el-button :disabled="!hasNext" size="mini" type="primary" @click="nextPage">下一页
             <i
               class="el-icon-arrow-right el-icon--right"
             /></el-button>
@@ -138,6 +140,8 @@ export default {
     return {
       page: 1,
       searchLoading: false,
+      pageSize: 10,
+      hasNext: false,
       searchResults: { list: [] },
       addPackForm: {
         patentName: '',
@@ -177,7 +181,8 @@ export default {
     search() {
       const self = this
       self.searchLoading = true
-      searchSimple(this.query).then(res => {
+      searchSimple({ ...this.query, pageIndex: this.page, pageSize: this.pageSize }).then(res => {
+        self.hasNext = res.data.data.list.length === self.pageSize
         self.searchResults = res.data.data
         self.searchLoading = false
       })

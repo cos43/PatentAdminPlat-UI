@@ -69,9 +69,13 @@
             <el-button size="mini" type="danger" @click="unClaimClick(row)">
               取消认领
             </el-button>
-            <el-button size="mini" type="primary">
-              加入工艺包
-            </el-button>
+
+            <addToPackage :patent="row.row.patentProperties">
+              <el-button size="mini" type="primary">
+                加入工艺包
+              </el-button>
+            </addToPackage>
+
           </template>
         </el-table-column>
 
@@ -137,14 +141,14 @@
           <template slot-scope="{row}">
             <el-button
               v-if="row.rejectTag === '已上传'"
+              icon="el-icon-download"
               size="mini"
               type="primary"
-              icon="el-icon-download"
               @click="download(row)"
             >
               下载
             </el-button>
-            <el-button v-if="row.rejectTag === '未审核'" size="mini" type="danger" round @click="cancelReport(row)"> 撤销
+            <el-button v-if="row.rejectTag === '未审核'" round size="mini" type="danger" @click="cancelReport(row)"> 撤销
             </el-button>
             <el-button v-if="row.rejectTag === '已撤销'" size="mini" type="primary" @click="reReport(row)"> 重新申请
             </el-button>
@@ -152,9 +156,9 @@
         </el-table-column>
       </el-table>
 
-      <el-dialog title="申请生成报告" :visible.sync="dialogFormVisible" width="30%" center>
+      <el-dialog :visible.sync="dialogFormVisible" center title="申请生成报告" width="30%">
         <el-form :model="form">
-          <el-form-item label="报告类型" :label-width="formLabelWidth">
+          <el-form-item :label-width="formLabelWidth" label="报告类型">
             <el-select v-model="form.type" placeholder="请选择报告类型">
               <el-option label="侵权报告" value="infringement" />
               <el-option label="估值报告" value="valuation" />
@@ -174,14 +178,15 @@
 </template>
 
 <script>
+import addToPackage from '@/views/users/components/AddToPackage'
 import { getClaimedPatents, unClaimPatent } from '@/api/patent'
-import { ApplyReport, userGetReportListByPaId, cancelReport, reAppReport } from '@/api/report'
+import { ApplyReport, cancelReport, reAppReport, userGetReportListByPaId } from '@/api/report'
 import waves from '@/directive/waves'
 
 export default {
   name: 'ComplexTable',
   directives: { waves },
-
+  components: { addToPackage },
   data() {
     return {
       tableKey: 0,
@@ -257,9 +262,15 @@ export default {
           if (this.reportlist[i].files !== '' && this.reportlist[i].files !== null && this.reportlist[i].files !== '[]' && this.reportlist[i].files !== 'undefined') {
             this.reportlist[i].files = JSON.parse(this.reportlist[i].files)
           }
-          if (this.reportlist[i].UpdatedAt === null) { this.reportlist[i].UpdatedAt = '无' }
-          if (this.reportlist[i].Type === 'infringement') { this.reportlist[i].Type = '侵权报告' }
-          if (this.reportlist[i].Type === 'valuation') { this.reportlist[i].Type = '估值报告' }
+          if (this.reportlist[i].UpdatedAt === null) {
+            this.reportlist[i].UpdatedAt = '无'
+          }
+          if (this.reportlist[i].Type === 'infringement') {
+            this.reportlist[i].Type = '侵权报告'
+          }
+          if (this.reportlist[i].Type === 'valuation') {
+            this.reportlist[i].Type = '估值报告'
+          }
         }
         // console.log(this.claim)  证明 用this依然可以访问 其他函数 修改的元素
         console.log(this.reportlist)

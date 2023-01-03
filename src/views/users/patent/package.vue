@@ -32,11 +32,6 @@
             </router-link>
             <el-button icon="el-icon-download" size="mini" type="primary">打包下载</el-button>
           </el-row>
-          <el-row>
-            <router-link :to="{path:`package/inventor-graph/${o.packageId}`,params:'1212'}" style="margin-right: 5px">
-              <el-button icon="el-icon-view" size="mini" type="primary">发明人关系图谱</el-button>
-            </router-link>
-          </el-row>
         </div>
       </el-card>
     </div>

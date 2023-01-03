@@ -5,8 +5,10 @@
         <el-button slot="append" icon="el-icon-search" plain type="primary" @click="doSearch" />
       </el-input>
       <div class="advancedFilter">
-        <span>高级搜索</span>
-        <span>表单搜索</span>
+        <div>
+          <span>高级搜索</span>
+          <span>表单搜索</span>
+        </div>
         <el-popover
           placement="right-start"
           trigger="click"
@@ -152,6 +154,10 @@ export default {
   font-size: 13px;
   margin: 5px 0;
   color: gray;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .advancedFilter span {
