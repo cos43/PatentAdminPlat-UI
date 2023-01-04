@@ -1,10 +1,10 @@
 <template>
-  <el-card class="box-card" style="min-height: 500px!important;">
+  <el-card ref="chartCard" class="box-card" style="min-height: 500px!important;width: 100%!important;">
     <div slot="header" class="clearfix">
       <span>{{ title }}</span>
       <el-button style="float: right; padding: 3px 0" type="text" />
     </div>
-    <div ref="chart" style="height: 400px;width: 100%" />
+    <div ref="chart" style="height: 400px;width: 100%!important;" />
   </el-card>
 
 </template>
@@ -18,12 +18,6 @@ const fakeData = {
     'axisPointer': {
       'type': 'shadow'
     }
-  },
-  'grid': {
-    'left': '3%',
-    'right': '4%',
-    'bottom': '3%',
-    'containLabel': true
   },
   'xAxis': [
     {
@@ -63,20 +57,11 @@ export default {
   data() {
     return {}
   },
-  watch: {
-    chartData: {
-      deep: true,
-      handler(val) {
-        this.setOptions(val)
-      }
-    }
-  },
   mounted() {
-    this.$nextTick(() => {
-      this.initChart()
-    })
+    this.initChart()
   },
   methods: {
+
     initChart() {
       this.chart = echarts.init(this.$refs.chart, 'macarons')
       this.chart.setOption(fakeData)
@@ -85,6 +70,16 @@ export default {
       //   const { option } = data.data
       //   this.chart.setOption(JSON.parse(option))
       // })
+
+      // timer to resize chart
+      let count = 0
+      const interval = setInterval(() => {
+        this.chart.resize()
+        count++
+        if (count > 10) {
+          clearInterval(interval)
+        }
+      }, 500)
     }
   }
 }
