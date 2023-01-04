@@ -95,6 +95,7 @@
       </el-card>
     </div>
     <div class="cards">
+
       <el-card
         v-for="(patent) in patentList.list"
         :key="patent.patentId"
@@ -103,9 +104,13 @@
         class="my-card"
         shadow="hover"
       >
-        <svg aria-hidden="true" class="image">
-          <use xlink:href="#icon-patentF" />
-        </svg>
+        <router-link :to="`/search/detail/${ JSON.parse(patent.patentProperties).PNM}`" target="_blank">
+
+          <svg aria-hidden="true" class="image">
+            <use xlink:href="#icon-patentF" />
+          </svg>
+        </router-link>
+
         <div style="font-size: 0.8rem;text-align: center">
           {{ JSON.parse(patent.patentProperties).TI | textCut }}<br>
         </div>
@@ -156,7 +161,6 @@ export default {
     },
     handleDeletePackage() {
       deletePackage(this.packageDetail.packageId).then(res => {
-        console.log(res)
         this.$message.success('删除成功')
         this.$router.push('/patent/package')
       })
@@ -191,7 +195,6 @@ export default {
     },
     isImage(filePath) {
       filePath = filePath || ''
-      console.log(filePath)
       return filePath.endsWith('.jpg') || filePath.endsWith('.png') || filePath.endsWith('.jpeg')
     }
   }
