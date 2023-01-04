@@ -77,7 +77,9 @@
             <el-button-group>
               <el-button size="mini" type="primary" @click="handleDeleteFile(file.FilePath)">删除
               </el-button>
-              <el-button size="mini" type="primary">下载</el-button>
+              <a :href="`http://${file.FilePath}`" target="_blank">
+                <el-button size="mini" type="primary">下载</el-button>
+              </a>
             </el-button-group>
           </div>
         </div>
