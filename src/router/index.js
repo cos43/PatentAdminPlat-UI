@@ -83,7 +83,7 @@ export const constantRoutes = [{
     hidden: true,
     meta: { title: '检索结果' }
   }, {
-    path: 'detail',
+    path: 'detail/:id',
     component: () => import('@/views/users/search/detail'),
     name: 'SearchDetail',
     hidden: true,

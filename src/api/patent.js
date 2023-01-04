@@ -57,3 +57,12 @@ export function getGraphByUserId2() {
     method: 'get'
   })
 }
+
+// 专利详情
+export function getPatentDetail(PNM) {
+  return request({
+    url: `/user-agent/auth-search/full`,
+    method: 'post',
+    data: { query: `PNM=${PNM}` }
+  })
+}

@@ -36,8 +36,8 @@
     </div>
     <div style="display: flex;flex-direction: row;align-items: center;justify-content: space-between">
       <div style="display: flex;flex-direction: row;align-items: center">
-        <el-button icon="el-icon-upload" size="small" type="primary" @click="handleUploadFile">
-          上传文件
+        <el-button :loading="uploading" icon="el-icon-upload" size="small" type="primary" @click="handleUploadFile">
+          {{ uploading ? '上传中' : '上传文件' }}
           <input v-show="false" ref="uploadInput" type="file">
         </el-button>
         <el-button icon="el-icon-download" size="small" type="primary">打包下载</el-button>
@@ -69,7 +69,11 @@
         shadow="hover"
       >
         <div class="card-actions">
-          <div style="display: flex;flex-direction: row;align-items: center;justify-content: center">
+          <div style="display: flex;flex-direction: column;align-items: center;justify-content: center;width: 100%">
+            <div style="font-size: 13px;color: white;margin: 10px;text-align: center">{{
+              file.FileName || '未命名'
+            }}
+            </div>
             <el-button-group>
               <el-button size="mini" type="primary" @click="handleDeleteFile(file.FilePath)">删除
               </el-button>
@@ -77,19 +81,16 @@
             </el-button-group>
           </div>
         </div>
-        <!--        <svg aria-hidden="true" class="image">-->
-        <!--          <use :xlink:href="`#icon-files_image`" />-->
-        <!--        </svg>-->
+
         <div class="imageField">
-          <img :src="`http://localhost:8000${file.FilePath}`" alt="" class="image">
+          <img v-if="isImage(file.FilePath)" :src="`http://${file.FilePath}`" alt="" class="image">
+          <svg v-else aria-hidden="true" class="image">
+            <use :xlink:href="`#icon-files2`" />
+          </svg>
         </div>
-        <!--        <div style="padding: 10px">-->
-        <!--          {{ file.FilePath }}-->
-        <!--        </div>-->
 
         <div style="font-size: 0.8rem;text-align: center">
           {{ (file.FileName || '未命名') | textCut }}
-          <div style="margin-top: 5px">10-23 15:37</div>
         </div>
       </el-card>
     </div>
@@ -107,7 +108,6 @@
         </svg>
         <div style="font-size: 0.8rem;text-align: center">
           {{ JSON.parse(patent.patentProperties).TI | textCut }}<br>
-          <div style="margin-top: 5px">10-23 15:37</div>
         </div>
       </el-card>
     </div>
@@ -123,6 +123,7 @@ export default {
   name: 'TechPack',
   data() {
     return {
+      uploading: false,
       packageDetail: { packageName: '' },
       patentList: [],
       files: [],
@@ -165,12 +166,14 @@ export default {
       this.$refs.uploadInput.onchange = e => {
         const formData = new FormData()
         formData.append('file', e.target.files[0])
+        this.uploading = true
         uploadFile(formData).then(res => {
           const path = res.data.data.path
           updatePackage(this.packageDetail.packageId, {
             filesOpt: 'add',
             files: [path]
           }).then(res => {
+            this.uploading = false
             this.loadPackageDetail()
             this.$message.success('上传成功')
           })
@@ -185,6 +188,11 @@ export default {
         this.loadPackageDetail()
         this.$message.success('删除成功')
       })
+    },
+    isImage(filePath) {
+      filePath = filePath || ''
+      console.log(filePath)
+      return filePath.endsWith('.jpg') || filePath.endsWith('.png') || filePath.endsWith('.jpeg')
     }
   }
 }

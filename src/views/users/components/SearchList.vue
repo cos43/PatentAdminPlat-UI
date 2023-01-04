@@ -5,9 +5,8 @@
       <el-skeleton v-for="i of 6" :key="i" :rows="6" animated />
     </div>
     <div v-else>
-
       <div v-for="(item,index) of searchResults.list" :key="item.PNM" class="result-item">
-        <Link :to="`detail?id=${item.patentId}`" target="_blank">
+        <Link :to="`detail/${item.PNM}`" target="_blank">
           <div class="result-title row-center">
             <span class="text-primary">{{ index + 1 }} {{ item.TI }}[ZH]</span>
             <el-tag
