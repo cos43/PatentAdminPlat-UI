@@ -199,12 +199,9 @@
                   <div style="display: flex;flex-direction: row;align-items: center;justify-content: center">
                     <el-button-group>
 
-                      <el-button icon="el-icon-download" size="mini" type="primary">
-                        <a :href="`http://${file.FilePath}`" target="_blank">
-                          <el-button size="mini" type="primary">下载</el-button>
-                        </a>
-
-                      </el-button>
+                      <a :href="`http://${file.FilePath}`" target="_blank">
+                        <el-button size="mini" type="primary">下载</el-button>
+                      </a>
                     </el-button-group>
                   </div>
                 </div>
@@ -217,22 +214,7 @@
                 <div style="font-size: 0.8rem;text-align: center">
                   {{ file.FileName }}
                 </div>
-                <el-dialog
-                  :close-on-click-modal="true"
-                  :close-on-press-escape="true"
-                  :visible.sync="centerDialogVisible"
-                  center
-                  title="预览"
-                  width="30%"
-                >
 
-                  <div class="imageField">
-                    <img :src="`http://localhost:8000${file.FilePath}`" alt="" class="image">
-                  </div>
-                  <span slot="footer" class="dialog-footer">
-                    <el-button icon="el-icon-download" @click="download(file.FilePath)">下载</el-button>
-                  </span>
-                </el-dialog>
               </el-card>
 
             </div>
@@ -297,6 +279,10 @@ export default {
     this.getList()
   },
   methods: {
+    isImage(filePath) {
+      filePath = filePath || ''
+      return filePath.endsWith('.jpg') || filePath.endsWith('.png') || filePath.endsWith('.jpeg')
+    },
     preview(file) {
       this.centerDialogVisible = true
     },
