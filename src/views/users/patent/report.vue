@@ -89,7 +89,7 @@
 
         <el-table-column class-name="status-col" label="专利详情" width="100">
           <template slot-scope="{row}">
-            <el-button class="detail" size="mini" type="warning" icon="el-icon-view" @click="getPatent(row.reportId)">
+            <el-button class="detail" icon="el-icon-view" size="mini" type="warning" @click="getPatent(row.reportId)">
               查看
             </el-button>
           </template>
@@ -99,9 +99,9 @@
           <template slot-scope="{row}">
             <el-button
               :disabled="row.rejectTag !== '已上传'"
+              icon="el-icon-view"
               size="mini"
               type="warning"
-              icon="el-icon-view"
               @click="getFiles(row.reportId)"
             >
               详情
@@ -199,9 +199,9 @@
                   <div style="display: flex;flex-direction: row;align-items: center;justify-content: center">
                     <el-button-group>
 
-                      <el-button size="mini" type="primary" icon="el-icon-download">
-                        <a @click="download(file.FilePath)">
-                          下载
+                      <el-button icon="el-icon-download" size="mini" type="primary">
+                        <a :href="`http://${file.FilePath}`" target="_blank">
+                          <el-button size="mini" type="primary">下载</el-button>
                         </a>
 
                       </el-button>
@@ -209,18 +209,21 @@
                   </div>
                 </div>
                 <div class="imageField">
-                  <img :src="`http://localhost:8000${file.FilePath}`" alt="" class="image">
+                  <img v-if="isImage(file.FilePath)" :src="`http://${file.FilePath}`" alt="" class="image">
+                  <svg v-else aria-hidden="true" class="image">
+                    <use :xlink:href="`#icon-files2`" />
+                  </svg>
                 </div>
                 <div style="font-size: 0.8rem;text-align: center">
                   {{ file.FileName }}
                 </div>
                 <el-dialog
-                  title="预览"
-                  :visible.sync="centerDialogVisible"
-                  width="30%"
-                  center
                   :close-on-click-modal="true"
                   :close-on-press-escape="true"
+                  :visible.sync="centerDialogVisible"
+                  center
+                  title="预览"
+                  width="30%"
                 >
 
                   <div class="imageField">
@@ -245,7 +248,7 @@
 </template>
 <script>
 import waves from '@/directive/waves' // waves directive
-import { userReportList, userGetReportPatents, userGetReportById, userGetReportListByType } from '@/api/report'
+import { userGetReportById, userGetReportListByType, userGetReportPatents, userReportList } from '@/api/report'
 
 export default {
   name: 'ComplexTable',
@@ -328,8 +331,12 @@ export default {
           for (var i = 0; i < response.data.data.length; i++) {
             this.list[i] = response.data.data[i]
             if (this.list[i].UpdatedAt === '') this.list[i].UpdatedAt = '无'
-            if (this.list[i].Type === 'infringement') { this.list[i].Type = '侵权报告' }
-            if (this.list[i].Type === 'valuation') { this.list[i].Type = '估值报告' }
+            if (this.list[i].Type === 'infringement') {
+              this.list[i].Type = '侵权报告'
+            }
+            if (this.list[i].Type === 'valuation') {
+              this.list[i].Type = '估值报告'
+            }
           }
 
           this.listLoading = false
@@ -355,8 +362,12 @@ export default {
         this.list = response.data.data
         for (var i = 0; i < this.list.length; i++) {
           if (this.list[i].UpdatedAt === '') this.list[i].UpdatedAt = '无'
-          if (this.list[i].Type === 'infringement') { this.list[i].Type = '侵权报告' }
-          if (this.list[i].Type === 'valuation') { this.list[i].Type = '估值报告' }
+          if (this.list[i].Type === 'infringement') {
+            this.list[i].Type = '侵权报告'
+          }
+          if (this.list[i].Type === 'valuation') {
+            this.list[i].Type = '估值报告'
+          }
         }
         this.listLoading = false
       })
