@@ -1,7 +1,20 @@
 <template>
-  <div>
-    <div style="display: flex;flex-direction: row;align-items: center;height: 100vh">
-      <div id="myChart" style="height: 80%;width:100%" />
+  <div v-loading.fullscreen.lock="loading" class="app-container">
+    <div>
+      <span>选择工艺包：</span>
+      <el-select v-model="currentPackage" placeholder="请选择">
+        <el-option
+          v-for="item in packageList"
+          :key="item.packageName"
+          :label="item.packageName"
+          :value="item.packageId"
+        />
+      </el-select>
+    </div>
+    <div
+      style="display: flex;flex-direction: row;height:calc(100vh - 140px);align-items: center;width: calc(100% - 255px);margin-top: 10px"
+    >
+      <div id="myChart" style="height: 100%;width:100%" />
     </div>
     <div class="table">
       <el-table
@@ -12,9 +25,13 @@
         <el-table-column
           align="center"
           label="排名"
-          prop="date"
-          width="100"
-        />
+          prop="id"
+          width="60"
+        >
+          <template slot-scope="{row}">
+            <slot>{{ parseInt(row.id) + 1 }}</slot>
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
           label="发明人"
@@ -23,7 +40,7 @@
         <el-table-column
           align="center"
           label="关联指数"
-          prop="number"
+          prop="value"
         />
       </el-table>
     </div>
@@ -31,60 +48,11 @@
 </template>
 <script>
 import echarts from 'echarts'
-import { getGraphByPackageId } from '@/api/package'
-const data = {
-  'links': [
-    {
-      source: '23',
-      target: '11',
-      ignoreForceLayout: true,
-      value: '12121',
-      label: {
-        show: true,
-        formatter: function() {
-          return '数据分析前端'
-        }
-      },
-      lineStyle: {
-        width: 5,
-        curveness: 0.2
-      }
-    }
+import { getPackageList, getRelationGraphByPackageId } from '@/api/package'
 
-  ],
-  'categories': [
-    {
-      'name': 'A'
-    },
-    {
-      'name': 'B'
-    },
-    {
-      'name': 'C'
-    },
-    {
-      'name': 'D'
-    },
-    {
-      'name': 'E'
-    },
-    {
-      'name': 'F'
-    },
-    {
-      'name': 'G'
-    },
-    {
-      'name': 'H'
-    },
-    {
-      'name': 'I'
-    }
-  ]
-}
 const option = {
   title: {
-    text: '专利包关系图谱',
+    text: '关联图谱',
     textAlign: 'auto',
     left: '10%', // '5' | '5%'，title 组件离容器左侧的距离
     right: 'auto', // 'title 组件离容器右侧的距离
@@ -94,39 +62,48 @@ const option = {
   tooltip: {},
   legend: [
     {
-      data: data.categories.map(function(a) {
-        return a.name
-      })
+      data: []
     }
   ],
   series: [
     {
-      name: 'Les Miserables',
+      name: '专利发明人',
       type: 'graph',
-      layout: 'none',
+      layout: 'force',
       data: null,
       links: null,
-      categories: data.categories,
+      categories: [],
       roam: true,
+      label: {
+        show: true,
+        formatter: '{b}',
+        position: 'right'
+      },
       focusNodeAdjacency: true,
       legendHoverLink: true,
-      // lineStyle: {
-      //   color: "source",
-      //   opacity: 0.2,
-      //   curveness: 0.3,
-      // },
-      label: {
-        position: 'right',
-        formatter: '{b}'
+      animation: false,
+      force: {
+        initLayout: 'circular',
+        layoutAnimation: false,
+        repulsion: 100
       },
       lineStyle: {
         color: 'source',
+        opacity: 0.2,
         curveness: 0.3
       },
       emphasis: {
         focus: 'adjacency',
+        itemStyle: {
+          shadowColor: 'rgba(0, 0, 0, 0.4)',
+          shadowBlur: 15
+        },
         lineStyle: {
-          width: 10
+          width: 3
+        },
+        label: {
+          textBorderColor: 'rgba(255, 255, 255, 0.8)',
+          textBorderWidth: 2
         }
       }
     }
@@ -136,74 +113,48 @@ export default {
   name: 'AssociationGraph',
   data() {
     return {
-      tableData: [{
-        date: '1',
-        name: '张三',
-        number: 12
-      }, {
-        date: '2',
-        name: '李四',
-        number: 11
-      }, {
-        date: '3',
-        name: '张三',
-        number: 8
-      }, {
-        date: '4',
-        name: '张三',
-        number: 2
-      },
-      {
-        date: '1',
-        name: '张三',
-        number: 12
-      }, {
-        date: '2',
-        name: '张三',
-        number: 11
-      }, {
-        date: '3',
-        name: '张三',
-        number: 8
-      }, {
-        date: '4',
-        name: '张三',
-        number: 2
-      }]
+      chart: null,
+      packageList: [],
+      currentPackage: '请选择',
+      loading: false,
+      tableData: []
+    }
+  },
+  watch: {
+    currentPackage: function(val) {
+      this.getChartData(val)
     }
   },
   mounted() {
-    // getChartOption(301, { 'Query': '网安' }).then(res => {
-    //   console.log(res)
-    //   // const myChart = echarts.init(document.getElementById('main'))
-    //   // myChart.setOption(option)
-    // })
-    const myChart = echarts.init(document.getElementById('myChart'))
-    myChart.setOption(option)
-    this.getlist()
+    this.chart = echarts.init(document.getElementById('myChart'))
+    this.loadPackageList()
   },
   methods: {
-    getlist() {
-      console.log('进入')
-      this.listloading = true
-      getGraphByPackageId(2).then(response => {
-        const results = response.data.data
-        option.series[0].data = results.nodes
-        option.series[0].links = results.links
-        option.series[0].data.forEach(function(node) {
-          // node.label = {
-          //   show: node.symbolSize > 30
-          // }
-        })
-      }).then(() => {
-        // console.log(data1)
-        // console.log(option)
-        // console.log('输出')
-        const myChart = echarts.init(document.getElementById('myChart'))
-        myChart.setOption(option)
-      }
-      )
-      // return null
+    loadPackageList() {
+      getPackageList().then(res => {
+        this.packageList = res.data.data
+      })
+    },
+    getChartData(packageId) {
+      this.loading = true
+      getRelationGraphByPackageId(packageId).then(res => {
+        const results = res.data.data
+        if (results == null) {
+          option.series[0].data = null
+          option.series[0].links = null
+        } else {
+          option.series[0].data = results.nodes
+          option.series[0].links = results.links
+          this.tableData = results.nodes.slice(0, 10)
+          option.legend[0].data = this.tableData.map(item => item.name)
+          option.series[0].categories = this.tableData.map(item => {
+            return { name: item.name }
+          })
+          console.log(option)
+          this.chart.setOption(option)
+        }
+        this.loading = false
+      })
     }
   }
 }
@@ -213,9 +164,9 @@ export default {
   position: absolute;
   z-index: 99;
   top: 10px;
-  right: 10px;
+  right: 5px;
   overflow-y: auto;
-  width: 300px;
+  width: 250px;
   border: 1px solid #ccc;
 }
 </style>

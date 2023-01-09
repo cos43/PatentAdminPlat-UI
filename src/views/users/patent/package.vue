@@ -18,9 +18,9 @@
 
     </div>
     <div class="cards">
-      <el-card v-for="o in packageList" :key="o.packageId" :style="{ padding: '0px',margin:'10px' }" class="my-card">
+      <el-card v-for="o in packageList" :key="o.packageId" :style="{ padding: '0',margin:'10px' }" class="my-card">
         <svg aria-hidden="true" class="image">
-          <use xlink:href="#icon-files" />
+          <use xlink:href="#icon-folder" />
         </svg>
         <div style="padding-top: 16px;">
           <div style="font-size:1rem;margin-bottom: 5px">
@@ -74,7 +74,7 @@ export default {
 
 .my-card {
   width: 220px;
-  height: 280px;
+  height: 260px;
 }
 
 .image {

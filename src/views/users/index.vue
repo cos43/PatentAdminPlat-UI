@@ -3,7 +3,7 @@
     <div class="header">
       <div class="searchBox">
         <div class="searchHeader">
-          <h1 style="color: black;text-shadow: 3px 3px 3px #ccc;">专利咨询平台</h1>
+          <h1 style="color: black;">专利咨询平台</h1>
           <div class="searchBoxInput">
             <input
               v-model="query"
@@ -20,47 +20,7 @@
         </div>
       </div>
     </div>
-    <div class="recommend" style="margin: 30px 100px">
-      <div class="d-flex flex-row align-items-center">
-        <span class="title title-active">知产教室</span>
-      </div>
-      <div style="margin-top: 5px">
-        <div class="d-flex flex-row">
-          <video controls height="270" width="400">
-            <source src="http://www.daweisoft.com//upload/file/gaoxiaodisijiang.mp4" type="video/mp4">
-          </video>
-          <div style="margin-left: 30px">
-            <h3>第四讲：高校优势学科的专利特色库建设</h3>
-            <p>培训大纲：
 
-              1、什么是优势学科专利专题特色库；
-
-              2、优势学科专利专题特色库的形式与功能展示
-
-              3、优势学科专利专题特色库的重要价值；
-
-              4、如何构建优势学科的全球专利特色库</p>
-          </div>
-        </div>
-        <div class="d-flex flex-row">
-          <video controls height="270" width="400">
-            <source src="http://www.daweisoft.com//upload/file/gaoxiaodisijiang.mp4" type="video/mp4">
-          </video>
-          <div style="margin-left: 30px">
-            <h3>第三讲：高校优势学科的专利特色库建设</h3>
-            <p>培训大纲：
-
-              1、什么是优势学科专利专题特色库；
-
-              2、优势学科专利专题特色库的形式与功能展示
-
-              3、优势学科专利专题特色库的重要价值；
-
-              4、如何构建优势学科的全球专利特色库</p>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <script>
@@ -88,17 +48,16 @@ export default {
 .header {
   padding: 10px 20px;
   border-bottom: 1px solid #ebeef5;
-  height: 300px;
+  height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
-
   align-items: center;
   background-image: linear-gradient(to top, #ace0f9 0%, #ffffff 100%);
 }
 
 .searchBox {
-  width: 70%;
-  padding-top: 50px;
+  padding-top: 100px;
+  width: 85%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -168,7 +127,6 @@ export default {
   color: #17233d;
   font-weight: bold;
   font-size: 13px;
-  text-shadow: 3px 3px 3px #ccc;
   justify-content: space-around;
   margin-top: 7px;
   cursor: pointer;
@@ -179,36 +137,8 @@ export default {
   margin-right: 10px;
 }
 
-.recommend {
-  margin: 20px 10px 0 10px;
-}
-
-.title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #17233d;
-
-}
-
-.title:hover {
-  cursor: pointer;
-  color: #bfe2f7;
-  transition: 0.3s;
-}
-
-.title-active:hover {
-  color: inherit;
-  transition: 0.3s;
-}
-
-.title-active {
-  text-decoration: none;
-  border-bottom: 10px solid #bfe2f7;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  line-height: 10px;
-  display: inline-block;
-  margin-bottom: -10px !important;
+.searchAction span:hover {
+  color: #17A1FF;
 }
 
 </style>

@@ -68,5 +68,9 @@ export function uppercaseFirst(string) {
 }
 
 export function textCut(string) {
-  return string.length > 10 ? string.substring(0, 10) + '...' : string
+  return string.length > 30 ? string.substring(0, 30) + '...' : string
+}
+
+export function localTime(string) {
+  return (new Date(string)).toLocaleString()
 }

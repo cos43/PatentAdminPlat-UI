@@ -10,16 +10,8 @@
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
-
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
-        <el-tooltip content="Global Size" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
-
-      </template>
-
+      <template v-if="device!=='mobile'" />
+      <el-tag effect="dark" style="cursor: pointer">人工智能技术团队 ｜ 92人</el-tag>
       <el-dropdown v-if="token" class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img
@@ -48,16 +40,12 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import Screenfull from '@/components/Screenfull'
-import SizeSelect from '@/components/SizeSelect'
 import LoginComponent from '@/views/users/components/LoginComponent'
 
 export default {
   components: {
     Breadcrumb,
     Hamburger,
-    Screenfull,
-    SizeSelect,
     LoginComponent
   },
   computed: {
@@ -120,7 +108,10 @@ export default {
   }
 
   .right-menu {
-    float: right;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
     height: 100%;
     line-height: 50px;
 

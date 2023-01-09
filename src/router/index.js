@@ -54,7 +54,7 @@ export const constantRoutes = [{
     path: 'dashboard',
     component: () => import('@/views/users/dashboard/index'),
     name: 'Dashboard',
-    meta: { title: '首页', icon: 'dashboard', affix: true }
+    meta: { title: '专利管理系统', icon: 'dashboard', affix: true }
   }]
 }, {
   path: '/login', component: () => import('@/views/users/login')
@@ -94,7 +94,7 @@ export const constantRoutes = [{
     path: 'home',
     component: () => import('@/views/users/patent/dashboard/index'),
     name: 'Patent',
-    meta: { title: '首页', icon: 'patent' }
+    meta: { title: '首页', icon: 'home' }
   }, {
     path: 'claim',
     component: () => import('@/views/users/patent/patentClaimList'),
@@ -125,25 +125,19 @@ export const constantRoutes = [{
   }, {
     path: 'analysis',
     name: 'analysis',
-    meta: { title: '分析', icon: 'pack' },
+    meta: { title: '分析', icon: 'analysis' },
     component: () => import('@/views/users/patent/analysis/analysis'),
     children: [{
       path: 'associationGraph',
       component: () => import('@/views/users/patent/analysis/packageAssociationGraph'),
       name: 'associationGraph',
-      meta: { title: '专利包关注图谱', icon: 'related' }
+      meta: { title: '关系图谱', icon: 'related' }
     }, {
       path: 'technicalGraph',
       component: () => import('@/views/users/patent/analysis/technicalGraph'),
       name: 'technicalGraph',
-      meta: { title: '技术图谱', icon: 'tech' }
+      meta: { title: '技术图谱', icon: 'techGraph' }
     }
-      //   {
-      //   path: 'associationGraph2',
-      //   component: () => import('@/views/users/patent/analysis/packageAssociationGraph2'),
-      //   name: 'associationGraph2',
-      //   meta: { title: '专利包发明人关注图谱', icon: 'related' }
-      // }
     ]
   }]
 }, {
@@ -156,27 +150,22 @@ export const constantRoutes = [{
     path: 'queries',
     component: () => import('@/views/users/explore/queriesList.vue'),
     name: 'Queries',
-    meta: { title: '我的搜索', icon: 'focus' }
+    meta: { title: '我的搜索', icon: 'search' }
   }, {
     path: 'analysis',
     name: 'Pack',
-    meta: { title: '分析', icon: 'pack' },
+    meta: { title: '分析', icon: 'analysis' },
     component: () => import('@/views/users/explore/analysis/analysis'),
     children: [{
       path: 'associationGraph',
       component: () => import('@/views/users/explore/analysis/focusAssociationGraph1'),
       name: 'associationGraph1',
-      meta: { title: '关注图谱1', icon: 'related' }
-    }, {
-      path: 'associationGraph2',
-      component: () => import('@/views/users/explore/analysis/focusAssociationGraph2'),
-      name: 'associationGraph2',
-      meta: { title: '关注图谱2', icon: 'related' }
+      meta: { title: '关系图谱', icon: 'related' }
     }, {
       path: 'technicalGraph',
       component: () => import('@/views/users/explore/analysis/technicalGraph'),
       name: 'technicalGraph',
-      meta: { title: '技术图谱', icon: 'tech' }
+      meta: { title: '技术图谱', icon: 'techGraph' }
     }]
   }]
 }, {
@@ -194,16 +183,16 @@ export const constantRoutes = [{
 },
 
 {
-  path: '/trade', component: Layout, meta: { title: '我的交易', icon: 'guide' }, children: [{
+  path: '/trade', component: Layout, meta: { title: '我的交易', icon: 'trade' }, children: [{
     path: 'home',
     component: () => import('@/views/users/trade/dashboard/index'),
     name: 'tradingInformation',
-    meta: { title: '首页', icon: 'trade' }
+    meta: { title: '首页', icon: 'home' }
   }, {
     path: 'information',
     component: () => import('@/views/users/trade/tradingInformation'),
     name: 'tradingInformation',
-    meta: { title: '交易信息', icon: 'trade' }
+    meta: { title: '交易信息', icon: 'tradeInfo' }
   }, {
     path: 'estimate',
     component: () => import('@/views/users/trade/patentValuation'),
@@ -224,7 +213,7 @@ export const constantRoutes = [{
     path: 'index',
     component: () => import('@/views/users/history'),
     name: 'History',
-    meta: { title: '浏览历史', icon: 'history' }
+    meta: { title: '操作历史', icon: 'history' }
   }]
 }]
 

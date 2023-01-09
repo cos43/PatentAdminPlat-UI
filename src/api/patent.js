@@ -8,9 +8,9 @@ export function claimPatent(patent) {
 }
 
 // 取消认领专利
-export function unClaimPatent(patentId) {
+export function unClaimPatent(PNM) {
   return request({
-    url: `/user-agent/patent/claim/${patentId}`, method: 'delete'
+    url: `/user-agent/patent/claim/${PNM}`, method: 'delete'
   })
 }
 
@@ -29,9 +29,9 @@ export function focusPatent(patent) {
 }
 
 // 取消关注专利
-export function unFocusPatent(patentId) {
+export function unFocusPatent(PNM) {
   return request({
-    url: `/user-agent/patent/focus/${patentId}`, method: 'delete'
+    url: `/user-agent/patent/focus/${PNM}`, method: 'delete'
   })
 }
 

@@ -46,6 +46,13 @@ export function addPatentToPackage(packageId, patentId, patent) {
   })
 }
 
+export function removePatentFromPackage(packageId, pnm) {
+  return request({
+    url: `/user-agent/package/${packageId}/patent/${pnm}`,
+    method: 'delete'
+  })
+}
+
 export function checkPatentToPackage(packageId, patentId, patent) {
   return request({
     url: `/user-agent/package/${packageId}/patent/${patentId}/isExist`,
@@ -60,6 +67,7 @@ export function getPatentListByPackageId(packageId) {
     method: 'get'
   })
 }
+
 // 通过专利包id获得专利包中专利的用户关系图谱
 export function getGraphByPackageId(packageId) {
   return request({
@@ -69,9 +77,9 @@ export function getGraphByPackageId(packageId) {
 }
 
 // 通过专利包id获得专利包中专利的发明人关系图谱
-export function getGraphByPackageId3(packageId) {
+export function getRelationGraphByPackageId(packageId) {
   return request({
-    url: `/user-agent/package/${packageId}/relationship3`,
+    url: `/user-agent/package/${packageId}/graph/relation`,
     method: 'get'
   })
 }

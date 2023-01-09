@@ -3,7 +3,6 @@
     placement="left-end"
     width="350"
   >
-    <create-pack ref="createPack" />
     <el-form
       :model="packageAddForm"
       label-position="left"
@@ -14,10 +13,13 @@
       <el-form-item label="专利" size="small">
         <el-input v-model="packageAddForm.patentName" size="small" />
       </el-form-item>
+      <el-form-item label="备注" size="small">
+        <el-input v-model="packageAddForm.desc" size="small" />
+      </el-form-item>
       <el-form-item label="工艺包" size="small">
         <el-select
           v-model="packageAddForm.packageId"
-          v-loading="loadingPackageList"
+          :loading="loadingPackageList"
           placeholder="请选择工艺包"
           size="small"
           style="width: 100%"
@@ -30,13 +32,13 @@
           />
         </el-select>
       </el-form-item>
-      <div style="display: flex;flex-direction: row;align-items: center;justify-content: space-between">
-        <el-button size="mini" type="primary" @click="showCreatePack">新增工艺包</el-button>
+      <div style="display: flex;flex-direction: row;align-items: center;justify-content: flex-end">
+        <!--        <el-button size="mini" type="primary" @click="showCreatePack">新增工艺包</el-button>-->
         <div style="text-align: right; margin: 0">
 
           <el-button
-            v-loading="loadingRelation"
             :disabled="patentPackageExist"
+            :loading="loadingRelation"
             size="mini"
             type="primary"
             @click="handleAddPatentToPackage()"
@@ -52,10 +54,8 @@
 </template>
 <script>
 import { addPatentToPackage, checkPatentToPackage, getPackageList } from '@/api/package'
-import CreatePack from '@/views/users/components/createPack'
 
 export default {
-  components: { CreatePack },
   props: {
     patent: {
       type: Object,
@@ -64,7 +64,7 @@ export default {
   },
   data() {
     return {
-      packageAddForm: { packageId: '', patentName: '', patentId: '' },
+      packageAddForm: { packageId: '', patentName: '', patentId: '', desc: '' },
       patentPackageExist: false,
       loadingRelation: false,
       loadingPackageList: false,
@@ -91,6 +91,7 @@ export default {
       this.packageAddForm.patentId = this.patent.PNM
       this.packageAddForm.patentName = this.patent.TI
       this.packageAddForm.packageId = ''
+      this.packageAddForm.desc = ''
     },
     loadPackageList() {
       getPackageList().then(res => {
@@ -98,9 +99,7 @@ export default {
         this.loadingPackageList = false
       })
     },
-    showCreatePack() {
-      this.$refs.createPack.show()
-    },
+
     handleAddPatentToPackage() {
       const { packageId, patentId } = this.packageAddForm
       addPatentToPackage(packageId, patentId, this.patent).then(res => {

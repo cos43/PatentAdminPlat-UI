@@ -6,15 +6,15 @@
       </el-input>
       <div class="advancedFilter">
         <div>
-          <span>高级搜索</span>
+          <span style="margin-right: 10px">高级搜索</span>
           <span>表单搜索</span>
         </div>
-        <el-popover
-          placement="right-start"
-          trigger="click"
-          width="400"
-        >
-          <div>
+        <div class="el-button-group">
+          <el-popover
+            placement="right-start"
+            trigger="click"
+            width="400"
+          >
             <el-form
               ref="queryForm"
               :model="queryFrom"
@@ -41,22 +41,14 @@
                 保存
               </el-button>
             </el-form>
-          </div>
-          <el-button slot="reference" size="mini" type="primary">保存搜索结果</el-button>
-        </el-popover>
+            <el-button slot="reference" size="mini" type="primary">保存搜索结果</el-button>
+          </el-popover>
+        </div>
       </div>
     </div>
     <el-tabs style="margin-top: 10px" type="border-card">
       <el-tab-pane>
         <span slot="label">搜索列表</span>
-        <div class="d-flex flex-row filters">
-          <span class="filter-active">概况</span>
-          <span>按时间</span>
-          <span>按产业分类</span>
-          <span>按机构</span>
-          <span>按发明人</span>
-          <span>法律状态</span>
-        </div>
         <search-list ref="search" :query="searchForm" />
       </el-tab-pane>
       <el-tab-pane label="搜索分析">
@@ -128,28 +120,6 @@ export default {
   padding: 0 15px;
 }
 
-.filters {
-  font-size: 0.8rem;
-  padding: 0 10px;
-  margin-bottom: 5px;
-}
-
-.filters span {
-  margin-right: 10px;
-  color: gray;
-  transition: 0.3s;
-
-}
-
-.filters span:hover {
-  cursor: pointer;
-  color: #00a9ed !important;
-}
-
-.filter-active {
-  color: #00a9ed !important;
-}
-
 .advancedFilter {
   font-size: 13px;
   margin: 5px 0;
@@ -160,7 +130,4 @@ export default {
   justify-content: space-between;
 }
 
-.advancedFilter span {
-  margin-right: 10px;
-}
 </style>

@@ -74,13 +74,14 @@
               file.FileName || '未命名'
             }}
             </div>
-            <el-button-group>
-              <el-button size="mini" type="primary" @click="handleDeleteFile(file.FilePath)">删除
+            <div style="display: flex;flex-direction: row">
+              <el-button size="mini" style="margin-right: 10px" type="danger" @click="handleDeleteFile(file.FilePath)">
+                删除
               </el-button>
-              <a :href="`http://${file.FilePath}`" target="_blank">
+              <download-able :name="file.FileName" :url="`http://${file.FilePath}`">
                 <el-button size="mini" type="primary">下载</el-button>
-              </a>
-            </el-button-group>
+              </download-able>
+            </div>
           </div>
         </div>
 
@@ -106,8 +107,17 @@
         class="my-card"
         shadow="hover"
       >
+        <div class="card-actions">
+          <div style="display: flex;flex-direction: column;align-items: center;justify-content: center;width: 100%">
+            <div style="font-size: 13px;color: white;margin: 10px;text-align: center" />
+            <div style="display: flex;flex-direction: row">
+              <el-button size="mini" type="danger" @click="handleDeletePatentFromPackage(patent)">
+                删除
+              </el-button>
+            </div>
+          </div>
+        </div>
         <router-link :to="`/search/detail/${ JSON.parse(patent.patentProperties).PNM}`" target="_blank">
-
           <svg aria-hidden="true" class="image">
             <use xlink:href="#icon-patentF" />
           </svg>
@@ -123,11 +133,19 @@
 </template>
 
 <script>
-import { deletePackage, getPackage, getPatentListByPackageId, updatePackage } from '@/api/package'
+import {
+  deletePackage,
+  getPackage,
+  getPatentListByPackageId,
+  removePatentFromPackage,
+  updatePackage
+} from '@/api/package'
 import { uploadFile } from '@/api/upload'
+import DownloadAble from '@/views/users/components/DownloadAble'
 
 export default {
-  name: 'TechPack',
+  name: 'PackageDetail',
+  components: { DownloadAble },
   data() {
     return {
       uploading: false,
@@ -165,6 +183,13 @@ export default {
       deletePackage(this.packageDetail.packageId).then(res => {
         this.$message.success('删除成功')
         this.$router.push('/patent/package')
+      })
+    },
+    handleDeletePatentFromPackage(patent) {
+      console.log(patent)
+      removePatentFromPackage(this.packageDetail.packageId, patent.PNM).then(res => {
+        this.$message.success('删除成功')
+        this.loadPackageDetail()
       })
     },
     handleUploadFile() {

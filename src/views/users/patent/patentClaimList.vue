@@ -37,30 +37,21 @@
         highlight-current-row
         style="width: 100%;  border-radius: 10px!important;"
       >
-        <el-table-column align="center" label="专利ID" prop="id" sortable="custom" width="90">
+        <el-table-column align="center" label="PNM" prop="id" sortable="custom" width="140">
           <template slot-scope="{row}">
-            <span>{{ row.patentId }}</span>
+            <span>{{ row.patentProperties.PNM }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="专利名称" min-width="150px">
+        <el-table-column align="center" label="专利名称" min-width="150">
           <template slot-scope="{row}">
-            <span class="link-type">{{ row.patentProperties.TI }}</span>
+            <router-link :to="`/search/detail/${ row.patentProperties.PNM}`" target="_blank">
+              <span class="link-type">{{ row.patentProperties.TI }}</span>
+            </router-link>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="申请日期" sortable="custom" width="190px">
+        <el-table-column align="center" label="备注" width="300">
           <template slot-scope="{row}">
-            <span>{{ row.patentProperties.AD }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="通过日期" sortable="custom" width="190px">
-          <template slot-scope="{row}">
-            <span>{{ row.patentProperties.PD }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="主分类号" width="130px">
-          <template slot-scope="{row}">
-            <span>{{ row.PNM }}</span>
+            <span>{{ row.patentProperties.desc || "" }}</span>
           </template>
         </el-table-column>
 
@@ -95,8 +86,8 @@
       <el-table
         v-if="ifreport"
         :key="tableKey"
-        v-loading="listLoading"
         :data="reportlist"
+        :loading="listLoading"
         border
         fit
         style="width: 100%;  border-radius: 10px!important;"
@@ -162,7 +153,6 @@
             <el-select v-model="form.type" placeholder="请选择报告类型">
               <el-option label="侵权报告" value="infringement" />
               <el-option label="估值报告" value="valuation" />
-              <el-option label="查新报告" value="none" />
             </el-select>
           </el-form-item>
         </el-form>
@@ -234,15 +224,16 @@ export default {
         results.map(item => {
           item.patentProperties = JSON.parse(item.patentProperties)
         })
+        console.log(results)
         this.list = results
-        for (var i = 0; i < this.list.length; i++) {
+        for (let i = 0; i < this.list.length; i++) {
           this.claim[i] = this.list[i].patentId
         }
         this.listLoading = false
       })
     },
     unClaimClick(row) {
-      unClaimPatent(row.row.patentId).then(response => {
+      unClaimPatent(row.row.patentProperties.PNM).then(response => {
         this.$message({
           message: '取消认领成功',
           type: 'success',
@@ -258,7 +249,7 @@ export default {
       userGetReportListByPaId(id).then(response => {
         this.reportlist = response.data.data
         this.listLoading = false
-        for (var i = 0; i < this.reportlist.length; i++) {
+        for (let i = 0; i < this.reportlist.length; i++) {
           if (this.reportlist[i].files !== '' && this.reportlist[i].files !== null && this.reportlist[i].files !== '[]' && this.reportlist[i].files !== 'undefined') {
             this.reportlist[i].files = JSON.parse(this.reportlist[i].files)
           }
@@ -284,8 +275,8 @@ export default {
     // 无法直接下载浏览器可直接预览的文件类型（txt、png、pdf会直接预览）
     download(row) {
       const path = row.files[0].FilePath
-      this.url = 'http://localhost:8000' + path
-      window.open(this.url, '_self')
+      this.url = 'http://' + path
+      window.open(this.url, '_blank')
     },
 
     showDialog(row) {

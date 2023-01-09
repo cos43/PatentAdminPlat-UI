@@ -10,14 +10,13 @@
           style="width: 200px;margin-right: 10px"
         />
 
-        <el-button v-waves class="filter-item" icon="el-icon-search" size="small" type="primary">
+        <el-button class="filter-item" icon="el-icon-search" size="small" type="primary">
           搜索
         </el-button>
 
       </div>
 
       <el-table
-        :key="tableKey"
         v-loading="listLoading"
         :data="list"
         border
@@ -29,56 +28,42 @@
           align="center"
           label="ID"
           prop="id"
-          sortable="custom"
           width="60"
         >
           <template slot-scope="{row}">
-            <span>{{ row.patentId }}</span>
+            <span>{{ row.traceID }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="专利名称" min-width="150px">
+        <el-table-column label="操作" width="300px">
           <template slot-scope="{row}">
-            <span class="link-type">{{ row.patentProperties.TI }}</span>
+            <span>{{ row.desc }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作时间" sortable="custom" width="120px">
+        <el-table-column align="center" label="详细信息" min-width="120px">
           <template slot-scope="{row}">
-            <span>{{ row.patentProperties.AD }}</span>
+            <span>{{ row.request }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="请求时间" width="300px">
+          <template slot-scope="{row}">
+            <span>{{ row.CreatedAt|localTime }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column class-name="status-col" label="操作" width="140">
-          <template slot-scope="{row}">
-            {{ row.patentId > 5 ? '查看估值报告' : '查看专利详情' }}
-          </template>
-        </el-table-column>
-        <!--        <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="130">-->
-        <!--          <template slot-scope="row">-->
-        <!--            <el-button size="mini" type="danger" @click="unClaimClick(row)">-->
-        <!--              取消认领-->
-        <!--            </el-button>-->
-        <!--          </template>-->
-        <!--        </el-table-column>-->
       </el-table>
 
     </div>
-    <!--    <div style="width: 300px">-->
-    <!--      <PatentRecommend />-->
-    <!--    </div>-->
   </div>
 </template>
 
 <script>
-import { getClaimedPatents, unClaimPatent } from '@/api/patent'
-import waves from '@/directive/waves' // waves directive
+import { getTraceList } from '@/api/trace'
 
 export default {
   name: 'ComplexTable',
-  directives: { waves },
 
   data() {
     return {
-      tableKey: 0,
       list: null,
       listLoading: true,
       listQuery: {
@@ -98,23 +83,10 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getClaimedPatents(this.listQuery).then(response => {
-        const results = response.data.data
-        results.map(item => {
-          item.patentProperties = JSON.parse(item.patentProperties)
-        })
-        this.list = results
+      getTraceList(this.listQuery).then(response => {
+        this.list = response.data.data.list
+        console.log(this.list)
         this.listLoading = false
-      })
-    },
-    unClaimClick(row) {
-      unClaimPatent(row.row.patentId).then(response => {
-        this.$message({
-          message: '取消认领成功',
-          type: 'success',
-          duration: 5 * 1000
-        })
-        this.getList()
       })
     }
   }

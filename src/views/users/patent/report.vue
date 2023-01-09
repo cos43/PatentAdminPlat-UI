@@ -42,8 +42,8 @@
       <el-table
         v-if="ifpatent === false && ifupload === false"
         :key="tableKey"
-        v-loading="listLoading"
         :data="list"
+        :loading="listLoading"
         border
         fit
         highlight-current-row
@@ -114,8 +114,8 @@
       <el-table
         v-if="ifpatent"
         :key="tableKey"
-        v-loading="listLoading"
         :data="patentlist"
+        :loading="listLoading"
         border
         fit
         style="width: 100%;  border-radius: 10px!important;"
@@ -162,25 +162,25 @@
       <el-table
         v-if="ifupload"
         :key="tableKey"
-        v-loading="listLoading"
         :data="files"
+        :loading="listLoading"
         border
         fit
         style="width: 100%;  border-radius: 10px!important;"
       >
         <el-table-column align="center" label="报告ID" prop="id" sortable="custom" width="90">
           <template slot-scope="{row}">
-            <span class="link-type">{{ row.reportId }}</span>
+            <span>{{ row.reportId }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="文件名称" min-width="150px">
           <template slot-scope="{row}">
-            <span class="link-type">{{ row.files[0].FileName }}</span>
+            <span>{{ row.files[0].FileName }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="上传日期" sortable="custom" width="220px">
           <template slot-scope="{row}">
-            <span class="link-type">{{ row.UpdatedAt }}</span>
+            <span>{{ row.UpdatedAt }}</span>
           </template>
         </el-table-column>
         <el-table-column class-name="status-col" label="缩略图" width="300">
@@ -190,19 +190,15 @@
               <el-card
                 v-for="(file, index) in row.files"
                 :key="`file-${index}`"
-                :body-style="{ padding: 0 }"
-                :style="{ padding: '0px', margin: '10px 10px 10px 0' }"
+                :style="{ padding: '0px', margin: '10px 10px 10px 0',border:'none' }"
                 class="my-card"
                 shadow="hover"
               >
                 <div class="card-actions">
                   <div style="display: flex;flex-direction: row;align-items: center;justify-content: center">
-                    <el-button-group>
-
-                      <a :href="`http://${file.FilePath}`" target="_blank">
-                        <el-button size="mini" type="primary">下载</el-button>
-                      </a>
-                    </el-button-group>
+                    <a :href="`http://${file.FilePath}`" target="_blank">
+                      <el-button size="mini" type="primary">下载</el-button>
+                    </a>
                   </div>
                 </div>
                 <div class="imageField">

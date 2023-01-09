@@ -10,7 +10,7 @@
       :rules="rules"
       label-width="80px"
       size="small"
-      style="margin: 10px"
+      style="margin: 10px;z-index: 9999!important;"
     >
       <el-form-item label="工艺包" prop="packageName" size="small">
         <el-input v-model="packForm.packageName" size="small" />

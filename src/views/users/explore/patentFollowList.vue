@@ -10,7 +10,7 @@
           style="width: 200px;margin-right: 10px"
         />
 
-        <el-button v-waves class="filter-item" icon="el-icon-search" size="small" type="primary">
+        <el-button class="filter-item" icon="el-icon-search" size="small" type="primary">
           搜索
         </el-button>
       </div>
@@ -26,13 +26,13 @@
       >
         <el-table-column
           align="center"
-          label="ID"
+          label="PNM"
           prop="id"
           sortable="custom"
-          width="60"
+          width="140"
         >
           <template slot-scope="{row}">
-            <span>{{ row.patentId }}</span>
+            <span>{{ row.patentProperties.PNM }}</span>
           </template>
         </el-table-column>
         <el-table-column label="专利名称" min-width="150px">
@@ -40,33 +40,15 @@
             <span class="link-type">{{ row.patentProperties.TI }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="申请日" sortable="custom" width="160">
+        <el-table-column align="center" label="备注" sortable="custom" width="300">
           <template slot-scope="{row}">
-            <span>{{ row.patentProperties.AD }}</span>
+            <span>{{ row.patentProperties.desc || "" }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="发明人" width="110px">
-          <template slot-scope="{row}">
-            <span>{{ row.patentProperties.PINN }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="主分类号" width="80px">
-          <template slot-scope="{row}">
-            <span>{{ row.PNM }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column class-name="status-col" label="状态" width="200">
-          <template slot-scope="{row}">
-            <el-tag :type="row.status ">
-              {{ row.patentProperties.CLS }}
-            </el-tag>
-          </template>
-        </el-table-column>
         <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="100">
           <template slot-scope="row">
-            <el-button size="mini" type="danger" @click="unClaimClick(row)">
+            <el-button size="mini" type="danger" @click="unFocusPatentClick(row)">
               取消关注
             </el-button>
           </template>
@@ -74,20 +56,13 @@
       </el-table>
 
     </div>
-    <!--    <div style="width: 300px">-->
-    <!--      <PatentRecommend />-->
-    <!--    </div>-->
   </div>
 </template>
 
 <script>
 import { getFocusedPatents, unFocusPatent } from '@/api/patent'
-import waves from '@/directive/waves' // waves directive
 
 export default {
-  name: 'ComplexTable',
-  directives: { waves },
-
   data() {
     return {
       tableKey: 0,
@@ -120,8 +95,8 @@ export default {
         this.listLoading = false
       })
     },
-    unClaimClick(row) {
-      unFocusPatent(row.row.patentId).then(response => {
+    unFocusPatentClick(row) {
+      unFocusPatent(row.row.patentProperties.PNM).then(response => {
         this.$message({
           message: '取消关注成功',
           type: 'success',
