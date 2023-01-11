@@ -3,7 +3,6 @@
     <div style="width: 100% ;">
       <div class="filter-container">
         <el-input
-          v-if="!ifreport"
           v-model="listQuery.title"
           class="filter-item"
           placeholder="专利名称"
@@ -11,25 +10,13 @@
           style="width: 200px;margin-right: 10px"
         />
 
-        <el-button v-if="!ifreport" v-waves class="filter-item" icon="el-icon-search" size="small" type="primary">
+        <el-button class="filter-item" icon="el-icon-search" size="small" type="primary">
           搜索
         </el-button>
-        <el-button
-          v-if="ifreport"
-          v-waves
-          class="filter-item"
-          icon="el-icon-d-arrow-left"
-          size="small"
-          type="primary"
-          @click="back"
-        >
-          返回
-        </el-button>
+
       </div>
 
       <el-table
-        v-if="!ifreport"
-        :key="tableKey"
         v-loading="listLoading"
         :data="list"
         border
@@ -42,112 +29,62 @@
             <span>{{ row.patentProperties.PNM }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="专利名称" min-width="150">
+        <el-table-column align="center" label="专利名称" min-width="120">
           <template slot-scope="{row}">
             <router-link :to="`/search/detail/${ row.patentProperties.PNM}`" target="_blank">
               <span class="link-type">{{ row.patentProperties.TI }}</span>
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="备注" width="300">
+        <el-table-column align="center" label="备注" width="400">
           <template slot-scope="{row}">
-            <span>{{ row.patentProperties.desc || "" }}</span>
+            <div style="display: flex;flex-direction: row;justify-content: space-between">
+              <span style="width: calc(100% - 40px)">{{ row.desc || "" }}</span>
+              <div style="width: 40px;">
+                <el-button
+                  circle
+                  icon="el-icon-edit"
+                  size="mini"
+                  style="margin-left: 10px"
+                  type="primary"
+                  @click="showDescDialog(row)"
+                />
+              </div>
+            </div>
           </template>
         </el-table-column>
-
+        <el-table-column align="center" label="报告" width="80">
+          <template slot-scope="{row}">
+            <el-button class="detail" size="mini" type="light" @click="showDialog(row)">
+              生成
+            </el-button>
+          </template>
+        </el-table-column>
         <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="180">
           <template slot-scope="row">
             <el-button size="mini" type="danger" @click="unClaimClick(row)">
               取消认领
             </el-button>
-
             <addToPackage :patent="row.row.patentProperties">
               <el-button size="mini" type="primary">
                 加入工艺包
               </el-button>
             </addToPackage>
-
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="报告" width="150">
-          <template slot-scope="{row}">
-            <el-button class="detail" size="mini" type="warning" @click="showReports(row.patentId)">
-              详情
-            </el-button>
-            <el-button class="detail" size="mini" type="primary" @click="showDialog(row)">
-              生成
-            </el-button>
-
           </template>
         </el-table-column>
       </el-table>
-
-      <el-table
-        v-if="ifreport"
-        :key="tableKey"
-        :data="reportlist"
-        :loading="listLoading"
-        border
-        fit
-        style="width: 100%;  border-radius: 10px!important;"
-      >
-
-        <el-table-column align="center" label="ID" prop="id" sortable="custom" width="80">
-          <template slot-scope="{row}">
-            <span>{{ row.reportId }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="报告名称" min-width="150px">
-          <template slot-scope="{row}">
-            <span class="link-type">{{ row.reportName }}</span>
-          </template>
-
-        </el-table-column>
-        <el-table-column align="center" label="报告类型" min-width="130px">
-          <template slot-scope="{row}">
-            <span class="link-type">{{ row.Type }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="申请时间" sortable="custom" width="180px">
-          <template slot-scope="{row}">
-            <span>{{ row.CreatedAt }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="最后更新时间" sortable="custom" width="180px">
-          <template slot-scope="{row}">
-            <span>{{ row.UpdatedAt }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" label="状态" width="110px">
-          <template slot-scope="{row}">
-            <span>{{ row.rejectTag }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="180">
-          <template slot-scope="{row}">
-            <el-button
-              v-if="row.rejectTag === '已上传'"
-              icon="el-icon-download"
-              size="mini"
-              type="primary"
-              @click="download(row)"
-            >
-              下载
-            </el-button>
-            <el-button v-if="row.rejectTag === '未审核'" round size="mini" type="danger" @click="cancelReport(row)"> 撤销
-            </el-button>
-            <el-button v-if="row.rejectTag === '已撤销'" size="mini" type="primary" @click="reReport(row)"> 重新申请
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <el-dialog :visible.sync="dialogFormVisible" center title="申请生成报告" width="30%">
+      <el-dialog :visible.sync="editDescFromVisible" center title="修改备注" width="30%">
+        <el-form>
+          <el-form-item label="备注">
+            <el-input v-model="description" placeholder="修改备注" type="textarea" />
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="editDescFromVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleUpdateDesc">确定</el-button>
+        </div>
+      </el-dialog>
+      <el-dialog :visible.sync="reportDialogFormVisible" center title="申请生成报告" width="30%">
         <el-form :model="form">
           <el-form-item :label-width="formLabelWidth" label="报告类型">
             <el-select v-model="form.type" placeholder="请选择报告类型">
@@ -157,7 +94,7 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button @click="reportDialogFormVisible = false">取 消</el-button>
           <el-button type="primary" @click="InsertReport(form)">确 定</el-button>
         </div>
       </el-dialog>
@@ -169,28 +106,22 @@
 
 <script>
 import addToPackage from '@/views/users/components/AddToPackage'
-import { getClaimedPatents, unClaimPatent } from '@/api/patent'
-import { ApplyReport, cancelReport, reAppReport, userGetReportListByPaId } from '@/api/report'
-import waves from '@/directive/waves'
+import { getClaimedPatents, unClaimPatent, updateClaimPatentDescription } from '@/api/patent'
+import { ApplyReport, userGetReportListByPaId } from '@/api/report'
 
 export default {
   name: 'ComplexTable',
-  directives: { waves },
   components: { addToPackage },
   data() {
     return {
       tableKey: 0,
       patents: null,
-      ifpatent: false,
-      ifcancel: false,
-      ifreport: false,
-      ifshow1: false,
-      patentitems: null,
-      reportlist: null,
-      patentlist: [],
-      isreject: false,
-      patentid: 0,
-      dialogFormVisible: false,
+      reportList: null,
+      patentId: 0,
+      editDescFromVisible: false,
+      currentPatent: null,
+      description: '',
+      reportDialogFormVisible: false,
       a: 0,
       list: null,
       claim: [],
@@ -207,7 +138,6 @@ export default {
       form: {
         patentId: '',
         type: ''
-        // CreatedAt: this.getNowTime()
       },
       formLabelWidth: '120px'
 
@@ -242,60 +172,38 @@ export default {
         this.getList()
       })
     },
-    showReports(id) {
-      this.ifreport = true
-      this.listLoading = true
-      this.patentid = id
-      userGetReportListByPaId(id).then(response => {
-        this.reportlist = response.data.data
-        this.listLoading = false
-        for (let i = 0; i < this.reportlist.length; i++) {
-          if (this.reportlist[i].files !== '' && this.reportlist[i].files !== null && this.reportlist[i].files !== '[]' && this.reportlist[i].files !== 'undefined') {
-            this.reportlist[i].files = JSON.parse(this.reportlist[i].files)
-          }
-          if (this.reportlist[i].UpdatedAt === null) {
-            this.reportlist[i].UpdatedAt = '无'
-          }
-          if (this.reportlist[i].Type === 'infringement') {
-            this.reportlist[i].Type = '侵权报告'
-          }
-          if (this.reportlist[i].Type === 'valuation') {
-            this.reportlist[i].Type = '估值报告'
-          }
-        }
-        // console.log(this.claim)  证明 用this依然可以访问 其他函数 修改的元素
-        console.log(this.reportlist)
+    handleUpdateDesc() {
+      updateClaimPatentDescription(this.currentPatent.patentProperties.PNM, this.description).then(res => {
+        this.$message({
+          message: '修改成功',
+          type: 'success',
+          duration: 1000
+        })
+        this.editDescFromVisible = false
+        this.getList()
       })
     },
-    back() {
-      this.ifreport = false
-      this.queryid = ''
-      this.getList()
-    },
-    // 无法直接下载浏览器可直接预览的文件类型（txt、png、pdf会直接预览）
-    download(row) {
-      const path = row.files[0].FilePath
-      this.url = 'http://' + path
-      window.open(this.url, '_blank')
-    },
-
     showDialog(row) {
-      this.dialogFormVisible = true
-      this.patentid = row.patentId
+      this.reportDialogFormVisible = true
+      this.patentId = row.patentId
+    },
+    showDescDialog(row) {
+      this.editDescFromVisible = true
+      this.currentPatent = row
+      this.description = row.desc
     },
 
     InsertReport(form) {
       this.flag = 0
-      this.dialogFormVisible = false
-      console.log(this.patentid)
-      this.form.patentId = this.patentid
+      this.reportDialogFormVisible = false
+      this.form.patentId = this.patentId
       console.log(this.form)
       userGetReportListByPaId(this.form.patentId).then(response => {
-        this.reportlist = response.data.data
+        this.reportList = response.data.data
         this.listLoading = false
         if (this.reportList !== null) {
-          for (var i = 0; i < this.reportlist.length && this.flag === 0; i++) {
-            if (this.reportlist[i].Type === this.form.type) {
+          for (let i = 0; i < this.reportList.length && this.flag === 0; i++) {
+            if (this.reportList[i].Type === this.form.type) {
               this.$message({
                 message: '您已申请该类型报告，点击详情查看',
                 type: 'error',
@@ -317,30 +225,6 @@ export default {
             }
           })
         }
-      })
-    },
-    cancelReport(row) {
-      cancelReport(row.reportId).then(response => {
-        if (response.data.code === 200) {
-          this.$message({
-            message: '撤销报告申请成功',
-            type: 'success',
-            duration: 5 * 1000
-          })
-        }
-        this.showReports(this.patentid)
-      })
-    },
-    reReport(row) {
-      reAppReport(row.reportId).then(response => {
-        if (response.data.code === 200) {
-          this.$message({
-            message: '重新申请成功',
-            type: 'success',
-            duration: 1000
-          })
-        }
-        this.showReports(this.patentid)
       })
     }
   }

@@ -6,22 +6,61 @@
     </div>
     <div v-else>
       <div class="d-flex flex-row " style="justify-content: space-between;margin-bottom: 5px">
-        <div class="filters">
-          <span class="filter-active">概况</span>
-          <span>按时间</span>
-          <span>按产业分类</span>
-          <span>按机构</span>
-          <span>按发明人</span>
-          <span>法律状态</span>
-        </div>
+        <!--        <div class="filters">-->
+        <!--          <span class="filter-active">概况</span>-->
+        <!--          <span>按时间</span>-->
+        <!--          <span>按产业分类</span>-->
+        <!--          <span>按机构</span>-->
+        <!--          <span>按发明人</span>-->
+        <!--          <span>法律状态</span>-->
+        <!--        </div>-->
         <div>
-          <el-button
-            :disabled="searchResults.list.filter(item=>item.select).length===0"
-            size="mini"
-            type="primary"
-            @click="exportTxt"
-          >导出本页
-          </el-button>
+          <div>
+            <el-popover
+              placement="right-start"
+              trigger="click"
+              width="400"
+            >
+              <el-form
+                ref="queryForm"
+                :model="queryFrom"
+                :rules="queryFromRules"
+                label-position="left"
+                label-width="60px"
+                size="small"
+                style="margin: 5px"
+              >
+                <el-form-item label="名称" prop="name" size="small">
+                  <el-input v-model="queryFrom.name" size="small" />
+                </el-form-item>
+                <el-form-item label="表达式" size="small">
+                  <el-input v-model="queryFrom.expression" disabled size="small" />
+                </el-form-item>
+                <el-form-item label="描述" size="small">
+                  <el-input v-model="queryFrom.desc" size="small" />
+                </el-form-item>
+                <el-button
+                  size="mini"
+                  type="primary"
+                  @click="submitForm('queryForm')"
+                >
+                  保存
+                </el-button>
+              </el-form>
+              <el-button slot="reference" size="mini" type="primary" @click="queryFrom.expression=query.query">
+                保存搜索结果
+              </el-button>
+            </el-popover>
+
+            <el-button
+              :disabled="searchResults.list.filter(item=>item.select).length===0"
+              size="mini"
+              style="margin-left: 10px"
+              type="light"
+              @click="exportTxt"
+            >导出所选项
+            </el-button>
+          </div>
         </div>
       </div>
       <div style="padding: 2px 10px;display: flex;flex-direction: row;align-items: center;font-size: 0.9rem">
@@ -93,7 +132,7 @@
 </template>
 <script>
 import { addPatentToPackage, checkPatentToPackage, getPackageList } from '@/api/package'
-import { searchSimple } from '@/api/search'
+import { addQuery, searchSimple } from '@/api/search'
 import { getTagColor, saveFile } from '@/views/users/utils'
 import createPack from '@/views/users/components/createPack'
 import Link from '@/layout/components/Sidebar/Link'
@@ -118,6 +157,7 @@ export default {
     }
   },
   data() {
+    console.log(this.query.query)
     return {
       page: 1,
       searchLoading: false,
@@ -135,7 +175,18 @@ export default {
       loadingPackageList: true,
       loadingRelation: false,
       packageList: [],
-      patentPackageExist: false
+      patentPackageExist: false,
+      // 用户搜索表达式
+      queryFrom: {
+        expression: this.query.query,
+        name: '',
+        desc: ''
+      },
+      queryFromRules: {
+        name: [
+          { required: true, message: '请输入搜索名称', trigger: 'blur' }
+        ]
+      }
     }
   },
   watch: {
@@ -162,9 +213,9 @@ export default {
     exportTxt() {
       const exportArray = []
       for (const item of this.searchResults.list.filter(item => item.select)) {
-        exportArray.push(`标题：${item.TI}\n申请号：${item.AN}\n`)
+        exportArray.push(`标题：${item.TI}\n申请号：${item.AN}\n申请日：${item.AD}\n公开（公告）号：${item.PNM}\n公开（公告）日：${item.PD}\n申请（专利权）人：${item.PA}\n发明(设计）人：${item.PINN}\n简介：\n${item.CL}\n`)
       }
-      const exportString = exportArray.join('\n')
+      const exportString = exportArray.join('\n\n')
       const fileName = `${this.query.query}.txt`
       saveFile(exportString, fileName)
     },
@@ -214,7 +265,23 @@ export default {
         }
       })
     },
-    getTagColor: getTagColor
+    getTagColor: getTagColor,
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          addQuery(this.queryFrom).then(res => {
+            this.$message({
+              message: '保存成功',
+              type: 'success'
+            })
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    }
+
   }
 }
 </script>

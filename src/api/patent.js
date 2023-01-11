@@ -1,5 +1,12 @@
 import request from '@/utils/request'
 
+// 更新关注的专利描述
+export function updateClaimPatentDescription(PNM, desc) {
+  return request({
+    url: `/user-agent/patent/claim/${PNM}/desc`, method: 'put', data: { desc }
+  })
+}
+
 // 认领专利
 export function claimPatent(patent) {
   return request({
@@ -18,6 +25,13 @@ export function unClaimPatent(PNM) {
 export function getClaimedPatents() {
   return request({
     url: '/user-agent/patent/claim', method: 'get'
+  })
+}
+
+// 更新关注的专利描述
+export function updateFocusPatentDescription(PNM, desc) {
+  return request({
+    url: `/user-agent/patent/focus/${PNM}/desc`, method: 'put', data: { desc }
   })
 }
 

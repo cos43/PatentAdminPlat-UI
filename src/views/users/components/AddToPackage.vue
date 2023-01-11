@@ -48,7 +48,7 @@
         </div>
       </div>
     </el-form>
-    <el-button slot="reference" size="mini" style="margin-left: 5px" type="primary" @click="showPopover()">加入工艺包
+    <el-button slot="reference" size="mini" style="margin-left: 5px" type="light" @click="showPopover()">加入工艺包
     </el-button>
   </el-popover>
 </template>

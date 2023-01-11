@@ -68,3 +68,11 @@ export function getNowTime() {
   var mytime = time.toLocaleDateString() + ' ' + time.toLocaleTimeString()
   return mytime
 }
+
+export function getNoveltyReport(data) {
+  return request({
+    url: `/user-agent/report/novelty `,
+    method: 'post',
+    data: data
+  })
+}

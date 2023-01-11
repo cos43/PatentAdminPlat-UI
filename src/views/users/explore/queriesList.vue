@@ -53,7 +53,7 @@
         </el-table-column>
         <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="200">
           <template slot-scope="row">
-            <el-button size="mini" type="primary" @click="queryDetail(row)">
+            <el-button size="mini" type="light" @click="queryDetail(row)">
               快速访问
             </el-button>
             <el-button size="mini" type="danger" @click="deleteQuery(row)">

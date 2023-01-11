@@ -40,7 +40,7 @@
           {{ uploading ? '上传中' : '上传文件' }}
           <input v-show="false" ref="uploadInput" type="file">
         </el-button>
-        <el-button icon="el-icon-download" size="small" type="primary">打包下载</el-button>
+        <!--        <el-button icon="el-icon-download" size="small" type="primary">打包下载</el-button>-->
         <el-button icon="el-icon-edit" size="small" type="primary" @click="packageDetailDialogVisible=true">编辑
         </el-button>
         <el-button icon="el-icon-delete" size="small" type="danger" @click="handleDeletePackage()">删除专利包

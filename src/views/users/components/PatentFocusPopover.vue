@@ -1,7 +1,8 @@
 <template>
   <div>
 
-    <el-button v-if="patent.isFocused" size="mini" type="success" @click="claim">已关注</el-button>
+    <el-button v-if="patent.isFocused" icon="el-icon-star-off" size="mini" type="danger" @click="focus">已关注
+    </el-button>
     <el-popover
       v-else
       placement="left-end"
@@ -17,7 +18,7 @@
           <el-input v-model="patent.TI" size="small" />
         </el-form-item>
         <el-form-item label="备注" size="small">
-          <el-input v-model="desc" size="small" />
+          <el-input v-model="desc" size="small" type="textarea" />
         </el-form-item>
         <div style="display: flex;flex-direction: row;align-items: center;justify-content: flex-end">
           <el-button size="mini" type="primary" @click="focus">确认</el-button>
@@ -28,10 +29,10 @@
         slot="reference"
         size="mini"
         style="margin-left: 5px"
-        type="primary"
+        type="light"
         @click="showPopover()"
       >
-        {{ patent.isFocused ? '已关注' : '关注' }}
+        关注
       </el-button>
     </el-popover>
 

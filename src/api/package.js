@@ -83,3 +83,11 @@ export function getRelationGraphByPackageId(packageId) {
     method: 'get'
   })
 }
+
+// 通过专利包id获得专利包中专利的发明人关系图谱
+export function getTechGraphByPackageId(packageId) {
+  return request({
+    url: `/user-agent/package/${packageId}/graph/tech`,
+    method: 'get'
+  })
+}

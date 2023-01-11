@@ -48,7 +48,8 @@ export default {
   components: { PanThumb },
   props: {
     user: {
-      type: Object
+      type: Object,
+      default: () => ({})
     }
   }
 }

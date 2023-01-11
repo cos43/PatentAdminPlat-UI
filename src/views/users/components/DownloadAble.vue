@@ -24,6 +24,10 @@ export default {
   methods: {
     download() {
       downloadFile(this.url, this.name)
+      this.$message({
+        message: '下载成功',
+        type: 'success'
+      })
     }
   }
 }

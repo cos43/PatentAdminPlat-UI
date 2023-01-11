@@ -16,7 +16,6 @@
       </div>
 
       <el-table
-        :key="tableKey"
         v-loading="listLoading"
         :data="list"
         border
@@ -40,9 +39,21 @@
             <span class="link-type">{{ row.patentProperties.TI }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="备注" sortable="custom" width="300">
+        <el-table-column align="center" label="备注" sortable="custom" width="400">
           <template slot-scope="{row}">
-            <span>{{ row.patentProperties.desc || "" }}</span>
+            <div style="display: flex;flex-direction: row;justify-content: space-between">
+              <span style="width: calc(100% - 40px)">{{ row.desc || "" }}</span>
+              <div style="width: 40px;">
+                <el-button
+                  circle
+                  icon="el-icon-edit"
+                  size="mini"
+                  style="margin-left: 10px"
+                  type="primary"
+                  @click="showDescDialog(row)"
+                />
+              </div>
+            </div>
           </template>
         </el-table-column>
 
@@ -54,18 +65,30 @@
           </template>
         </el-table-column>
       </el-table>
-
+      <el-dialog :visible.sync="editDescFromVisible" center title="修改备注" width="30%">
+        <el-form>
+          <el-form-item label="备注">
+            <el-input v-model="description" placeholder="修改备注" type="textarea" />
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="editDescFromVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleUpdateDesc">确定</el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import { getFocusedPatents, unFocusPatent } from '@/api/patent'
+import { getFocusedPatents, unFocusPatent, updateFocusPatentDescription } from '@/api/patent'
 
 export default {
   data() {
     return {
-      tableKey: 0,
+      editDescFromVisible: false,
+      currentPatent: null,
+      description: '',
       list: null,
       listLoading: true,
       listQuery: {
@@ -83,6 +106,11 @@ export default {
     this.getList()
   },
   methods: {
+    showDescDialog(row) {
+      this.editDescFromVisible = true
+      this.currentPatent = row
+      this.description = row.desc
+    },
     getList() {
       this.listLoading = true
       getFocusedPatents(this.listQuery).then(response => {
@@ -102,6 +130,17 @@ export default {
           type: 'success',
           duration: 5 * 1000
         })
+        this.getList()
+      })
+    },
+    handleUpdateDesc() {
+      updateFocusPatentDescription(this.currentPatent.patentProperties.PNM, this.description).then(res => {
+        this.$message({
+          message: '修改成功',
+          type: 'success',
+          duration: 1000
+        })
+        this.editDescFromVisible = false
         this.getList()
       })
     }

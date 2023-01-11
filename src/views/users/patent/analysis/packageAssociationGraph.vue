@@ -56,7 +56,7 @@ const option = {
     textAlign: 'auto',
     left: '10%', // '5' | '5%'，title 组件离容器左侧的距离
     right: 'auto', // 'title 组件离容器右侧的距离
-    top: 'auto', // title 组件离容器上侧的距离
+    top: '10%', // title 组件离容器上侧的距离
     bottom: 'auto'
   },
   tooltip: {},

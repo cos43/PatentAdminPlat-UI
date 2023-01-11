@@ -102,6 +102,7 @@ export const constantRoutes = [{
     meta: { title: '专利管理', icon: 'patent' }
   }, {
     path: 'report',
+    hidden: true,
     component: () => import('@/views/users/patent/report'),
     name: 'Report',
     meta: { title: '我的报告', icon: 'report' }
@@ -116,12 +117,6 @@ export const constantRoutes = [{
     name: 'Pack',
     hidden: true,
     meta: { title: '工艺包详情', icon: 'pack' }
-  }, {
-    path: 'package/inventor-graph/:id',
-    component: () => import('@/views/users/patent/analysis/packageAssociationGraph2'),
-    name: 'Pack',
-    hidden: true,
-    meta: { title: '工艺包发明人关系图谱', icon: 'pack' }
   }, {
     path: 'analysis',
     name: 'analysis',
@@ -182,6 +177,19 @@ export const constantRoutes = [{
   }]
 },
 
+{
+  path: '/report', component: Layout, meta: { title: '我的报告', icon: 'report' }, children: [{
+    path: 'list',
+    component: () => import('@/views/users/report/reportList'),
+    name: 'NoveltyReportGenerator',
+    meta: { title: '报告管理', icon: 'report' }
+  }, {
+    path: 'noveltyReportGenerator',
+    component: () => import('@/views/users/report/NoveltyReportGenerator'),
+    name: 'NoveltyReportGenerator',
+    meta: { title: '生成查新报告', icon: 'new' }
+  }]
+},
 {
   path: '/trade', component: Layout, meta: { title: '我的交易', icon: 'trade' }, children: [{
     path: 'home',

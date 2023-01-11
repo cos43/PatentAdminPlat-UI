@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <el-button v-if="patent.isClaimed" size="mini" type="success" @click="claim">已认领</el-button>
+    <el-button v-if="patent.isClaimed" icon="el-icon-check" size="mini" type="success" @click="claim">已认领</el-button>
     <el-popover
       v-else
       placement="left-end"
@@ -17,7 +17,7 @@
           <el-input v-model="patent.TI" size="small" />
         </el-form-item>
         <el-form-item label="备注" size="small">
-          <el-input v-model="desc" size="small" />
+          <el-input v-model="desc" size="small" type="textarea" />
         </el-form-item>
         <div style="display: flex;flex-direction: row;align-items: center;justify-content: flex-end">
           <el-button size="mini" type="primary" @click="claim">确认</el-button>
@@ -28,7 +28,7 @@
         slot="reference"
         size="mini"
         style="margin-left: 5px"
-        type="primary"
+        type="light"
         @click="showPopover()"
       >
         {{ patent.isClaimed ? '已认领' : '认领' }}

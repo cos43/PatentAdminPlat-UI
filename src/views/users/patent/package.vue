@@ -28,9 +28,9 @@
           </div>
           <el-row justify="space-between" type="flex">
             <router-link :to="{path:`package/${o.packageId}`,params:'1212'}" style="margin-right: 5px">
-              <el-button icon="el-icon-view" size="mini" type="primary">查看</el-button>
+              <el-button icon="el-icon-view" size="mini" type="light">查看</el-button>
             </router-link>
-            <el-button icon="el-icon-download" size="mini" type="primary">打包下载</el-button>
+            <!--            <el-button icon="el-icon-download" size="mini" type="primary">打包下载</el-button>-->
           </el-row>
         </div>
       </el-card>

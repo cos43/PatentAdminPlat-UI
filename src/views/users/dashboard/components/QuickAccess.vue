@@ -3,16 +3,18 @@
     <p>快捷访问</p>
     <el-row :gutter="40" class="panel-group">
       <el-col :lg="6" :sm="12" :xs="12" class="card-panel-col">
-        <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-people">
-            <svg-icon class-name="card-panel-icon" icon-class="patent" />
-          </div>
-          <div class="card-panel-description">
-            <div class="card-panel-text">
-              查新报告入口
+        <router-link to="/report/noveltyReportGenerator">
+          <div class="card-panel">
+            <div class="card-panel-icon-wrapper icon-people">
+              <svg-icon class-name="card-panel-icon" icon-class="patent" />
+            </div>
+            <div class="card-panel-description">
+              <div class="card-panel-text">
+                查新报告入口
+              </div>
             </div>
           </div>
-        </div>
+        </router-link>
       </el-col>
       <el-col :lg="6" :sm="12" :xs="12" class="card-panel-col">
         <div class="card-panel">
@@ -27,16 +29,20 @@
         </div>
       </el-col>
       <el-col :lg="6" :sm="12" :xs="12" class="card-panel-col">
-        <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-message">
-            <svg-icon class-name="card-panel-icon" icon-class="pack" />
-          </div>
-          <div class="card-panel-description">
-            <div class="card-panel-text">
-              交底书模版下载
+        <download-able name="交底书模版" url="http://10.112.138.178:8000/static/docs/patent_confession_template.doc">
+          <div class="card-panel">
+            <div class="card-panel-icon-wrapper icon-message">
+              <svg-icon class-name="card-panel-icon" icon-class="pack" />
+            </div>
+            <div class="card-panel-description">
+              <div class="card-panel-text">
+                交底书模版下载
+              </div>
+
             </div>
           </div>
-        </div>
+        </download-able>
+
       </el-col>
     </el-row>
   </div>
@@ -44,7 +50,11 @@
 
 <script>
 
-export default {}
+import DownloadAble from '@/views/users/components/DownloadAble'
+
+export default {
+  components: { DownloadAble }
+}
 </script>
 
 <style lang="scss" scoped>
