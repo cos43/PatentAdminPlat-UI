@@ -184,11 +184,12 @@ export const constantRoutes = [{
     name: 'NoveltyReportGenerator',
     meta: { title: '报告管理', icon: 'report' }
   }, {
-    path: 'noveltyReportGenerator',
-    component: () => import('@/views/users/report/NoveltyReportGenerator'),
-    name: 'NoveltyReportGenerator',
-    meta: { title: '生成查新报告', icon: 'new' }
-  }]
+    path: 'ReportGenerator',
+    component: () => import('@/views/users/report/ReportGenerator'),
+    name: 'ReportGenerator',
+    meta: { title: '报告生成', icon: 'new' }
+  }
+  ]
 },
 {
   path: '/trade', component: Layout, meta: { title: '我的交易', icon: 'trade' }, children: [{

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div>
     <el-form ref="form" :model="form" :rules="formRules" label-width="80px">
       <el-form-item label="专利标题" prop="title">
         <el-input v-model="form.title" />
@@ -108,7 +108,7 @@ export default {
           type: 'blob',
           mimeType:
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        }) // Output the document using Data-URI
+        })
         saveAs(out, 'output.docx')
         self.$message({
           message: '生成成功',

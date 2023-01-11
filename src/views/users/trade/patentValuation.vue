@@ -10,14 +10,13 @@
           style="width: 200px;margin-right: 10px"
         />
 
-        <el-button v-waves class="filter-item" icon="el-icon-search" size="small" type="primary">
+        <el-button class="filter-item" icon="el-icon-search" size="small" type="primary">
           搜索
         </el-button>
 
       </div>
 
       <el-table
-        :key="tableKey"
         v-loading="listLoading"
         :data="list"
         border
@@ -25,67 +24,65 @@
         highlight-current-row
         style="width: 100%;  border-radius: 10px!important;"
       >
-        <el-table-column
-          align="center"
-          label="ID"
-          prop="id"
-          sortable="custom"
-          width="60"
-        >
+        <el-table-column align="center" label="PNM" prop="id" sortable="custom" width="140">
           <template slot-scope="{row}">
-            <span>{{ row.patentId }}</span>
+            <span>{{ row.patentProperties.PNM }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="专利名称" min-width="150px">
+        <el-table-column align="center" label="专利名称" min-width="120">
           <template slot-scope="{row}">
-            <span class="link-type">{{ row.patentProperties.TI }}</span>
+            <router-link :to="`/search/detail/${ row.patentProperties.PNM}`" target="_blank">
+              <span class="link-type">{{ row.patentProperties.TI }}</span>
+            </router-link>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="交易时间" sortable="custom" width="120px">
+        <el-table-column align="center" label="备注" width="400">
           <template slot-scope="{row}">
-            <span>{{ row.patentProperties.AD }}</span>
+            <div style="display: flex;flex-direction: row;justify-content: space-between">
+              <span style="width: calc(100% - 40px)">{{ row.desc || "" }}</span>
+              <div style="width: 40px;">
+                <el-button
+                  circle
+                  icon="el-icon-edit"
+                  size="mini"
+                  style="margin-left: 10px"
+                  type="primary"
+                  @click="showDescDialog(row)"
+                />
+              </div>
+            </div>
           </template>
         </el-table-column>
-
-        <el-table-column align="center" label="估价金额" width="110px">
-          <template>
-            <span>100000</span>
+        <el-table-column align="center" label="估价">
+          <template slot-scope="{row}">
+            {{ row.price }}
           </template>
         </el-table-column>
-
-        <el-table-column class-name="status-col" label="状态" width="140">
-          <template>
-            <el-button size="small" type="primary">查看估值报告</el-button>
-          </template>
-        </el-table-column>
-        <!--        <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="130">-->
-        <!--          <template slot-scope="row">-->
-        <!--            <el-button size="mini" type="danger" @click="unClaimClick(row)">-->
-        <!--              取消认领-->
-        <!--            </el-button>-->
-        <!--          </template>-->
-        <!--        </el-table-column>-->
       </el-table>
 
     </div>
-    <!--    <div style="width: 300px">-->
-    <!--      <PatentRecommend />-->
-    <!--    </div>-->
+
   </div>
 </template>
 
 <script>
-import { getClaimedPatents, unClaimPatent } from '@/api/patent'
-import waves from '@/directive/waves' // waves directive
+import { getClaimedPatents } from '@/api/patent'
 
 export default {
   name: 'ComplexTable',
-  directives: { waves },
-
   data() {
     return {
       tableKey: 0,
+      patents: null,
+      reportList: null,
+      patentId: 0,
+      editDescFromVisible: false,
+      currentPatent: null,
+      description: '',
+      reportDialogFormVisible: false,
+      a: 0,
       list: null,
+      claim: [],
       listLoading: true,
       listQuery: {
         page: 1,
@@ -94,7 +91,13 @@ export default {
         title: undefined,
         type: undefined,
         sort: '+id'
-      }
+      },
+      flag: 0,
+      form: {
+        patentId: '',
+        type: ''
+      },
+      formLabelWidth: '120px'
 
     }
   },
@@ -109,21 +112,15 @@ export default {
         results.map(item => {
           item.patentProperties = JSON.parse(item.patentProperties)
         })
+        console.log(results)
         this.list = results
-        console.log(this.list)
+        for (let i = 0; i < this.list.length; i++) {
+          this.claim[i] = this.list[i].patentId
+        }
         this.listLoading = false
       })
-    },
-    unClaimClick(row) {
-      unClaimPatent(row.row.patentId).then(response => {
-        this.$message({
-          message: '取消认领成功',
-          type: 'success',
-          duration: 5 * 1000
-        })
-        this.getList()
-      })
     }
+
   }
 }
 </script>
